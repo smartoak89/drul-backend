@@ -1,0 +1,96 @@
+extends ../layout/mainAdmin
+block content
+    include ../mixins/mixins
+    section.content-wrapper(role="main")
+        div.content
+            div.content-bar
+                div.pull-right(role="group")
+                    a.btn.btn-nofill.btn-sm.btn-default(data-toggle="modal" data-scripts="_includes/setups.js" data-target="#templateSetup" title="Template Setups" aria-label="template setups" href="#")
+                        span.icon-settings.fa-lg.text-muted
+
+                ul.breadcrumb.breadcrumb-angle
+                    li
+                        a(href="/admin" aria-label="home")
+                            i.fa.fa-home
+                    li.active Категории
+
+            div.content-body
+                div.panel(data-fill-color="true")
+                    div.panel-heading
+                        h3.panel-title Список категорий
+                    div.panel-body
+                        div.btn-toolbar.clearfix(role="toolbar")
+                            //div.btn-group.pull-right(style="direction: ltr")
+                            //    label.text-muted(style="margin-right:10px") Multiple select:
+                            //    input#allowMultipleSelect.js-switch(type="checkbox" data-class-name="switchery switchery-alt")
+                            div.btn-group.btn-group-sm.pull-left
+                                button.btn.btn-default#add-mainCateg(data-toggle="tooltip" data-container="body" title="add new record" role="button")
+                                    i.fa.fa-plus
+                            //div.btn-group.btn-group-sm.pull-left
+                            //    button.btn.btn-default.datatables1-actions.disabled#edit-datatables1(data-toggle="tooltip" data-container="body" title="edit record" role="button")
+                            //        i.fa.fa-edit
+                                //button.btn.btn-default.datatables1-actions.disabled#delete-datatables1(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                                //    i.fa.fa-trash-o
+                            //div.btn-group.pull-left
+                            //    input.form-control.input-sm#filterDatatables1(placeholder="Filter")
+                    div.panel-body.hide#addMainCategFormContainer
+                        form#formAddMainCateg(action="#" method="POST")
+                            div.form-group
+                                p.lead Добавить категорию
+                                div.row
+                                    div.col-md-3
+                                        div.form-group
+                                            input.form-control.input-sm#addEngine(name="Имя" placeholder="Имя категории" autocomplete="off" required="")
+                            div.form-grouphide
+                                button.btn.btn-default.btn-sm#hideAddmainCateg Отмена
+                                button.btn.btn-success.btn-sm(type="submit") Создать
+                div.dataTables_wrapper.form-inline.dt-bootstrap
+                    table.table.table-noborder.table-hover.tree.dataTable.bordered-top#categtable
+                        thead
+                            tr
+                                th Название
+                                th Уровень
+                        tbody
+                            //tr.treegrid-1
+                            //    td Обувь
+                            //    td Основная
+                            //    td
+                            //        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")
+                            //            i.fa.fa-times
+                            //        button.btn.btn-default.pull-right(type="button" aria-label="icon note circle")
+                            //            i.icon-note
+                            //tr.treegrid-2.treegrid-parent-1
+                            //    td Женская обувь
+                            //    td Дополнительная
+                            //    td
+                            //        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")
+                            //            i.fa.fa-times
+                            //tr.treegrid-3.treegrid-parent-1
+                            //    td Мужская обувь
+                            //    td Дополнительная
+                            //    td
+                            //        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")
+                            //            i.fa.fa-times
+                            //tr.treegrid-4
+                            //    td Одежда
+                            //    td Основная
+                            //    td
+                            //        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")
+                            //            i.fa.fa-times
+                            //        button.btn.btn-default.pull-right(type="button" aria-label="icon note circle")
+                            //            i.icon-note
+                            //tr.treegrid-5.treegrid-parent-4
+                            //    td Детская одежда
+                            //    td Дополнительная
+                            //    td
+                            //        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")
+                            //            i.fa.fa-times
+                            //
+                            //
+                        tfoot
+                            tr
+                                th Rendering Email
+                                th Rendering Link
+                        //div.modal.fade#templateSetup
+                        //    div.modal-dialog
+                        //        div.modal-content

@@ -1,0 +1,41 @@
+[
+  {
+    "Category": {
+      "POST /category": "Create a new category",
+      "GET /categories": "Show list of categories",
+      "PUT /category/{uuid}": "Update current category",
+      "POST /category/{uuid}": "Create subcategory inside the current category",
+      "DELETE /category/{uuid}": "Delete the current category",
+      "DELETE /category/{uuid}/{index}": "Delete subcategory by index from the current category"
+    }
+  },{
+    "User": {
+      "POST /user/register": "Register a new user",
+      "GET /users": "Show list of users",
+      "PUT /user/{uuid}": "Update the current user",
+      "DELETE /user/{uuid}": "Delete the current user",
+      "GET /user/{uuid}": "Get one user by uuid",
+      "POST /user/auth": "Authorize user account"
+    }
+  },{
+    "Product": {
+      "POST /product": "Create a new product",
+      "GET /products": "Return list of products",
+      "PUT /product/{uuid}": "Update product",
+      "DELETE /product/{uuid}": "Delete product",
+      "GET /product/{uuid}": "Get one product"
+      "GET /product/{uuid}/gallery": "Get all photos for current product",
+    }
+  },{
+    "File": {
+      "POST /file/{uuid}": "Upload photo for current product",
+      "GET /file/{uuid}": "Get one photo",
+    }
+  },{
+    "Deferred": {
+      "POST /deferred/:{product uuid}": {body: userId}"add to deferred",
+      "GET /deferreds/:userid": "Get all deferreds",
+      "DELETE /deferreds/:uuid": "delete deferred",
+    }
+  }
+]

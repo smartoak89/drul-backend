@@ -1,0 +1,62 @@
+extends ../layout/mainAdmin
+block content
+    include ../mixins/mixins
+    section.content-wrapper
+        div.content
+            div.create
+                button.create-categ.btn.btn-primary.pull-right.mb-1x.ml-1x + add new category
+
+            table.table.table-hover.table-condensed.tree.dataTable.bordered-top
+                thead
+                    tr
+                        td Имя
+                        td Ссылка
+                        td Артикул
+                        td
+                tbody.category-body
+                    -each category in categories
+                        tr
+                            td #{category.name}
+                            td #{category.link}
+                            td #{category.article}
+                            td
+                                a(class='delete-categ pull-right' data-id="#{category.uuid}")
+                                    i.fa.fa-close
+                        -if(category.subcat.length > 0)
+                            -each subc in category.subcat
+                                tr.subcategories
+                                    td(style="padding-left:30px") #{subc.name}
+                                    td #{subc.link}
+                                    td #{subc.article}
+                                    td
+                                        a(class='delete-categ pull-right' data-id='#{subc.uuid}')
+                                            i.fa.fa-close
+
+
+        div(class="modal fade" id="create-categ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        h4.modal-title Добавить категорию
+                    div.modal-body
+                        form.add-category
+                            input(type="text" name="name" placeholder="Название")
+                            br
+                            input(type="text" name="link" placeholder="Ссылка")
+                            br
+                            input(type="text" name="article" placeholder="Артикул")
+                    div.modal-footer
+                        button(type="button" class="btn btn-success" data-add="category") Добавить
+                        button(type="button" class="btn btn-default" data-modal="close") Закрыть
+
+        div(class="modal fade" id="deleteCateg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+            div.modal-dialog
+                div.modal-content
+                    div.modal-header
+                        h4.modal-title Удаление категории
+                    div.modal-body
+                       p Вы уверены что хотите удалить категорию ?
+                    div.modal-footer
+                        button(type="button" class="btn btn-success" data-modal-delete="categ") Удалить
+                        button(type="button" class="btn btn-default" data-modal="close") Отмена
+

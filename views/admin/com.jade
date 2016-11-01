@@ -1,0 +1,76 @@
+extends ../layout/mainAdmin
+block content
+    include ../mixins/mixins
+    //aside.sidebar(role="complementary")
+    //    div.sidebar-block
+    //        div.media
+    //            div.media-left
+    //                a(href="page-profile.html")
+    //                    span.status.dotted.dotted-primary(data-toggle="tooltip", data-container="body", title="", data-original-title="available")
+    //                    img.media-object.img-circle(src="/images/ava/uifaces5.jpg", alt="photo profile")
+    //            div.media-body
+    //                h4.media-heading Emma Greene
+    //                p.text-muted
+    //                    small Graphic Designer
+    //    div.nav-wrapper
+    //        ul.nav.nav-stacked(role="navigation")
+    //            +navAdmin('Категории', 'categ')
+    //            +navAdmin('Товары', 'tovs')
+    //            +navAdmin('Пользователи', 'users')
+    //            +navAdmin('Заявки', 'reqs')
+    //            +navAdmin('Акции', 'stocks')
+    //            +navAdmin('Валюты', 'curr')
+    //            +navAdmin('Доставка', 'deliv')
+    //            +navAdmin('Отзывы', 'com')(class="active")
+    section.content-wrapper(role="main")
+        div.content
+            div.content-bar
+                div.pull-right(role="group")
+                    a.btn.btn-nofill.btn-sm.btn-default(data-toggle="modal" data-scripts="_includes/setups.js" data-target="#templateSetup" title="Template Setups" aria-label="template setups" href="#")
+                        span.icon-settings.fa-lg.text-muted
+
+                ul.breadcrumb.breadcrumb-angle
+                    li
+                        a(href="/admin" aria-label="home")
+                            i.fa.fa-home
+                    li.active Отзывы
+
+            div.content-body
+                div.panel(data-fill-color="true")
+                    div.panel-heading
+                        h3.panel-title Список отзывов
+                    div.panel-body
+                        div.btn-toolbar.clearfix(role="toolbar")
+                            //div.btn-group.pull-right(style="direction: ltr")
+                            //    label.text-muted(style="margin-right:10px") Multiple select:
+                            //    input#allowMultipleSelect.js-switch(type="checkbox" data-class-name="switchery switchery-alt")
+                            //div.btn-group.btn-group-sm.pull-left
+                            //    button.btn.btn-default#add-mainCateg(data-toggle="tooltip" data-container="body" title="add new record" role="button")
+                            //        i.fa.fa-plus
+                            //div.btn-group.btn-group-sm.pull-left
+                            //    button.btn.btn-default.datatables1-actions.disabled#edit-datatables1(data-toggle="tooltip" data-container="body" title="edit record" role="button")
+                            //        i.fa.fa-edit
+                                button.btn.btn-default.datatables1-actions.disabled#delete-datatables1(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                                    i.fa.fa-trash-o
+                            //div.btn-group.pull-left
+                            //    input.form-control.input-sm#filterDatatables1(placeholder="Filter")
+                div.panel
+                    div.panel-body
+                        div.comment.clearfix
+                            div.comment-avatar
+                                img.img-responsive(src="https://s3.amazonaws.com/uifaces/faces/twitter/pixeliris/128.jpg" alt="")
+                            div.comment-content.clearfix
+                                h5.comment-author.font-alt
+                                    a(href="#") Andy
+                                div.comment-body
+                                    p The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The European languages are members of the same family. Their separate existence is a myth.
+                                div.comment-meta.font-alt Today, 14:55 - <a href="#">Reply</a>
+                    div.bordered-top.panel-body
+                        div.row
+                            div.col-lg-12.col-md-12.col-sm-12.col-xs-12.btn-toolbar
+                                div.btn-group.btn-group-sm.pull-right
+                                    button.btn.btn-default#delete-ss(data-toggle="tooltip" data-container="body" title="delete comment" role="button")
+                                        i.fa.fa-trash-o
+                                div.btn-group.btn-group-sm.pull-right
+                                    button.btn.btn-default#edit-cx(data-toggle="tooltip" data-container="body" title="view commet" role="button")
+                                        i.fa.fa-eye

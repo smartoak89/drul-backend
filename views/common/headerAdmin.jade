@@ -1,0 +1,20 @@
+nav.header.navbar
+    div.container-fluid
+        div.pull-left
+            a.navbar-brand(href="index.html", role="logo", aria-label="Logo")
+                img.logo(src="images/logo/brand-text-dark.png", alt="Brand")
+            button.btn.btn-icon.navbar-btn(data-sidebar="toggleVisible")
+                i.fa.fa-bars
+                i.fa.fa-caret-down
+
+        div.pull-right(role="navigation")
+            a.btn.btn-icon.navbar-btn(aria-label="Search", id="brandSearchNav", href="#")
+                i.fa.fa-search
+            a.btn.btn-icon.navbar-btn(aria-label="Signout", href="#")
+                i.fa.fa-sign-out
+
+        div.brand-search(id="brandSearchFrm")
+            form(action="#", role="search")
+                a.search-close(href="#") &times;
+                input.search-field(placeholder="Search for everything you want...", tabindex="-1")
+

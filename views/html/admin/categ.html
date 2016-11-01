@@ -1,0 +1,67 @@
+<section class="content-wrapper">
+    <div class="content">
+        <div class="create">
+            <button class="create-categ btn btn-primary pull-right mb-1x ml-1x">+ add new category</button>
+        </div>
+        <table class="table table-hover table-condensed tree dataTable bordered-top">
+            <thead>
+            <tr>
+                <td>Имя</td>
+                <td>Ссылка</td>
+                <td>Артикул</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody class="category-body">
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a data-id="4" class="delete-categ pull-right"><i class="fa fa-close"></i></a></td>
+            </tr>
+            <tr class="subcategories">
+                <td style="padding-left:30px">1</td>
+                <td>2</td>
+                <td>3</td>
+                <td><a data-id="4" class="delete-categ pull-right"><i class="fa fa-close"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="create-categ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Добавить категорию</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="add-category">
+                        <input type="text" name="name" placeholder="Название"/><br/>
+                        <input type="text" name="link" placeholder="Ссылка"/><br/>
+                        <input type="text" name="article" placeholder="Артикул"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-add="category" class="btn btn-success">Добавить</button>
+                    <button type="button" data-modal="close" class="btn btn-default">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="deleteCateg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Удаление категории</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены что хотите удалить категорию ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-modal-delete="categ" class="btn btn-success">Удалить</button>
+                    <button type="button" data-modal="close" class="btn btn-default">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

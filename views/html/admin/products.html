@@ -1,0 +1,111 @@
+<section role="main" class="content-wrapper">
+    <div class="content">
+        <div class="content-bar">
+            <div role="group" class="pull-right"><a data-toggle="modal" data-scripts="_includes/setups.js" data-target="#templateSetup" title="Template Setups" aria-label="template setups" href="#" class="btn btn-nofill btn-sm btn-default"><span class="icon-settings fa-lg text-muted"></span></a></div>
+            <ul class="breadcrumb breadcrumb-angle">
+                <li><a href="/admin" aria-label="home"><i class="fa fa-home"></i></a></li>
+                <li class="active">Категории</li>
+            </ul>
+        </div>
+        <div class="content-body">
+            <div data-fill-color="true" class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Список категорий</h3>
+                </div>
+                <div class="panel-body">
+                    <div role="toolbar" class="btn-toolbar clearfix">
+                        <!--div.btn-group.pull-right(style="direction: ltr")-->
+                        <!--    label.text-muted(style="margin-right:10px") Multiple select:-->
+                        <!--    input#allowMultipleSelect.js-switch(type="checkbox" data-class-name="switchery switchery-alt")-->
+                        <div class="btn-group btn-group-sm pull-left">
+                            <button id="add-mainCateg" data-toggle="tooltip" data-container="body" title="add new record" role="button" class="btn btn-default"><i class="fa fa-plus"></i></button>
+                        </div>
+                        <!--div.btn-group.btn-group-sm.pull-left-->
+                        <!--    button.btn.btn-default.datatables1-actions.disabled#edit-datatables1(data-toggle="tooltip" data-container="body" title="edit record" role="button")-->
+                        <!--        i.fa.fa-edit
+                        //button.btn.btn-default.datatables1-actions.disabled#delete-datatables1(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                        //    i.fa.fa-trash-o
+                        -->
+                        <!--div.btn-group.pull-left-->
+                        <!--    input.form-control.input-sm#filterDatatables1(placeholder="Filter")-->
+                    </div>
+                </div>
+                <div id="addMainCategFormContainer" class="panel-body hide">
+                    <form id="formAddMainCateg" action="#" method="POST">
+                        <div class="form-group">
+                            <p class="lead">Добавить категорию</p>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input id="addEngine" name="Имя" placeholder="Имя категории" autocomplete="off" required="" class="form-control input-sm"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-grouphide">
+                            <button id="hideAddmainCateg" class="btn btn-default btn-sm">Отмена</button>
+                            <button type="submit" class="btn btn-success btn-sm">Создать</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="dataTables_wrapper form-inline dt-bootstrap">
+                <table id="categtable" class="table table-noborder table-hover tree dataTable bordered-top">
+                    <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Уровень</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--tr.treegrid-1-->
+                    <!--    td Обувь-->
+                    <!--    td Основная-->
+                    <!--    td-->
+                    <!--        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")-->
+                    <!--            i.fa.fa-times-->
+                    <!--        button.btn.btn-default.pull-right(type="button" aria-label="icon note circle")-->
+                    <!--            i.icon-note-->
+                    <!--tr.treegrid-2.treegrid-parent-1-->
+                    <!--    td Женская обувь-->
+                    <!--    td Дополнительная-->
+                    <!--    td-->
+                    <!--        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")-->
+                    <!--            i.fa.fa-times-->
+                    <!--tr.treegrid-3.treegrid-parent-1-->
+                    <!--    td Мужская обувь-->
+                    <!--    td Дополнительная-->
+                    <!--    td-->
+                    <!--        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")-->
+                    <!--            i.fa.fa-times-->
+                    <!--tr.treegrid-4-->
+                    <!--    td Одежда-->
+                    <!--    td Основная-->
+                    <!--    td-->
+                    <!--        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")-->
+                    <!--            i.fa.fa-times-->
+                    <!--        button.btn.btn-default.pull-right(type="button" aria-label="icon note circle")-->
+                    <!--            i.icon-note-->
+                    <!--tr.treegrid-5.treegrid-parent-4-->
+                    <!--    td Детская одежда-->
+                    <!--    td Дополнительная-->
+                    <!--    td-->
+                    <!--        button.btn.btn-danger.pull-right(type="button" aria-label="icon support circle nofill")-->
+                    <!--            i.fa.fa-times-->
+                    <!---->
+                    <!---->
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>Rendering Email</th>
+                        <th>Rendering Link</th>
+                    </tr>
+                    </tfoot>
+                    <!--div.modal.fade#templateSetup-->
+                    <!--    div.modal-dialog-->
+                    <!--        div.modal-content-->
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

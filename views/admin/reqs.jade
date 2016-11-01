@@ -1,0 +1,318 @@
+extends ../layout/mainAdmin
+block content
+    include ../mixins/mixins
+    //aside.sidebar(role="complementary")
+    //    div.sidebar-block
+    //        div.media
+    //            div.media-left
+    //                a(href="page-profile.html")
+    //                    span.status.dotted.dotted-primary(data-toggle="tooltip", data-container="body", title="", data-original-title="available")
+    //                    img.media-object.img-circle(src="/images/ava/uifaces5.jpg", alt="photo profile")
+    //            div.media-body
+    //                h4.media-heading Emma Greene
+    //                p.text-muted
+    //                    small Graphic Designer
+    //    div.nav-wrapper
+    //        ul.nav.nav-stacked(role="navigation")
+    //            +navAdmin('Категории', 'categ')
+    //            +navAdmin('Товары', 'tovs')
+    //            +navAdmin('Пользователи', 'users')
+    //            +navAdmin('Заявки', 'reqs')(class="active")
+    //            +navAdmin('Акции', 'stocks')
+    //            +navAdmin('Валюты', 'curr')
+    //            +navAdmin('Доставка', 'deliv')
+    //            +navAdmin('Отзывы', 'com')
+    section.content-wrapper(role="main")
+        div.content
+            div.content-bar
+                div.pull-right(role="group")
+                    a.btn.btn-nofill.btn-sm.btn-default(data-toggle="modal" data-scripts="_includes/setups.js" data-target="#templateSetup" title="Template Setups" aria-label="template setups" href="#")
+                        span.icon-settings.fa-lg.text-muted
+
+                ul.breadcrumb.breadcrumb-angle
+                    li
+                        a(href="/admin" aria-label="home")
+                            i.fa.fa-home
+                    li.active Заявки
+
+            div.content-body
+                div.panel(data-fill-color="true")
+                    div.panel-heading
+                        h3.panel-title Список заявок
+                    div.panel-body
+                        div.btn-toolbar.clearfix(role="toolbar")
+                            //div.btn-group.pull-right(style="direction: ltr")
+                            //    label.text-muted(style="margin-right:10px") Multiple select:
+                            //    input#allowMultipleSelect.js-switch(type="checkbox" data-class-name="switchery switchery-alt")
+                            //div.btn-group.btn-group-sm.pull-left
+                            //    button.btn.btn-default#add-mainCateg(data-toggle="tooltip" data-container="body" title="add new record" role="button")
+                            //        i.fa.fa-plus
+                            div.btn-group.btn-group-sm.pull-left
+                            //    button.btn.btn-default.datatables1-actions.disabled#edit-datatables1(data-toggle="tooltip" data-container="body" title="edit record" role="button")
+                            //        i.fa.fa-edit
+                                button.btn.btn-default.datatables1-actions.disabled#delete-datatables1(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                                    i.fa.fa-trash-o
+                            div.btn-group.pull-left
+                                input.form-control.input-sm#filterDatatables1(placeholder="Filter")
+                    div.panel-body
+                        div.row
+                            div.col-md-12
+                                div.panel-group#accordion1
+                                    div.panel
+                                        div.panel-heading
+                                            h3.panel-title.row
+                                                a.col-md-6(data-toggle="collapse" data-parent="#accordion1" href="#collapseOne") Заявка #1
+                                                div.col-md-5
+                                                    div.pull-right 11.11.1111
+                                                div.col-md-1.text-center
+                                                    i.fa.fa-circle.greenReq(aria-hidden="true")
+                                        div.panel-collapse.collapse#collapseOne
+                                            div.fade.in.panel-teal#demo1-panel(data-context="blue" data-init-panel="true")
+                                                div.panel-heading
+                                                    div.panel-control.pull-right
+                                                        ul.nav.nav-tabs.nav-contrast-dark#demo1-tabs
+                                                            li.active
+                                                                a(href="#home1" data-toggle="tab" aria-expanded="false") Клиент
+                                                            li
+                                                                a(href="#profile1" data-toggle="tab" aria-expanded="true") Товары
+                                                            li.dropdown
+                                                                a.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Статус
+                                                                    i.fa.fa-angle-down
+                                                                ul.dropdown-menu.dropdown-menu-right(style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;")
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#bent1" data-toggle="tab") Зеленый
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#iin1" data-toggle="tab") Желтый
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#iin1" data-toggle="tab") Крысный
+                                                    h3.panel-title
+                                                        i.icon-rocket.fa-fw
+                                                        span.hidden-xs Awesome things
+                                                div.panel-body
+                                                    div.tab-content
+                                                        div.tab-pane.in.active#home1
+                                                            p.text-muted
+                                                                strong Клиент
+                                                            div.row
+                                                                div.col-lg-6.col-md-6.col-sm-6.col-xs-6
+                                                                    div
+                                                                        h4.disInl Инициалы:
+                                                                        span.disInl Петров Петр Петрович
+                                                                    div
+                                                                        h4.disInl Телефон:
+                                                                        span.disInl +38 (111) 111-11-11
+                                                                    div
+                                                                        h4.disInl Страна:
+                                                                        span.disInl.uaFlag Украина
+                                                        div.tab-pane.fade#profile1
+                                                            p.text-muted
+                                                                strong Profile
+                                                            table.table.table-condensed.no-border
+                                                                thead
+                                                                    tr
+                                                                        th #
+                                                                        th First Name
+                                                                        th Last Name
+                                                                        th Username
+                                                                tbody
+                                                                    tr
+                                                                        td 1
+                                                                        td Mark
+                                                                        td Otto
+                                                                        td @mdo
+                                                                    tr
+                                                                        td 2
+                                                                        td Jacob
+                                                                        td Thornton
+                                                                        td @fat
+                                                                    tr
+                                                                        td 3
+                                                                        td Larry
+                                                                        td the Bird
+                                                                        td @twitter
+                                                                    tr
+                                                                        td 4
+                                                                        td John
+                                                                        td Doe
+                                                                        td @thedoe
+                                                div.bordered-top.panel-body
+                                                    div.row
+                                                        div.col-lg-12.col-md-12.col-sm-12.col-xs-12.btn-toolbar
+                                                            div.btn-group.btn-group-sm.pull-right
+                                                                button.btn.btn-default#delete-ss1(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                                                                    i.fa.fa-trash-o
+                                                            div.btn-group.btn-group-sm.pull-right
+                                                                button.btn.btn-default#edit-cx1(data-toggle="tooltip" data-container="body" title="check record" role="button")
+                                                                    i.fa.fa-check
+                                    div.panel
+                                        div.panel-heading
+                                            h3.panel-title.row
+                                                a.col-md-6(data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo") Заявка #2
+                                                div.col-md-5
+                                                    div.pull-right 11.11.1111
+                                                div.col-md-1.text-center
+                                                    i.fa.fa-circle.yellowReq(aria-hidden="true")
+                                        div.panel-collapse.collapse#collapseTwo
+                                            div.fade.in.panel-teal#demo2-panel(data-context="blue" data-init-panel="true")
+                                                div.panel-heading
+                                                    div.panel-control.pull-right
+                                                        ul.nav.nav-tabs.nav-contrast-dark#demo2-tabs
+                                                            li.active
+                                                                a(href="#home2" data-toggle="tab" aria-expanded="false") Клиент
+                                                            li
+                                                                a(href="#profile2" data-toggle="tab" aria-expanded="true") Товары
+                                                            li.dropdown
+                                                                a.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Статус
+                                                                    i.fa.fa-angle-down
+                                                                ul.dropdown-menu.dropdown-menu-right(style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;")
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#bent1" data-toggle="tab") Зеленый
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#iin1" data-toggle="tab") Желтый
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#iin1" data-toggle="tab") Крысный
+                                                    h3.panel-title
+                                                        i.icon-rocket.fa-fw
+                                                        span.hidden-xs Awesome things
+                                                div.panel-body
+                                                    div.tab-content
+                                                        div.tab-pane.in.active#home2
+                                                            p.text-muted
+                                                                strong Клиент
+                                                            div.row
+                                                                div.col-lg-6.col-md-6.col-sm-6.col-xs-6
+                                                                    div
+                                                                        h4.disInl Инициалы:
+                                                                        span.disInl Петров Петр Петрович
+                                                                    div
+                                                                        h4.disInl Телефон:
+                                                                        span.disInl +38 (111) 111-11-11
+                                                                    div
+                                                                        h4.disInl Страна:
+                                                                        span.disInl.rusFlag Украина
+                                                        div.tab-pane.fade#profile2
+                                                            p.text-muted
+                                                                strong Profile
+                                                            table.table.table-condensed.no-border
+                                                                thead
+                                                                    tr
+                                                                        th #
+                                                                        th First Name
+                                                                        th Last Name
+                                                                        th Username
+                                                                tbody
+                                                                    tr
+                                                                        td 1
+                                                                        td Mark
+                                                                        td Otto
+                                                                        td @mdo
+                                                                    tr
+                                                                        td 2
+                                                                        td Jacob
+                                                                        td Thornton
+                                                                        td @fat
+                                                                    tr
+                                                                        td 3
+                                                                        td Larry
+                                                                        td the Bird
+                                                                        td @twitter
+                                                                    tr
+                                                                        td 4
+                                                                        td John
+                                                                        td Doe
+                                                                        td @thedoe
+                                                div.bordered-top.panel-body
+                                                    div.row
+                                                        div.col-lg-12.col-md-12.col-sm-12.col-xs-12.btn-toolbar
+                                                            div.btn-group.btn-group-sm.pull-right
+                                                                button.btn.btn-default#delete-ss(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                                                                    i.fa.fa-trash-o
+                                                            div.btn-group.btn-group-sm.pull-right
+                                                                button.btn.btn-default#edit-cx(data-toggle="tooltip" data-container="body" title="check record" role="button")
+                                                                    i.fa.fa-check
+                                    div.panel
+                                        div.panel-heading
+                                            h3.panel-title.row
+                                                a.col-md-6(data-toggle="collapse" data-parent="#accordion1" href="#collapseThree") Заявка #3
+                                                div.col-md-5
+                                                    div.pull-right 11.11.1111
+                                                div.col-md-1.text-center
+                                                    i.fa.fa-circle.redReq(aria-hidden="true")
+                                        div.panel-collapse.collapse#collapseThree
+                                            div.fade.in.panel-teal#demo3-panel(data-context="blue" data-init-panel="true")
+                                                div.panel-heading
+                                                    div.panel-control.pull-right
+                                                        ul.nav.nav-tabs.nav-contrast-dark#demo3-tabs
+                                                            li.active
+                                                                a(href="#home3" data-toggle="tab" aria-expanded="false") Клиент
+                                                            li
+                                                                a(href="#profile3" data-toggle="tab" aria-expanded="true") Товары
+                                                            li.dropdown
+                                                                a.dropdown-toggle(href="#" data-toggle="dropdown" aria-expanded="false") Статус
+                                                                    i.fa.fa-angle-down
+                                                                ul.dropdown-menu.dropdown-menu-right(style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;")
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#bent1" data-toggle="tab") Зеленый
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#iin1" data-toggle="tab") Желтый
+                                                                    li(style="opacity: 1; display: list-item; transform: translateY(0px);")
+                                                                        a(href="#iin1" data-toggle="tab") Крысный
+                                                    h3.panel-title
+                                                        i.icon-rocket.fa-fw
+                                                        span.hidden-xs Awesome things
+                                                div.panel-body
+                                                    div.tab-content
+                                                        div.tab-pane.in.active#home3
+                                                            p.text-muted
+                                                                strong Клиент
+                                                            div.row
+                                                                div.col-lg-6.col-md-6.col-sm-6.col-xs-6
+                                                                    div
+                                                                        h4.disInl Инициалы:
+                                                                        span.disInl Петров Петр Петрович
+                                                                    div
+                                                                        h4.disInl Телефон:
+                                                                        span.disInl +38 (111) 111-11-11
+                                                                    div
+                                                                        h4.disInl Страна:
+                                                                        span.disInl.rusFlag Россия
+                                                        div.tab-pane.fade#profile3
+                                                            p.text-muted
+                                                                strong Profile
+                                                            table.table.table-condensed.no-border
+                                                                thead
+                                                                    tr
+                                                                        th #
+                                                                        th First Name
+                                                                        th Last Name
+                                                                        th Username
+                                                                tbody
+                                                                    tr
+                                                                        td 1
+                                                                        td Mark
+                                                                        td Otto
+                                                                        td @mdo
+                                                                    tr
+                                                                        td 2
+                                                                        td Jacob
+                                                                        td Thornton
+                                                                        td @fat
+                                                                    tr
+                                                                        td 3
+                                                                        td Larry
+                                                                        td the Bird
+                                                                        td @twitter
+                                                                    tr
+                                                                        td 4
+                                                                        td John
+                                                                        td Doe
+                                                                        td @thedoe
+                                                div.bordered-top.panel-body
+                                                    div.row
+                                                        div.col-lg-12.col-md-12.col-sm-12.col-xs-12.btn-toolbar
+                                                            div.btn-group.btn-group-sm.pull-right
+                                                                button.btn.btn-default#delete-ss3(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                                                                    i.fa.fa-trash-o
+                                                            div.btn-group.btn-group-sm.pull-right
+                                                                button.btn.btn-default#edit-cx3(data-toggle="tooltip" data-container="body" title="check record" role="button")
+                                                                    i.fa.fa-check

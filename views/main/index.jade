@@ -1,0 +1,169 @@
+extends ../layout/layout
+block content
+    include ../mixins/mixins
+    div.main
+        div.container-fluid
+            div.col-lg-3.col-md-3.col-sm-3.col-xs-3
+                div.accordion
+                    h1 Повседневная одежда
+                    div
+                        a Content 1<br>
+                        a Content 1<br>
+                        a Content 1<br>
+                        a Content 1<br>
+                    h1 Верхняя оджеда
+                    div
+                        a Content 2<br>
+                        a Content 2<br>
+                        a Content 2<br>
+                        a Content 2<br>
+                    h1 Обувь
+                    div
+                        a Content 3<br>
+                        a Content 3<br>
+                        a Content 3<br>
+                        a Content 3<br>
+                    h1 Аксессуары
+                    div
+                        a Content 4<br>
+                        a Content 4<br>
+                        a Content 4<br>
+                        a Content 4<br>
+                    h1 Сумки
+                    div
+                        a Content 5<br>
+                        a Content 5<br>
+                        a Content 5<br>
+                        a Content 5<br>
+                    h1 Спортивная одежда
+                    div
+                        a Content 6<br>
+                        a Content 6<br>
+                        a Content 6<br>
+                        a Content 6<br>
+            div.col-lg-9.col-md-9.col-sm-9.col-xs-9
+                div.sort
+                    span Сортировать:
+                    a по популярности
+                    a по цене
+                    a по рейтингу
+                    a по отзывам
+                    a по новизне
+                div.row
+                //Product
+                div.row
+                    div.col-lg-12.col-md-12.col-sm-12.col-xs-12.center
+                        div.paginat
+                div.modal.fade.bs-example-modal-lg(tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel")
+                    button.close(type="button" data-dismiss="modal" aria-label="Close")
+                        span(aria-hidden="true") &times;
+                    div.modal-dialog.modal-lg.modal-sizeLg(role="document")
+                        div.modal-content.card
+                            div.row
+                                div.col-lg-5.col-md-5.col-sm-5.col-xs-12
+                                    div.sp-wrap
+                                        a(href="images/123.jpg")
+                                            img(src="images/123.jpg" alt="")
+                                        a(href="images/1.jpg")
+                                            img(src="images/1_tb.jpg" alt="")
+                                        a(href="images/2.jpg")
+                                            img(src="images/2_tb.jpg" alt="")
+                                        a(href="images/3.jpg")
+                                            img(src="images/3_tb.jpg" alt="")
+                                        a(href="images/4.jpg")
+                                            img(src="images/4_tb.jpg" alt="")
+                                        a(href="images/5.jpg")
+                                            img(src="images/5_tb.jpg" alt="")
+                                        a(href="images/6.jpg")
+                                            img(src="images/6_tb.jpg" alt="")
+                                div.col-lg-7.col-md-7.col-sm-7.col-xs-12
+                                    div.row
+                                        div.col-lg-12.col-md-12.col-sm-12.col-xs-12
+                                            p.categCard Женские пальто | Maria Veneda
+                                            div.artNameCard
+                                                div Артикул 30530101
+                                                p#goodNameCard Пальто Maria Veneda
+                                            div.descriptionCard
+                                                | Очаровательное, изысканное и стильное женское пальто, которое непременно
+                                                | займет достойное место в гардеробе ценительниц по-настоящему женственных
+                                                | и элегантных вещей. Безукоризненно простой фасон подходит к любой фигуре,
+                                                | а также обеспечивает универсальность и удобство.
+                                            div.priceCard
+                                                span 2700 грн
+                                                strike 3100 грн
+                                            hr.marCard
+                                            div.sizeCard Размер
+                                                div.sizeCardDis
+                                                    div.checkbo
+                                                        input(type="checkbox" id="144" name="option" value="a")
+                                                        label(for="144")
+                                                        span 44
+                                                    div.checkbo
+                                                        input(type="checkbox" id="146" name="option" value="a")
+                                                        label(for="146")
+                                                        span 46
+                                                    div.checkbo
+                                                        input(type="checkbox" id="148" name="option" value="a")
+                                                        label(for="148")
+                                                        span 48
+                                                    div.checkbo
+                                                        input(type="checkbox" id="150" name="option" value="a")
+                                                        label(for="150")
+                                                        span 50
+                                                    div.checkbo
+                                                        input(type="checkbox" id="152" name="option" value="a")
+                                                        label(for="152")
+                                                        span 52
+                                                    div.checkbo
+                                                        input(type="checkbox" id="154" name="option" value="a")
+                                                        label(for="154")
+                                                        span 54
+                                            div.buttonsCard
+                                                button.btn.btn-drul.dark(type="button") оформить заказ
+                                                button.btn.btn-drul(type="button") <div class="fa fa-heart-o"></div> отложить
+
+
+                            div.row
+                                div.col-lg-12.col-md-12.col-sm-12.col-xs-12
+                                    ul.nav.nav-tabs(role="tablist")
+                                        li.active(role="presentation")
+                                            a(href="#about" aria-controls="home" role="tab" data-toggle="tab") О товаре
+                                        li(role="presentation")
+                                            a(href="#comm" aria-controls="profile" role="tab" data-toggle="tab") Отзывы
+                                    div.tab-content
+                                        div.tab-pane.active#about(role="tabpanel")
+                                            div.row
+                                                div.col-lg-12.col-md-12.col-sm-12.col-xs-12
+                                                    table.table
+                                                        tbody
+                                                            tr
+                                                                td Состав
+                                                                td Шерсть - 56%, Вискоза - 44%
+                                                            tr
+                                                                td Длина рукава
+                                                                td 57 см
+                                                            tr
+                                                                td Длина
+                                                                td 105 см
+                                                            tr
+                                                                td Размер модели на фото
+                                                                td 42
+                                                            tr
+                                                                td Рукав
+                                                                td длинный
+                                                            tr
+                                                                td Цвет
+                                                                td бежевый
+                                                            tr
+                                                                td Застежка
+                                                                td на пуговицах
+                                                            tr
+                                                                td Сезон
+                                                                td Зима, Демисезон
+                                                            tr
+                                                                td Коллекция
+                                                                td Осень-зима
+                                                            tr
+                                                                td Карманы
+                                                                td 2
+                                        div.tab-pane#comm(role="tabpanel") 222

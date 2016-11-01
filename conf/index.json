@@ -1,0 +1,27 @@
+{
+    "port" : "8000",
+    "live": false,
+    "session": {
+        "secret": "SomeThink",
+        "key": "sid",
+        "resave": false,
+        "saveUninitialized": true,
+        "coockie": {
+            "path": "/",
+            "httpOnly": true
+        }
+    },
+    "mongoose": {
+        "uri": "mongodb://localhost/test"
+    },
+    "mongoDB": {
+        "uri": "mongodb://localhost/drul-shop"
+    },
+    "redis": {
+      "host": "localhost",
+      "port": "6379",
+      "ttl": 50000
+    },
+    "tmp": "tmp",
+    "frontend_path": "../app/index.html"
+}

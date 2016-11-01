@@ -1,0 +1,348 @@
+<section role="main" class="content-wrapper">
+    <div class="content">
+        <div class="content-bar">
+            <div role="group" class="pull-right"><a data-toggle="modal" data-scripts="_includes/setups.js" data-target="#templateSetup" title="Template Setups" aria-label="template setups" href="#" class="btn btn-nofill btn-sm btn-default"><span class="icon-settings fa-lg text-muted"></span></a></div>
+            <ul class="breadcrumb breadcrumb-angle">
+                <li><a href="/admin" aria-label="home"><i class="fa fa-home"></i></a></li>
+                <li class="active">Заявки</li>
+            </ul>
+        </div>
+        <div class="content-body">
+            <div data-fill-color="true" class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Список заявок</h3>
+                </div>
+                <div class="panel-body">
+                    <div role="toolbar" class="btn-toolbar clearfix">
+                        <!--div.btn-group.pull-right(style="direction: ltr")-->
+                        <!--    label.text-muted(style="margin-right:10px") Multiple select:-->
+                        <!--    input#allowMultipleSelect.js-switch(type="checkbox" data-class-name="switchery switchery-alt")-->
+                        <!--div.btn-group.btn-group-sm.pull-left-->
+                        <!--    button.btn.btn-default#add-mainCateg(data-toggle="tooltip" data-container="body" title="add new record" role="button")-->
+                        <!--        i.fa.fa-plus-->
+                        <div class="btn-group btn-group-sm pull-left"></div>
+                        <!--    button.btn.btn-default.datatables1-actions.disabled#edit-datatables1(data-toggle="tooltip" data-container="body" title="edit record" role="button")-->
+                        <!--        i.fa.fa-edit
+                        button.btn.btn-default.datatables1-actions.disabled#delete-datatables1(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                            i.fa.fa-trash-o
+                        -->
+                        <div class="btn-group pull-left">
+                            <input id="filterDatatables1" placeholder="Filter" class="form-control input-sm"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="accordion1" class="panel-group">
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title row"><a data-toggle="collapse" data-parent="#accordion1" href="#collapseOne" class="col-md-6">Заявка #1</a>
+                                            <div class="col-md-5">
+                                                <div class="pull-right">11.11.1111</div>
+                                            </div>
+                                            <div class="col-md-1 text-center"><i aria-hidden="true" class="fa fa-circle greenReq"></i></div>
+                                        </h3>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse">
+                                        <div id="demo1-panel" data-context="blue" data-init-panel="true" class="fade in panel-teal">
+                                            <div class="panel-heading">
+                                                <div class="panel-control pull-right">
+                                                    <ul id="demo1-tabs" class="nav nav-tabs nav-contrast-dark">
+                                                        <li class="active"><a href="#home1" data-toggle="tab" aria-expanded="false">Клиент</a></li>
+                                                        <li><a href="#profile1" data-toggle="tab" aria-expanded="true">Товары</a></li>
+                                                        <li class="dropdown"><a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">Статус<i class="fa fa-angle-down"></i></a>
+                                                            <ul style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;" class="dropdown-menu dropdown-menu-right">
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#bent1" data-toggle="tab">Зеленый</a></li>
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#iin1" data-toggle="tab">Желтый</a></li>
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#iin1" data-toggle="tab">Крысный</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <h3 class="panel-title"><i class="icon-rocket fa-fw"></i><span class="hidden-xs">Awesome things</span></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="tab-content">
+                                                    <div id="home1" class="tab-pane in active">
+                                                        <p class="text-muted"><strong>Клиент</strong></p>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                <div>
+                                                                    <h4 class="disInl">Инициалы:</h4><span class="disInl">Петров Петр Петрович</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 class="disInl">Телефон:</h4><span class="disInl">+38 (111) 111-11-11</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 class="disInl">Страна:</h4><span class="disInl uaFlag">Украина</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="profile1" class="tab-pane fade">
+                                                        <p class="text-muted"><strong>Profile</strong></p>
+                                                        <table class="table table-condensed no-border">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>First Name</th>
+                                                                <th>Last Name</th>
+                                                                <th>Username</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2</td>
+                                                                <td>Jacob</td>
+                                                                <td>Thornton</td>
+                                                                <td>@fat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>3</td>
+                                                                <td>Larry</td>
+                                                                <td>the Bird</td>
+                                                                <td>@twitter</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>4</td>
+                                                                <td>John</td>
+                                                                <td>Doe</td>
+                                                                <td>@thedoe</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bordered-top panel-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn-toolbar">
+                                                        <div class="btn-group btn-group-sm pull-right">
+                                                            <button id="delete-ss1" data-toggle="tooltip" data-container="body" title="delete record(s)" role="button" class="btn btn-default"><i class="fa fa-trash-o"></i></button>
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm pull-right">
+                                                            <button id="edit-cx1" data-toggle="tooltip" data-container="body" title="check record" role="button" class="btn btn-default"><i class="fa fa-check"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title row"><a data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo" class="col-md-6">Заявка #2</a>
+                                            <div class="col-md-5">
+                                                <div class="pull-right">11.11.1111</div>
+                                            </div>
+                                            <div class="col-md-1 text-center"><i aria-hidden="true" class="fa fa-circle yellowReq"></i></div>
+                                        </h3>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse">
+                                        <div id="demo2-panel" data-context="blue" data-init-panel="true" class="fade in panel-teal">
+                                            <div class="panel-heading">
+                                                <div class="panel-control pull-right">
+                                                    <ul id="demo2-tabs" class="nav nav-tabs nav-contrast-dark">
+                                                        <li class="active"><a href="#home2" data-toggle="tab" aria-expanded="false">Клиент</a></li>
+                                                        <li><a href="#profile2" data-toggle="tab" aria-expanded="true">Товары</a></li>
+                                                        <li class="dropdown"><a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">Статус<i class="fa fa-angle-down"></i></a>
+                                                            <ul style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;" class="dropdown-menu dropdown-menu-right">
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#bent1" data-toggle="tab">Зеленый</a></li>
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#iin1" data-toggle="tab">Желтый</a></li>
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#iin1" data-toggle="tab">Крысный</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <h3 class="panel-title"><i class="icon-rocket fa-fw"></i><span class="hidden-xs">Awesome things</span></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="tab-content">
+                                                    <div id="home2" class="tab-pane in active">
+                                                        <p class="text-muted"><strong>Клиент</strong></p>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                <div>
+                                                                    <h4 class="disInl">Инициалы:</h4><span class="disInl">Петров Петр Петрович</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 class="disInl">Телефон:</h4><span class="disInl">+38 (111) 111-11-11</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 class="disInl">Страна:</h4><span class="disInl rusFlag">Украина</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="profile2" class="tab-pane fade">
+                                                        <p class="text-muted"><strong>Profile</strong></p>
+                                                        <table class="table table-condensed no-border">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>First Name</th>
+                                                                <th>Last Name</th>
+                                                                <th>Username</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2</td>
+                                                                <td>Jacob</td>
+                                                                <td>Thornton</td>
+                                                                <td>@fat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>3</td>
+                                                                <td>Larry</td>
+                                                                <td>the Bird</td>
+                                                                <td>@twitter</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>4</td>
+                                                                <td>John</td>
+                                                                <td>Doe</td>
+                                                                <td>@thedoe</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bordered-top panel-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn-toolbar">
+                                                        <div class="btn-group btn-group-sm pull-right">
+                                                            <button id="delete-ss" data-toggle="tooltip" data-container="body" title="delete record(s)" role="button" class="btn btn-default"><i class="fa fa-trash-o"></i></button>
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm pull-right">
+                                                            <button id="edit-cx" data-toggle="tooltip" data-container="body" title="check record" role="button" class="btn btn-default"><i class="fa fa-check"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title row"><a data-toggle="collapse" data-parent="#accordion1" href="#collapseThree" class="col-md-6">Заявка #3</a>
+                                            <div class="col-md-5">
+                                                <div class="pull-right">11.11.1111</div>
+                                            </div>
+                                            <div class="col-md-1 text-center"><i aria-hidden="true" class="fa fa-circle redReq"></i></div>
+                                        </h3>
+                                    </div>
+                                    <div id="collapseThree" class="panel-collapse collapse">
+                                        <div id="demo3-panel" data-context="blue" data-init-panel="true" class="fade in panel-teal">
+                                            <div class="panel-heading">
+                                                <div class="panel-control pull-right">
+                                                    <ul id="demo3-tabs" class="nav nav-tabs nav-contrast-dark">
+                                                        <li class="active"><a href="#home3" data-toggle="tab" aria-expanded="false">Клиент</a></li>
+                                                        <li><a href="#profile3" data-toggle="tab" aria-expanded="true">Товары</a></li>
+                                                        <li class="dropdown"><a href="#" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle">Статус<i class="fa fa-angle-down"></i></a>
+                                                            <ul style="opacity: 0; display: none; transform: scaleX(1) scaleY(1) translateY(0px); transform-origin: 50% 50% 0px;" class="dropdown-menu dropdown-menu-right">
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#bent1" data-toggle="tab">Зеленый</a></li>
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#iin1" data-toggle="tab">Желтый</a></li>
+                                                                <li style="opacity: 1; display: list-item; transform: translateY(0px);"><a href="#iin1" data-toggle="tab">Крысный</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <h3 class="panel-title"><i class="icon-rocket fa-fw"></i><span class="hidden-xs">Awesome things</span></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="tab-content">
+                                                    <div id="home3" class="tab-pane in active">
+                                                        <p class="text-muted"><strong>Клиент</strong></p>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                                                <div>
+                                                                    <h4 class="disInl">Инициалы:</h4><span class="disInl">Петров Петр Петрович</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 class="disInl">Телефон:</h4><span class="disInl">+38 (111) 111-11-11</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h4 class="disInl">Страна:</h4><span class="disInl rusFlag">Россия</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="profile3" class="tab-pane fade">
+                                                        <p class="text-muted"><strong>Profile</strong></p>
+                                                        <table class="table table-condensed no-border">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>First Name</th>
+                                                                <th>Last Name</th>
+                                                                <th>Username</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2</td>
+                                                                <td>Jacob</td>
+                                                                <td>Thornton</td>
+                                                                <td>@fat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>3</td>
+                                                                <td>Larry</td>
+                                                                <td>the Bird</td>
+                                                                <td>@twitter</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>4</td>
+                                                                <td>John</td>
+                                                                <td>Doe</td>
+                                                                <td>@thedoe</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="bordered-top panel-body">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 btn-toolbar">
+                                                        <div class="btn-group btn-group-sm pull-right">
+                                                            <button id="delete-ss3" data-toggle="tooltip" data-container="body" title="delete record(s)" role="button" class="btn btn-default"><i class="fa fa-trash-o"></i></button>
+                                                        </div>
+                                                        <div class="btn-group btn-group-sm pull-right">
+                                                            <button id="edit-cx3" data-toggle="tooltip" data-container="body" title="check record" role="button" class="btn btn-default"><i class="fa fa-check"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

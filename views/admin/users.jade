@@ -1,0 +1,143 @@
+extends ../layout/mainAdmin
+block content
+    include ../mixins/mixins
+    //aside.sidebar(role="complementary")
+    //    div.sidebar-block
+    //        div.media
+    //            div.media-left
+    //                a(href="page-profile.html")
+    //                    span.status.dotted.dotted-primary(data-toggle="tooltip", data-container="body", title="", data-original-title="available")
+    //                    img.media-object.img-circle(src="/images/ava/uifaces5.jpg", alt="photo profile")
+    //            div.media-body
+    //                h4.media-heading Emma Greene
+    //                p.text-muted
+    //                    small Graphic Designer
+    //    div.nav-wrapper
+    //        ul.nav.nav-stacked(role="navigation")
+    //            +navAdmin('Категории', 'categ')
+    //            +navAdmin('Товары', 'tovs')
+    //            +navAdmin('Пользователи', 'users')(class="active")
+    //            +navAdmin('Заявки', 'reqs')
+    //            +navAdmin('Акции', 'stocks')
+    //            +navAdmin('Валюты', 'curr')
+    //            +navAdmin('Доставка', 'deliv')
+    //            +navAdmin('Отзывы', 'com')
+    section.content-wrapper(role="main")
+        div.content
+            div.content-bar
+                div.pull-right(role="group")
+                    a.btn.btn-nofill.btn-sm.btn-default(data-toggle="modal" data-scripts="_includes/setups.js" data-target="#templateSetup" title="Template Setups" aria-label="template setups" href="#")
+                        span.icon-settings.fa-lg.text-muted
+
+                ul.breadcrumb.breadcrumb-angle
+                    li
+                        a(href="/admin" aria-label="home")
+                            i.fa.fa-home
+                    li.active Товары
+
+            div.content-body
+                div.panel(data-fill-color="true")
+                    div.panel-heading
+                        div.panel-control.pull-right
+                            a.btn.btn-icon(href="#"  data-toggle="panel-refresh" rel="tooltip" data-placement="bottom" title="refresh")
+                                i.icon-refresh
+                            a.btn.btn-icon(href="#"  data-toggle="panel-expand" rel="tooltip" data-placement="bottom" title="expand")
+                                i.arrow_expand
+                            a.btn.btn-icon(href="#" data-toggle="panel-collapse" rel="tooltip" data-placement="bottom" title="collapse")
+                                i.icon_minus_alt2
+                        h3.panel-title Список пользователей
+                    div.panel-body
+                        div.btn-toolbar.clearfix(role="toolbar")
+                            //div.btn-group.pull-right(style="direction: ltr")
+                            //    label.text-muted(style="margin-right:10px") Multiple select:
+                            //    input#allowMultipleSelect.js-switch(type="checkbox" data-class-name="switchery switchery-alt")
+                            div.btn-group.btn-group-sm.pull-left
+                                button.btn.btn-default#add-datatables1(data-toggle="tooltip" data-container="body" title="add new record" role="button")
+                                    i.fa.fa-plus
+                            div.btn-group.btn-group-sm.pull-left
+                                button.btn.btn-default.datatables1-actions.disabled#edit-datatables1(data-toggle="tooltip" data-container="body" title="edit record" role="button")
+                                    i.fa.fa-edit
+                                button.btn.btn-default.datatables1-actions.disabled#delete-datatables1(data-toggle="tooltip" data-container="body" title="delete record(s)" role="button")
+                                    i.fa.fa-trash-o
+                            div.btn-group.pull-left
+                                input.form-control.input-sm#filterDatatables1(placeholder="Filter")
+                    div.panel-body.hide#addFormContainer
+                        form#formAddDatatables1(action="#" method="POST")
+                            div.form-group
+                                p.lead Добавить пользователя
+                                div.row
+                                    div.col-md-3
+                                        div.form-group
+                                            input.form-control.input-sm#addEngine(name="email" placeholder="User email" autocomplete="off" required="")
+                                    //div.col-md-3
+                                    //    div.form-group
+                                    //        input.form-control.input-sm#addBrowser(name="index" placeholder="index" autocomplete="off" required="")
+                                    //div.col-md-2
+                                    //    div.form-group
+                                    //        input.form-control.input-sm#addPlatform(name="addPlatform" placeholder="Platform" autocomplete="off" required="")
+                                    //div.col-md-2
+                                    //    div.form-group
+                                    //        input.form-control.input-sm#addVersion(name="addVersion" placeholder="Engine version" autocomplete="off" required="")
+                                    //div.col-md-2
+                                    //    div.form-group
+                                    //        label.select.select-sm
+                                    //            select#addGrade(name="addGrade" required="")
+                                    //                option(value="") CSS grade
+                                    //                option(value="A") A
+                                    //                option(value="B") B
+                                    //                option(value="C") C
+                                    //                option(value="D") D
+                                    //                option(value="E") E
+                                    //                option(value="X") X
+                                    //                option(value="C/A1") C/A
+                                    //                    sup 1
+                            div.form-grouphide
+                                button.btn.btn-default.btn-sm#hideAddDatatables1 Cancel
+                                button.btn.btn-success.btn-sm(type="submit") Create
+                    div.panel-body.hide#editFormContainer
+                        form#formEditDatatables1(action="#" method="POST")
+                            div.form-group
+                                p.lead Изменить пользователя
+                                div.row
+                                    div.col-md-3
+                                        div.form-group
+                                            input#datatables1ID(type="hidden" name="datatables1ID")
+                                            input.form-control.input-sm#editEngine(name="editEngine" placeholder="Rendering engine" autocomplete="off" required="")
+                                    div.col-md-3
+                                        div.form-group
+                                            input.form-control.input-sm#editBrowser(name="editBrowser" placeholder="Browser" autocomplete="off" required="")
+                                    div.col-md-2
+                                        div.form-group
+                                            input.form-control.input-sm#editPlatform(name="editPlatform" placeholder="Platform" autocomplete="off" required="")
+                                    div.col-md-2
+                                        div.form-group
+                                            input.form-control.input-sm#editVersion(name="editVersion" placeholder="Engine version" autocomplete="off" required="")
+                                    div.col-md-2
+                                        div.form-group
+                                            label.select.select-sm
+                                                select#editGrade(name="editGrade" required="")
+                                                    option(value="") CSS grade
+                                                    option(value="A") A
+                                                    option(value="B") B
+                                                    option(value="C") C
+                                                    option(value="D") D
+                                                    option(value="E") E
+                                                    option(value="X") X
+                                                    option(value="C/A1") C/A
+                                                        sup 1
+                                        div.form-group
+                                            button.btn.btn-default.btn-sm#hideEditDatatables1 Cancel
+                                            button.btn.btn-primary.btn-sm(type="submit") Save Change
+                    table.table.table-noborder.table-hover.bordered-top#datatables1
+                        thead
+                            tr
+                                //th №
+                                th Email
+                        tbody
+                        tfoot
+                            tr
+                                //th Rendering №
+                                th Rendering Email
+            div.modal.fade#templateSetup
+                div.modal-dialog
+                    div.modal-content

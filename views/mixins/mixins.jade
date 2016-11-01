@@ -1,0 +1,21 @@
+mixin navAdmin(name, code)
+    li.nav-item(role="presentation")&attributes(attributes)
+        a(href= '/admin/' + code)
+            span.nav-icon
+                i.fa.fa-cube
+            span.nav-text= name
+mixin errorMessage()
+    div.callout.callout-danger.fade.in.marTop40
+        h4 Oh snap!
+        p Error message!
+mixin product(product)
+    div.col-lg-4.col-md-4.col-sm-6.col-xs-12
+        div.goodsBlock
+            div.marker.red sale
+            img.img-responsive.cover(src="/api/file/")
+            div.namePrice
+                div атрикль
+                p имя
+                hr.line
+                span 100$
+                strike 10$
