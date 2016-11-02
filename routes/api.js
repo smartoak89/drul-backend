@@ -46,6 +46,10 @@ function getRouter(router) {
     router.post('/curmon', curmonHandler.createEdit);
     router.get('/curmon', curmonHandler.get);
 
+    //--Stocks
+    var stocksHandler = require('../handlers/stocks')
+    router.post('/stocks', stocksHandler.create);
+
     return router;
 }
 

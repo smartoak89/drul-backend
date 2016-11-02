@@ -4,12 +4,12 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var flash = require('express-flash');
+// var flash = require('express-flash');
 var log = require('./libs/logger')(module);
 var passport = require('./libs/passport');
 var conf = require('./conf');
-var redisStore = require('connect-redis')(session);
-var redisCli = require('./libs/redis');
+// var redisStore = require('connect-redis')(session);
+// var redisCli = require('./libs/redis');
 var morgan = require('morgan');
 var app = express();
 
@@ -33,27 +33,27 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-app.use(session({
-    secret: conf.session.secret,
-    key: conf.session.key,
-    resave: conf.session.resave,
-    saveUninitialized: conf.session.saveUninitialized,
-    coockie: conf.session.coockie,
-    store: new redisStore({
-        client: redisCli,
-        ttl: conf.redis.ttl
-    })
-}));
+// app.use(session({
+//     secret: conf.session.secret,
+//     key: conf.session.key,
+//     resave: conf.session.resave,
+//     saveUninitialized: conf.session.saveUninitialized,
+//     coockie: conf.session.coockie,
+//     store: new redisStore({
+//         client: redisCli,
+//         ttl: conf.redis.ttl
+//     })
+// }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
-app.use(function (req, res, next) {
-    // console.log('Session', req.session);
-    next();
-});
+// app.use(flash());
+// app.use(function (req, res, next) {
+//     // console.log('Session', req.session);
+//     next();
+// });
 
-require('./middleware/configureUser')(app);
+// require('./middleware/configureUser')(app);
 
 require('./routes')(app, express);
 

@@ -21,7 +21,7 @@ exports.list = function (req, res, next) {
                 uuid: i.uuid,
                 name: i.name,
                 link: i.link,
-                subcat: i.subcat
+                children: i.subcat
             }
         });
         res.json(list);
@@ -68,9 +68,8 @@ function isValid (req, callback) {
 
     var schema = v.joi.object().keys({
         name: v.joi.string().min(3).max(20).required(),
-        link: v.joi.string().alphanum().min(3).max(20).required(),
-        article: v.joi.string().alphanum().min(3).max(20).required()
-
+        link: v.joi.string().min(3).max(20).required(),
+        article: v.joi.string().min(3).max(20).required()
     });
 
     v.validate(data, schema, callback);

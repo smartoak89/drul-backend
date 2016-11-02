@@ -100,8 +100,8 @@ function isValidUpdate (req, callback) {
     var schema = v.joi.object().keys({
         country: v.joi.string().required(),
         email: v.joi.string().email().required(),
-        firstname: v.joi.string().required(),
-        lastname: v.joi.string().required(),
+        firstname: v.joi.string().min(2).max(30).required(),
+        lastname: v.joi.string().min(2).max(30).required(),
         phone: v.joi.number().min(11).required(),
         password: v.joi.string().min(4).required()
     });
@@ -121,10 +121,10 @@ function isValid (req, callback) {
 
     var schema = v.joi.object().keys({
         email: v.joi.string().email().required(),
-        password: v.joi.string().regex(/^[a-zA-Z0-9-_]{4,30}$/).required(),
+        password: v.joi.string().required(),
         phone: v.joi.number().required(),
-        firstname: v.joi.string().regex(/^[a-zA-Z0-9-_]{4,30}$/).required(),
-        lastname: v.joi.string().regex(/^[a-zA-Z0-9-_]{4,30}$/).required()
+        firstname: v.joi.string().min(2).max(30).required(),
+        lastname: v.joi.string().min(2).max(30).required()
     });
 
     v.validate(data, schema, callback);

@@ -3,7 +3,7 @@ var log = require('../libs/logger')(module);
 var HttpError = require('../error/index').HttpError;
 
 exports.create = function (req, res, next) {
-    var productApi = require('../api/product')(req.user);
+    var productApi = require('../api/product');
 
     isValid(req, function (err, value) {
         log.log('gotVal %', value);
@@ -90,13 +90,13 @@ function isValid (req, callback) {
         size: req.body.size,
         price: req.body.price,
         photo: req.body.photo,
-        old_price: req.body.old_price,
+        old_price: req.body.old_price
 
     };
 
     var schema = v.joi.object().keys({
         name: v.joi.string().min(4).max(50).required(),
-        article: v.joi.string().token().max(50),
+        article: v.joi.string().max(50),
         description: v.joi.string().max(250),
         category: v.joi.string().max(50),
         photo: v.joi.string().max(50),
