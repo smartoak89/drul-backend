@@ -8,9 +8,9 @@ exports.create = function (req, res, next) {
     isValid(req, function (err, value) {
         log.log('gotVal %', value);
         if (err) return res.sendMsg(err, true, 400);
-        productApi.create(value, function (err) {
+        productApi.create(value, function (err, product) {
             if (err) return next(err);
-            res.sendMsg(msg.CREATED);
+            res.json(product);
         })
     });
 };
@@ -25,10 +25,10 @@ exports.list = function (req, res, next) {
 };
 
 exports.get = function (req, res, next) {
-    var productApi = require('../api/product')(req.user);
-    productApi.findOne({uuid: req.params.id}, function (err, data) {
+    var productApi = require('../api/product');
+    productApi.findOne({uuid: req.params.id}, function (err, product) {
         if (err) return next(err);
-        res.json({data: data});
+        res.json(product);
     });
 };
 
@@ -53,7 +53,7 @@ exports.gallery = function (req, res, next) {
 };
 
 exports.remove = function (req, res, next) {
-    var productApi = require('../api/product')(req.user);
+    var productApi = require('../api/product');
     productApi.remove(req.params.id, function(err) {
         if (err) return next(err);
         res.sendMsg(msg.DELETED);
@@ -90,7 +90,8 @@ function isValid (req, callback) {
         size: req.body.size,
         price: req.body.price,
         photo: req.body.photo,
-        old_price: req.body.old_price
+        old_price: req.body.old_price,
+        slug: req.body.slug
 
     };
 
@@ -99,6 +100,7 @@ function isValid (req, callback) {
         article: v.joi.string().max(50),
         description: v.joi.string().max(250),
         category: v.joi.string().max(50),
+        slug: v.joi.string().max(50),
         photo: v.joi.string().max(50),
         count: v.joi.string().max(3),
         color: v.joi.array().items(v.joi.string()),

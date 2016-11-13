@@ -6,22 +6,37 @@ var Promise = require("bluebird");
 var conf = require('../conf/index');
 var fs = require('fs');
 
-exports.uploadPhoto = function (req, res, next) {
+// exports.uploadPhoto = function (req, res, next) {
+//     var document = {uuid: req.params.id};
+//     //TODO: allow upload only type "image"
+//     productAPI.findOne(document, function (err, result) {
+//         if (err) return next(err);
+//
+//         createFolder(result.uuid, function (err) {
+//             if (err) return next(err);
+//             upload(req, result.uuid, function (err) {
+//                 if (err) return next(err);
+//                 res.sendMsg(msg.UPLOADED);
+//             });
+//         })
+//     });
+// };
+exports.upload = function (req, res, next) {
     var document = {uuid: req.params.id};
     //TODO: allow upload only type "image"
+    console.log('id', document);
     productAPI.findOne(document, function (err, result) {
         if (err) return next(err);
-
+        console.log('productRes', result);
         createFolder(result.uuid, function (err) {
             if (err) return next(err);
-            upload(req, result.uuid, function (err) {
+            upload(req, result.uuid, function (err, result) {
                 if (err) return next(err);
-                res.sendMsg(msg.UPLOADED);
+                res.json(result);
             });
         })
     });
 };
-
 exports.delete = function (req, res, next) {
     fileAPI.remove(req.params.id, function (err, result) {
         if (err) return next(err);
@@ -54,6 +69,7 @@ function upload (req, productID, callback) {
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
         var filedesc = {
+            fieldname: fieldname,
             parent: productID,
             name: filename,
             mime: mimetype,

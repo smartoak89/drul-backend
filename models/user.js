@@ -9,28 +9,13 @@ var schema = new Schema({
         required: true
     },
     country: {type: String},
-    email: {
-        type: String,
-        //unique: true,
-        // required: true
-    },
-    firstname: {
-        type: String,
-        // required: true
-    },
-    lastname: {
-        type: String,
-        // required: true
-    },
+    email: {type: String},
+    firstname: {type: String},
+    lastname: {type: String},
     phone: {type: String},
-    hashedPassword: {
-        type: String,
-        // required: true
-    },
-    salt: {
-        type: String,
-        // required: true
-    },
+    state: {type: String},
+    hashedPassword: {type: String},
+    salt: {type: String},
     created: {
         type: Date,
         default: Date.now

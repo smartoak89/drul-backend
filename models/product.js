@@ -19,6 +19,7 @@ var schema = new Schema({
     photo: {type: String},
     gallery: {type: Array},
     diferredId: {type: String},
+    slug: {type: String},
     created: {
         type: Date,
         default: Date.now

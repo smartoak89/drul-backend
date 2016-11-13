@@ -7,6 +7,7 @@ module.exports = {
             firstname: user.firstname,
             lastname: user.lastname,
             email: user.email,
+            state: user.state,
             phone: user.phone,
             created: user.created
         }

@@ -3,6 +3,7 @@ var HttpError = require('../error').HttpError;
 
 module.exports = {
     create: function (data, callback) {
+        console.log('upload file =>', data);
         db.create(data, callback)
     },
     findAll: function (patern, callback) {

@@ -29,7 +29,8 @@ function getRouter(router) {
     router.delete('/product/:id', productHandler.remove);
 
     //--File
-    router.post('/file/:id', fileHandler.uploadPhoto);
+    // router.post('/file/:id', fileHandler.uploadPhoto);
+    router.post('/file/:id', fileHandler.upload);
     // router.get('/files/:id', fileHandler.list);
     router.get('/file/:id', fileHandler.get);
     router.delete('/file/:id', fileHandler.delete);
@@ -49,7 +50,13 @@ function getRouter(router) {
     //--Stocks
     var stocksHandler = require('../handlers/stocks')
     router.post('/stocks', stocksHandler.create);
+    router.get('/stocks', stocksHandler.list);
+    router.delete('/stocks/:id', stocksHandler.remove);
 
+    // Cart
+    var cartHandler = require('../handlers/cart');
+    router.post('/cart/:id', cartHandler.add);
+    router.get('/cart/:id', cartHandler.list);
     return router;
 }
 

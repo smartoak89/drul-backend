@@ -7,6 +7,7 @@ var schema = new Schema({
         unique: true,
         required: true
     },
+    type: {type: String},
     name: { type: String },
     size: { type: Number },
     mime: { type: String },

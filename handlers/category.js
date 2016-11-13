@@ -1,14 +1,14 @@
 var HttpError = require('../error/index').HttpError;
 var msg = require('../message/ru/category');
 var categoryAPI = require('../api/category');
+var error = require('../error').ressError;
 
 exports.create = function (req, res, next) {
     isValid(req, function (err, value) {
         if (err) return res.sendMsg(err, true, 400);
         categoryAPI.create(value, function (err, result) {
             if (err) return next(err);
-            res.json({uuid: result.uuid});
-            // res.sendMsg(msg.CATEGORY_ADDED);
+            res.json(result);
         })
     });
 };
@@ -21,7 +21,9 @@ exports.list = function (req, res, next) {
                 uuid: i.uuid,
                 name: i.name,
                 link: i.link,
-                children: i.subcat
+                article: i.article,
+                slug: i.slug,
+                children: i.children
             }
         });
         res.json(list);
@@ -31,7 +33,7 @@ exports.list = function (req, res, next) {
 exports.update = function (req, res, next) {
     isValid(req, function (err, value) {
         if (err) return res.sendMsg(err, true, 400);
-        categoryAPI.update(req.params.id, value, function (err) {
+        categoryAPI.update(req.params.id, value, function (err, result) {
             if (err) return next(err);
             res.sendMsg(msg.CATEGORY_UPDATED);
         });
@@ -52,8 +54,8 @@ exports.add = function (req, res, next) {
 exports.remove = function (req, res, next) {
     categoryAPI.remove(req.params.id, req.params.index, function(err, result) {
         if (err) return next(err);
-        if(!result) return next(new HttpError(404));
-        res.sendMsg(msg.CATEGORY_DELETED);
+        if(!result) return res.json(error(404, 'Категория не найдена'));
+        res.json(result);
     })
 };
 
@@ -63,13 +65,15 @@ function isValid (req, callback) {
     var data = {
         name: req.body.name,
         link: req.body.link,
-        article: req.body.article
+        article: req.body.article,
+        slug: req.body.slug
     };
 
     var schema = v.joi.object().keys({
         name: v.joi.string().min(3).max(20).required(),
         link: v.joi.string().min(3).max(20).required(),
-        article: v.joi.string().min(3).max(20).required()
+        article: v.joi.string().min(3).max(20).required(),
+        slug: v.joi.string().min(3).max(20).required()
     });
 
     v.validate(data, schema, callback);

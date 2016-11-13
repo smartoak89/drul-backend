@@ -7,19 +7,14 @@ var schema = new Schema({
         unique: true,
         required: true
     },
-    name: {
+    productID: {
         type: String
     },
-    link: {
+    owner: {
         type: String
-    },
-    children: {
-        type: Array
-    },
-    article: {type: String},
-    slug: {type: String}
+    }
 },{
     versionKey: false
 });
 
-module.exports = mongoose.model('Category', schema);
+module.exports = mongoose.model('Cart', schema);

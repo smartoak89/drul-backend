@@ -53,14 +53,14 @@ module.exports = {
     }
 };
 
-function getProducts (deferrent, callback) {
+function getProducts (deferred, callback) {
     var productAPI = require('./product');
     var Promise = require('bluebird');
 
-    Promise.map(deferrent, Promise.promisify(function (prod, i, b, cb) {
+    Promise.map(deferred, Promise.promisify(function (prod, i, b, cb) {
         productAPI.findOne({uuid: prod.productId}, function (err, product) {
             if (err) return callback(err);
-            product.diferredId = prod.uuid;
+            product.deferredID = prod.uuid;
             return cb(null, product);
 
         });

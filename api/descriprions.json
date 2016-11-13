@@ -23,7 +23,7 @@
       "GET /products": "Return list of products",
       "PUT /product/{uuid}": "Update product",
       "DELETE /product/{uuid}": "Delete product",
-      "GET /product/{uuid}": "Get one product"
+      "GET /product/{uuid}": "Get one product",
       "GET /product/{uuid}/gallery": "Get all photos for current product",
     }
   },{
@@ -33,9 +33,13 @@
     }
   },{
     "Deferred": {
-      "POST /deferred/:{product uuid}": {body: userId}"add to deferred",
+      "POST /deferred/:{product uuid}": {user: userId}"add to deferred",
       "GET /deferreds/:userid": "Get all deferreds",
       "DELETE /deferreds/:uuid": "delete deferred",
+    },{
+    "Cart": {
+      "POST /cart/:{product uuid}": {user: userId}"add to Cart",
+      "GET /cart/:userID": "get list products from cart for user",
     }
   }
 ]

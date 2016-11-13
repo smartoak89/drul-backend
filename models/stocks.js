@@ -8,7 +8,12 @@ var schema = new Schema({
         required: true
     },
     name: {type: String},
-    percent: {type: String}
+    percent: {type: String},
+    expires: {type: Date},
+    created: {
+        type: Date,
+        default: Date.now
+    }
 },{
     versionKey: false
 });

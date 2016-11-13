@@ -3,7 +3,7 @@ var msg = require('../message/ru/user');
 var HttpError = require('../error/index').HttpError;
 
 exports.register = function (req, res, next) {
-    isValid(req, function (err, value) {
+    isValid(req.body, function (err, value) {
         if (err) return res.sendMsg(err, true, 400);
         userAPI.findOne({email: value.email}, function(err, result) {
             if (err) return next(err);
@@ -22,10 +22,10 @@ exports.register = function (req, res, next) {
 exports.list = function (req, res, next) {
     userAPI.list(function (err, result) {
         if (err) return next(err);
-        var list = result.map(function (i) {
+        var users = result.map(function (i) {
             return viewData(i);
         });
-        res.json({data: list});
+        res.json(users);
     });
 };
 
@@ -63,10 +63,10 @@ exports.auth = function (req, res, next) {
 
             if (err) return next(err);
             if (!user) return res.sendMsg(msg.AUTH_ERROR, true, 400);
-            req.session.user = {
-                uuid: user.uuid,
-                email: user.email
-            };
+            // req.session.user = {
+            //     uuid: user.uuid,
+            //     email: user.email
+            // };
             res.json(view(user));
         })
     });
@@ -109,20 +109,22 @@ function isValidUpdate (req, callback) {
     v.validate(data, schema, callback);
 }
 
-function isValid (req, callback) {
+function isValid (body, callback) {
     var v = require('../libs/validator');
     var data = {
-        email: req.body.email,
-        password: req.body.password,
-        phone: req.body.phone,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname
+        email: body.email,
+        password: body.password,
+        phone: body.phone,
+        firstname: body.firstname,
+        lastname: body.lastname,
+        state: body.state
     };
 
     var schema = v.joi.object().keys({
         email: v.joi.string().email().required(),
         password: v.joi.string().required(),
         phone: v.joi.number().required(),
+        state: v.joi.string().max(50).required(),
         firstname: v.joi.string().min(2).max(30).required(),
         lastname: v.joi.string().min(2).max(30).required()
     });
