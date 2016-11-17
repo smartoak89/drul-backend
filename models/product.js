@@ -16,7 +16,7 @@ var schema = new Schema({
     size: { type: Array },
     price: {type: Number},
     old_price: {type: Number},
-    photo: {type: String},
+    photo: {type: Object},
     gallery: {type: Array},
     diferredId: {type: String},
     slug: {type: String},

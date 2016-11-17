@@ -2,9 +2,11 @@ var fileAPI = require('../api/file');
 var productAPI = require('../api/product');
 var msg = require('../message/ru/file');
 var HttpError = require('../error/index').HttpError;
+var error = require('../error/index').ressError;
 var Promise = require("bluebird");
 var conf = require('../conf/index');
 var fs = require('fs');
+var log = require('../libs/logger')(module);
 
 // exports.uploadPhoto = function (req, res, next) {
 //     var document = {uuid: req.params.id};
@@ -24,10 +26,8 @@ var fs = require('fs');
 exports.upload = function (req, res, next) {
     var document = {uuid: req.params.id};
     //TODO: allow upload only type "image"
-    console.log('id', document);
     productAPI.findOne(document, function (err, result) {
         if (err) return next(err);
-        console.log('productRes', result);
         createFolder(result.uuid, function (err) {
             if (err) return next(err);
             upload(req, result.uuid, function (err, result) {
@@ -37,10 +37,11 @@ exports.upload = function (req, res, next) {
         })
     });
 };
+
 exports.delete = function (req, res, next) {
     fileAPI.remove(req.params.id, function (err, result) {
         if (err) return next(err);
-        res.sendMsg(msg.DELETED_ONE);
+        res.json(result);
     });
 };
 
@@ -53,6 +54,60 @@ exports.get = function (req, res, next) {
             if (err) return callback(err);
         })
     });
+};
+
+exports.getFiles = function (req, res, next) {
+    var id = req.params.id;
+    var criteria = req.query || {};
+    criteria['parent'] = id;
+
+    productAPI.findOne({uuid: id}, function (err, product) {
+        if (err) return next(err);
+        if (!product) return res.json(error(404, 'Product Not Found'));
+
+        fileAPI.findAll(criteria, function (err, files) {
+            if (err) return next(err);
+            if (!files) return res.json(error(404, 'Files Not Found'));
+            res.json(files);
+        })
+    });
+
+};
+
+exports.updatePhoto = function (req, res, next) {
+    var id = req.params.id;
+    fileAPI.findOne({uuid: id}, function (err, file) {
+        if (err) return next(err);
+        if (!file) return res.json(error(404, 'Files Not Found'));
+        var parent = file.parent;
+
+        fileAPI.findOne({parent: parent, type: 'main'}, function (err, result) {
+            if (err) return next(err);
+
+            result.type = 'gallery';
+
+            fileAPI.update(result.uuid, result, function (err, gallFIle) {
+                if (err) return next(err);
+
+                file.type = 'main';
+                fileAPI.update(file.uuid, file, function (err, mainPhoto) {
+                    if (err) return next(err);
+                    res.json(mainPhoto);
+                })
+            })
+        })
+    });
+    // productAPI.findOne({uuid: id}, function (err, product) {
+    //     if (err) return next(err);
+    //     if (!product) return res.json(error(404, 'Product Not Found'));
+    //
+    //     fileAPI.findAll(criteria, function (err, files) {
+    //         if (err) return next(err);
+    //         if (!files) return res.json(error(404, 'Files Not Found'));
+    //         res.json(files);
+    //     })
+    // });
+
 };
 
 function read (file, res, callback) {
@@ -69,7 +124,7 @@ function upload (req, productID, callback) {
 
     busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
         var filedesc = {
-            fieldname: fieldname,
+            type: fieldname,
             parent: productID,
             name: filename,
             mime: mimetype,
@@ -105,7 +160,25 @@ function upload (req, productID, callback) {
 }
 
 var save = Promise.promisify(function (file, b, c, callback) {
-    fileAPI.create(file, callback);
+    log.info('saveFile');
+    if (file.type == 'main') {
+        fileAPI.findOne({parent: file.parent, type: 'main'}, function (err, resfile) {
+            log.info('findeOneFunc');
+            if (err) return callback(err);
+            if (resfile) {
+                resfile.type = 'gallery';
+                console.log('resFile', resfile);
+                fileAPI.update(resfile.uuid, resfile, function (err) {
+                    if (err) return callback(err);
+                    fileAPI.create(file, callback);
+                });
+            } else {
+                return fileAPI.create(file, callback);
+            }
+        });
+    } else {
+        fileAPI.create(file, callback);
+    }
 });
 
 function createFolder (name, callback) {

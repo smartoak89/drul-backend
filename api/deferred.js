@@ -2,69 +2,64 @@ var db = require('../libs/datastore')('deferred');
 var HttpError = require('../error').HttpError;
 
 module.exports = {
-    add: function (req, callback) {
-        var prodId = req.params.id;
-        var userId = req.body.user;
-
-        var userAPI = require('./user');
-        userAPI.find(userId, function (err, user) {
+    add: function (user, product, callback) {
+        var data = {
+            owner: user,
+            product: product
+        };
+        db.create(data, callback);
+    },
+    list: function (criteria, callback) {
+        db.findAll(criteria, function (err, list) {
             if (err) return callback(err);
-            if (!user) {
-                return callback(404);
-            }
+            getProductsFromDeferred(list, callback);
 
-            var productAPI = require('./product');
-            productAPI.findOne({uuid: prodId}, function (err, prod) {
-                if (err) return callback(err);
-                db.findOne({parent: userId, productId: prod.uuid}, function (err, deferred) {
-                    if (err) return callback(err);
-
-                    if (!deferred) {
-                        return db.create({productId: prod.uuid, parent: userId}, function (err, res) {
-                            if (err) return callback (err);
-                            callback(null, res);
-                        })
-                    }
-                    callback(null);
-                });
-            })
         });
     },
-    list: function (id, callback) {
-        var userAPI = require('./user');
-        userAPI.find(id, function (err, user) {
+    delete: function (document, callback) {
+        db.findOne(document, function (err, result) {
             if (err) return callback(err);
-            if (!user) {
-                console.log('found user', user);
-                return callback(new Error('User Not Found'));
-            }
-            db.findAll({parent: id}, function (err, result) {
-                if (err) return callback(err);
-                getProducts(result, callback);
-            })
+            if (!result) return callback(null);
+            db.remove(result.uuid, callback);
         });
     },
-    delete: function (id, callback) {
-        db.find(id, function (err, result) {
+    find: function (criteria, callback) {
+        db.findOne(criteria, function (err, result) {
             if (err) return callback(err);
-            if (!result) return callback(new HttpError(404, 'Product Not Found'));
-            db.remove(id, callback);
+            callback(null, result);
+        });
+    },
+    deleteAll: function (productID, callback) {
+        db.findAll({product: productID}, function (err, res) {
+            if (err) return callback(err);
+            if (!res) return callback();
+
+            var Promise = require('bluebird');
+            Promise.map(res, Promise.promisify(function (i, e, c, cb) {
+                db.remove(i.uuid, cb);
+            })).then(function () {
+                callback();
+            }).catch(function(err) {
+                callback(err);
+            });
         });
     }
 };
 
-function getProducts (deferred, callback) {
-    var productAPI = require('./product');
+function getProductsFromDeferred (list, callback) {
     var Promise = require('bluebird');
+    var productAPI = require('./product');
 
-    Promise.map(deferred, Promise.promisify(function (prod, i, b, cb) {
-        productAPI.findOne({uuid: prod.productId}, function (err, product) {
-            if (err) return callback(err);
-            product.deferredID = prod.uuid;
-            return cb(null, product);
-
-        });
-    })).then(function (res) {
-        callback(null, res);
+    Promise.map(list, Promise.promisify(function (i,a,b,cb) {
+        console.log(i.product);
+        productAPI.findOne({uuid: i.product}, function (error, product) {
+            if (error) return callback(error);
+            product.created = i.created;
+            cb(null, product);
+        })
+    })).then(function (list) {
+        callback(null, list);
+    }).catch(function (err) {
+        callback(err);
     })
 }

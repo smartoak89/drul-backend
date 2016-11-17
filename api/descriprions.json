@@ -29,17 +29,27 @@
   },{
     "File": {
       "POST /file/{uuid}": "Upload photo for current product",
+      "POST /file/{productId}": "Если есть главная фотка то заменит если в запросе filename ==='main'",
       "GET /file/{uuid}": "Get one photo",
+      "DELETE /file/{file_uuid}": "delete file",
+      "GET /files/{productId}": "all files",
+      "PUT /file/{uuid}": "to do this file main photo for product",
     }
   },{
     "Deferred": {
-      "POST /deferred/:{product uuid}": {user: userId}"add to deferred",
-      "GET /deferreds/:userid": "Get all deferreds",
-      "DELETE /deferreds/:uuid": "delete deferred",
+      "PUT /deferred/:user/product":"add to deferred",
+      "GET /deferred/:user": "Get all deferreds",
+      "DELETE /deferred/:user/:product": "delete from deferred",
     },{
     "Cart": {
-      "POST /cart/:{product uuid}": {user: userId}"add to Cart",
-      "GET /cart/:userID": "get list products from cart for user",
+      "PUT /cart/:user/:product":"add to Cart",
+      "GET /cart/:user": "get list products from cart for user",
+      "DELETE /cart/:user/:product": "delete from deferred",
+    },
+    "combination":{
+      "POST /combination" : "Create new combination",
+      "GET /combinations" : "list of combinations",
     }
+}
   }
 ]

@@ -3,7 +3,6 @@ var HttpError = require('../error').HttpError;
 
 module.exports = {
     create: function (data, callback) {
-        console.log('upload file =>', data);
         db.create(data, callback)
     },
     findAll: function (patern, callback) {
@@ -19,6 +18,9 @@ module.exports = {
     findOne: function (data, callback) {
         db.findOne (data, callback);
     },
+    update: function (id , data, callback) {
+        db.update(id, data, callback);
+    }
     // list: function (callback) {
     //     db.list(callback);
     // },

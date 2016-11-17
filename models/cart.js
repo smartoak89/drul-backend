@@ -7,11 +7,15 @@ var schema = new Schema({
         unique: true,
         required: true
     },
-    productID: {
+    product: {
         type: String
     },
     owner: {
         type: String
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 },{
     versionKey: false

@@ -7,20 +7,20 @@ var schema = new Schema({
         unique: true,
         required: true
     },
-    owner: {
+    name: {
         type: String,
         required: true
     },
-    product: {
+    slug: {
         type: String,
+        // unique: true,
         required: true
     },
-    created: {
-        type: Date,
-        default: Date.now
+    children: {
+        type: Array
     }
 }, {
     versionKey: false
 });
 
-module.exports = mongoose.model('Deferred', schema);
+module.exports = mongoose.model('Combination', schema);

@@ -33,14 +33,9 @@ function getRouter(router) {
     router.post('/file/:id', fileHandler.upload);
     // router.get('/files/:id', fileHandler.list);
     router.get('/file/:id', fileHandler.get);
+    router.get('/files/:id', fileHandler.getFiles);
     router.delete('/file/:id', fileHandler.delete);
-
-    //--Deferred
-    var deferredHandler = require('../handlers/deferred');
-
-    router.post('/deferred/:id', deferredHandler.add);
-    router.get('/deferred/:id', deferredHandler.getList);
-    router.delete('/deferred/:id', deferredHandler.delete);
+    router.put('/file/:id', fileHandler.updatePhoto);
 
     // Currency monitor
     var curmonHandler = require('../handlers/curmon');
@@ -53,10 +48,25 @@ function getRouter(router) {
     router.get('/stocks', stocksHandler.list);
     router.delete('/stocks/:id', stocksHandler.remove);
 
+    //--Deferred
+    var deferredHandler = require('../handlers/deferred');
+    router.put('/deferred/:user/:product', deferredHandler.add);
+    router.delete('/deferred/:user/:product', deferredHandler.delete);
+    router.get('/deferred/:user', deferredHandler.list);
+
     // Cart
     var cartHandler = require('../handlers/cart');
-    router.post('/cart/:id', cartHandler.add);
-    router.get('/cart/:id', cartHandler.list);
+    router.put('/cart/:user/:product', cartHandler.add);
+    router.get('/cart/:user', cartHandler.list);
+    router.delete('/cart/:user/:product', cartHandler.delete);
+
+    // Combinations
+    var combinationHandler = require('../handlers/combination');
+    router.post('/combination', combinationHandler.create);
+    router.get('/combinations', combinationHandler.list);
+    router.put('/combination/:id', combinationHandler.update);
+    router.delete('/combination/:id', combinationHandler.delete);
+
     return router;
 }
 

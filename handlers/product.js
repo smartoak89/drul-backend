@@ -1,6 +1,6 @@
 var msg = require('../message/ru/product');
 var log = require('../libs/logger')(module);
-var HttpError = require('../error/index').HttpError;
+var error = require('../error/index').ressError;
 
 exports.create = function (req, res, next) {
     var productApi = require('../api/product');
@@ -28,17 +28,18 @@ exports.get = function (req, res, next) {
     var productApi = require('../api/product');
     productApi.findOne({uuid: req.params.id}, function (err, product) {
         if (err) return next(err);
+        if (!product) return res.status(404).json(error(404, 'Товар не найден'));
         res.json(product);
     });
 };
 
 exports.update = function (req, res, next) {
-    var productApi = require('../api/product')(req.user);
+    var productApi = require('../api/product');
     isValid(req, function (err, value) {
         if (err) return res.sendMsg(err, true, 400);
         productApi.update(req.params.id, value, function (err) {
             if (err) return next(err);
-            res.sendMsg(msg.UPDATED);
+            res.json(req.params.id);
         });
     });
 };
@@ -89,7 +90,6 @@ function isValid (req, callback) {
         color: req.body.color,
         size: req.body.size,
         price: req.body.price,
-        photo: req.body.photo,
         old_price: req.body.old_price,
         slug: req.body.slug
 
@@ -98,15 +98,14 @@ function isValid (req, callback) {
     var schema = v.joi.object().keys({
         name: v.joi.string().min(4).max(50).required(),
         article: v.joi.string().max(50),
-        description: v.joi.string().max(250),
+        description: v.joi.string(),
         category: v.joi.string().max(50),
         slug: v.joi.string().max(50),
-        photo: v.joi.string().max(50),
         count: v.joi.string().max(3),
         color: v.joi.array().items(v.joi.string()),
         size: v.joi.array().items(v.joi.string()),
         price: v.joi.number(),
-        old_price: v.joi.number(),
+        old_price: v.joi.number()
     });
 
     v.validate(data, schema, callback);
