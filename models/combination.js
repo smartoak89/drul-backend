@@ -14,11 +14,10 @@ var schema = new Schema({
     slug: {
         type: String,
         // unique: true,
-        required: true
+        // required: true
     },
-    children: {
-        type: Array
-    }
+    checked: {type: Boolean},
+    value: {type: Array}
 }, {
     versionKey: false
 });

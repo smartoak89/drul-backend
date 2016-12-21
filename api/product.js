@@ -2,6 +2,7 @@ var db = require('../libs/datastore')('product');
 var HttpError = require('../error').HttpError;
 var error = require('../error').ressError;
 var Promise = require('bluebird');
+var conf = require('../conf');
 
 module.exports = {
     create: function (data, callback) {
@@ -25,6 +26,7 @@ module.exports = {
             if (!result) return callback(new HttpError(404, 'Product Not Found'));
             for (var k in data) {
                 if (typeof data[k] !== 'undefined') {
+                    console.log('data', data[k]);
                     result[k] = data[k];
                 }
             }
@@ -53,18 +55,46 @@ module.exports = {
             // });
         })
     },
-    findAll: function (document, callback) {
-        db.findAll(document, callback);
+    findAll: function (criteria, callback) {
+        _find(sanitazeCriteria(criteria), callback);
     },
-    filter: function (req, callback) {
-        var criteria = {};
-        for (key in req.body) {
-            criteria[key] = {$in: req.body[key]}
-        }
-        db.findAll(criteria, callback);
+    getProductFilter: function (category, callback) {
+        db.getProductFilter(category, callback);
     }
 };
 
+function sanitazeCriteria (criteria) {
+    var obj = {};
+
+    if (criteria.category) {
+        obj.match = { category: criteria.category };
+        delete criteria.category;
+    }
+    if(criteria.skip) {
+        obj.skip = criteria.skip * conf.product.limit;
+        delete criteria.skip;
+    }
+    if (Object.keys(criteria).length !== 0) {
+        obj.sort = {};
+        for (var key in criteria) {
+            obj.sort[key] = + criteria[key]
+        }
+    }
+    return obj;
+}
+
+function _find (criteria, callback) {
+    var match = criteria.match || null;
+    var sort = criteria.sort || null;
+    var skip = criteria.skip || null;
+    var limit = criteria.limit || conf.product.limit;
+    var filter = [];
+    if (match) filter.push({$match: match});
+    if (sort)  filter.push({$sort: sort });
+    if (skip)  filter.push({$skip: skip});
+    filter.push({$limit: limit});
+    db.filter(filter, callback);
+}
 function removeFromCartAndDeferred(productID, callback) {
     var Promise = require('bluebird');
     var cartAPI = require('./cart');

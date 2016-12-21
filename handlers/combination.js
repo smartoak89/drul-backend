@@ -35,7 +35,7 @@ exports.delete = function (req, res, next) {
 
     combinationAPI.delete(req.params.id, function (err, result) {
         if (err) return next(err);
-        if (!result) return res.status(400).json(error(400, 'Нет такой комбинации!'));
+        if (!result) return res.status(404).json(error(404, 'Нет такой комбинации!'));
         res.json(result);
     })
 
@@ -48,13 +48,15 @@ function isValid (body, callback) {
     var data = {
         name: body.name,
         slug: body.slug,
-        value: body.value
+        value: body.value,
+        checked: body.checked
     };
 
     var schema = v.joi.object().keys({
         name: v.joi.string().max(50).required(),
-        slug: [v.joi.string(), v.joi.number()],
-        value: v.joi.array().items(v.joi.string())
+        slug: v.joi.string(),
+        value: v.joi.array().items(v.joi.string()),
+        checked: v.joi.boolean()
     });
 
     v.validate(data, schema, callback);

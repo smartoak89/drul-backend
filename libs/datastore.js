@@ -7,7 +7,7 @@ function Datastore (model) {
 
 Datastore.prototype = {
     list: function(callback) {
-        this.model.find({}, function (err, result) {
+        this.model.find(function (err, result) {
             if (err) return callback(err);
             if (!result) return callback(500);
             return callback(null, result);
@@ -31,23 +31,21 @@ Datastore.prototype = {
     },
     update: function (id, data, callback) {
         var self = this;
-        this.find(id, function (err) {
-            if (err) return callback(err);
-            console.log('updatedData', data);
+        // this.find(id, function (err) {
+        //     if (err) return callback(err);
             self.model.update({uuid: id}, data, function (err, result) {
                 if (err) return callback(err);
-                if (!result) return callback(500);
                 console.log('Updated data => ', JSON.stringify(result));
-                return callback(null, result);
-            })
-        });
+                return callback(null, data);
+            });
+        // });
     },
     remove: function (id, callback) {
         var self = this;
         this.find(id, function (err, result) {
             if (err) return callback(err);
             console.log('result', result);
-            self.model.remove(result, function (err, result) {
+            self.model.remove({uuid: result.uuid}, function (err, result) {
                 if (err) return callback(err);
                 return callback(null, result);
             })
@@ -59,10 +57,27 @@ Datastore.prototype = {
             return callback(null, result);
         })
     },
-    findAll: function (patern, callback) {
-        this.model.find(patern, function (err, result) {
+    findAll: function (criteria, callback) {
+        var limit;
+        if (criteria.limit){
+            limit = criteria.limit;
+            delete criteria.limit;
+        }
+        this.model.find(criteria, function (err, result) {
             if (err) return callback(err);
             return callback(null, result);
+        }).limit(limit);
+    },
+    filter: function (filter, callback) {
+        this.model.aggregate(filter , function (err, result) {
+            if (err) return callback(err);
+            callback(null, result);
+        });
+    },
+    getProductFilter: function (category, callback) {
+        this.model.aggregate([{$match: {category: category}}, {$unwind: '$combo'}, {$unwind: '$combo.values'}, {$group: {_id: '$combo.name', values: {$addToSet: '$combo.values'}}} ], function (err, res) {
+            if (err) return callback(err);
+            callback(null, res);
         })
     }
 };

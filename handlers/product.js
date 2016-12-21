@@ -1,9 +1,9 @@
 var msg = require('../message/ru/product');
 var log = require('../libs/logger')(module);
 var error = require('../error/index').ressError;
+var productApi = require('../api/product');
 
 exports.create = function (req, res, next) {
-    var productApi = require('../api/product');
 
     isValid(req, function (err, value) {
         log.log('gotVal %', value);
@@ -16,30 +16,42 @@ exports.create = function (req, res, next) {
 };
 
 exports.list = function (req, res, next) {
-    var productApi = require('../api/product');
+    var urlencode = require('urlencode');
+    // console.log('query', req.query);
+    var query = Object.keys(req.query);
+    console.log('color', req.query)
 
-    productApi.list(function (err, data) {
+    var productApi = require('../api/product');
+    var criteria = {};
+    productApi.findAll(criteria, function (err, data) {
         if (err) return next(err);
         res.json(data);
     });
 };
 
 exports.get = function (req, res, next) {
-    var productApi = require('../api/product');
     productApi.findOne({uuid: req.params.id}, function (err, product) {
         if (err) return next(err);
         if (!product) return res.status(404).json(error(404, 'Товар не найден'));
         res.json(product);
     });
 };
+exports.getProductFilter = function (req, res, next) {
+
+    productApi.getProductFilter(req.params.category, function (err, filter) {
+        if (err) return next(err);
+        res.json(filter);
+    });
+};
 
 exports.update = function (req, res, next) {
-    var productApi = require('../api/product');
     isValid(req, function (err, value) {
+        console.log('Preupdate product', err);
         if (err) return res.sendMsg(err, true, 400);
-        productApi.update(req.params.id, value, function (err) {
+        productApi.update(req.params.id, value, function (err, product) {
+            // console.log('update product', product);
             if (err) return next(err);
-            res.json(req.params.id);
+            res.json(product);
         });
     });
 };
@@ -54,7 +66,6 @@ exports.gallery = function (req, res, next) {
 };
 
 exports.remove = function (req, res, next) {
-    var productApi = require('../api/product');
     productApi.remove(req.params.id, function(err) {
         if (err) return next(err);
         res.sendMsg(msg.DELETED);
@@ -68,9 +79,6 @@ function viewData (data) {
         article: data.article,
         description: data.description,
         category: data.category,
-        count: data.count,
-        color: data.color,
-        size: data.size,
         price: data.price,
         gallery: data.gallery,
         old_price: data.old_price
@@ -86,26 +94,25 @@ function isValid (req, callback) {
         article: req.body.article,
         description: req.body.description,
         category: req.body.category,
-        count: req.body.count,
-        color: req.body.color,
-        size: req.body.size,
         price: req.body.price,
-        old_price: req.body.old_price,
-        slug: req.body.slug
-
+        slug: req.body.slug,
+        stock: req.body.stock,
+        combo: req.body.combo,
+        sublines: req.body.sublines,
+        show: req.body.show
     };
 
     var schema = v.joi.object().keys({
         name: v.joi.string().min(4).max(50).required(),
         article: v.joi.string().max(50),
         description: v.joi.string(),
-        category: v.joi.string().max(50),
+        category: v.joi.object(),
         slug: v.joi.string().max(50),
-        count: v.joi.string().max(3),
-        color: v.joi.array().items(v.joi.string()),
-        size: v.joi.array().items(v.joi.string()),
+        stock: v.joi.string().allow(''),
         price: v.joi.number(),
-        old_price: v.joi.number()
+        combo: v.joi.array(),
+        sublines: v.joi.array().items(v.joi.object()),
+        show: v.joi.boolean()
     });
 
     v.validate(data, schema, callback);

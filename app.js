@@ -28,7 +28,7 @@ app.use(function(req, res, next) {
 app.set('view engine', 'jade');
 
 app.use(express.static(path.join(__dirname, 'app')));
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -54,7 +54,10 @@ app.use(passport.session());
 // });
 
 // require('./middleware/configureUser')(app);
-
+// app.use(function (req, res, next) {
+//     console.log('IP', req.connection.remoteAddress)
+//     next();
+// })
 require('./routes')(app, express);
 
 app.use(require('./middleware/page404'));

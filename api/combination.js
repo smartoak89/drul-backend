@@ -1,5 +1,4 @@
 var db = require('../libs/datastore')('combination');
-var HttpError = require('../error').HttpError;
 
 module.exports = {
     create: function (combination, callback) {

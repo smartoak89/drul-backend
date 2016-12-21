@@ -78,7 +78,7 @@ exports.updatePhoto = function (req, res, next) {
     var id = req.params.id;
     fileAPI.findOne({uuid: id}, function (err, file) {
         if (err) return next(err);
-        if (!file) return res.json(error(404, 'Files Not Found'));
+        if (!file) return res.json(error(404, 'File Not Found'));
         var parent = file.parent;
 
         fileAPI.findOne({parent: parent, type: 'main'}, function (err, result) {

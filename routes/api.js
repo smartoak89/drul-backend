@@ -2,6 +2,7 @@ var categoryHandler = require('../handlers/category');
 var userHandler = require('../handlers/user');
 var productHandler = require('../handlers/product');
 var fileHandler = require('../handlers/file');
+var filterHandler = require('../handlers/filter');
 
 function getRouter(router) {
     //--Category
@@ -28,10 +29,12 @@ function getRouter(router) {
     router.put('/product/:id', productHandler.update);
     router.delete('/product/:id', productHandler.remove);
 
+    //--Filter
+    router.get('/filter/:category', productHandler.getProductFilter);
+
     //--File
     // router.post('/file/:id', fileHandler.uploadPhoto);
     router.post('/file/:id', fileHandler.upload);
-    // router.get('/files/:id', fileHandler.list);
     router.get('/file/:id', fileHandler.get);
     router.get('/files/:id', fileHandler.getFiles);
     router.delete('/file/:id', fileHandler.delete);
@@ -43,7 +46,7 @@ function getRouter(router) {
     router.get('/curmon', curmonHandler.get);
 
     //--Stocks
-    var stocksHandler = require('../handlers/stocks')
+    var stocksHandler = require('../handlers/stocks');
     router.post('/stocks', stocksHandler.create);
     router.get('/stocks', stocksHandler.list);
     router.delete('/stocks/:id', stocksHandler.remove);
@@ -67,6 +70,9 @@ function getRouter(router) {
     router.put('/combination/:id', combinationHandler.update);
     router.delete('/combination/:id', combinationHandler.delete);
 
+    // Comments
+    var commentHandler = require('../handlers/comment');
+    router.post('product/:id/comment', commentHandler.add);
     return router;
 }
 

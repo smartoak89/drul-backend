@@ -23,5 +23,8 @@
       "ttl": 50000
     },
     "tmp": "tmp",
-    "frontend_path": "../app/index.html"
+    "frontend_path": "../app/index.html",
+    "product" : {
+        "limit": 50
+    }
 }
