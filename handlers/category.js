@@ -16,17 +16,7 @@ exports.create = function (req, res, next) {
 exports.list = function (req, res, next) {
     categoryAPI.list(function (err, result) {
         if (err) return next(err);
-        var list = result.map(function (i) {
-            return {
-                uuid: i.uuid,
-                name: i.name,
-                link: i.link,
-                article: i.article,
-                slug: i.slug,
-                children: i.children
-            }
-        });
-        res.json(list);
+        res.json(result);
     });
 };
 
@@ -50,7 +40,20 @@ exports.add = function (req, res, next) {
         })
     });
 };
+exports.getFilter = function (req,res,next) {
+    var categName = req.params.name;
+    var productAPI = require('../api/product');
 
+    productAPI.getProductFilter(categName, function (err, filter) {
+        if(err) return next(err);
+        res.json(filter);
+    });
+
+    // productAPI.findAll({category: categName}, function (err, products) {
+    //     if (err) return next(err);
+    //     res.json(products);
+    // })
+};
 exports.remove = function (req, res, next) {
     categoryAPI.remove(req.params.id, req.params.index, function(err, result) {
         if (err) return next(err);
@@ -66,14 +69,16 @@ function isValid (req, callback) {
         name: req.body.name,
         link: req.body.link,
         article: req.body.article,
-        slug: req.body.slug
+        slug: req.body.slug,
+        level: req.body.level
     };
 
     var schema = v.joi.object().keys({
         name: v.joi.string().min(3).max(20).required(),
         link: v.joi.string().min(3).max(20).required(),
         article: v.joi.string().min(3).max(20).required(),
-        slug: v.joi.string().min(3).max(20).required()
+        slug: v.joi.string().min(3).max(20).required(),
+        level: v.joi.number()
     });
 
     v.validate(data, schema, callback);

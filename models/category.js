@@ -17,7 +17,9 @@ var schema = new Schema({
         type: Array
     },
     article: {type: String},
-    slug: {type: String}
+    slug: {type: String},
+    level: {type: Number},
+    parent: {type: String}
 },{
     versionKey: false
 });

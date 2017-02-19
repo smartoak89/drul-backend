@@ -16,12 +16,11 @@ exports.create = function (req, res, next) {
 };
 
 exports.list = function (req, res, next) {
-    var urlencode = require('urlencode');
+    // var urlencode = require('urlencode');
     // console.log('query', req.query);
-    var query = Object.keys(req.query);
-    console.log('color', req.query)
+    // var query = Object.keys(req.query);
+    // console.log('color', req.query)
 
-    var productApi = require('../api/product');
     var criteria = {};
     productApi.findAll(criteria, function (err, data) {
         if (err) return next(err);
@@ -35,6 +34,14 @@ exports.get = function (req, res, next) {
         if (!product) return res.status(404).json(error(404, 'Товар не найден'));
         res.json(product);
     });
+};
+exports.listFromCurrentCateg = function (req, res, next){
+    var categoryName = req.params.name;
+    productApi.findAll({category: categoryName}, function (err, products) {
+        if (err) return next(err);
+        res.json(products);
+    })
+
 };
 exports.getProductFilter = function (req, res, next) {
 

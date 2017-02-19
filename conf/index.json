@@ -23,6 +23,9 @@
       "ttl": 50000
     },
     "tmp": "tmp",
+    "product_images": "tmp/product",
+    "sliders_images": "tmp/slider",
+    "music": "tmp/music",
     "frontend_path": "../app/index.html",
     "product" : {
         "limit": 50

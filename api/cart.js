@@ -2,18 +2,12 @@ var db = require('../libs/datastore')('cart');
 
 module.exports = {
     add: function (user, product, callback) {
-        var data = {
-            owner: user,
-            product: product
-        };
-        db.create(data, callback);
+        db.create(product, callback);
     },
     list: function (criteria, callback) {
         db.findAll(criteria, function (err, list) {
             if (err) return callback(err);
-
-            getProductsFromCart(list, callback);
-
+            callback(null, list);
         });
     },
     delete: function (document, callback) {
@@ -54,7 +48,7 @@ function getProductsFromCart (list, callback) {
         console.log(i.product);
         productAPI.findOne({uuid: i.product}, function (error, product) {
             if (error) return callback(error);
-            product.created = i.created;
+            // product.created = i.created;
             cb(null, product);
         })
     })).then(function (list) {

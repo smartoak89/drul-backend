@@ -10,15 +10,11 @@ module.exports = {
     },
     update: function (id, data, callback) {
         db.find(id, function (err, user) {
-            if (err) return callback(err);
-            if (!user) return callback(new HttpError(404, 'User Not Found'));
-            if (!user.checkPassword(data.password)) return callback(HttpError(400, 'Неверный пароль'));
             for (var k in data) {
                 if (typeof data[k] !== 'undefined') {
                     user[k] = data[k];
                 }
             }
-            console.log('User data for update => ', JSON.stringify(user));
             db.update(user.uuid, user, callback);
         })
     },

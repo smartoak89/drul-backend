@@ -54,7 +54,7 @@ function getProductsFromDeferred (list, callback) {
         console.log(i.product);
         productAPI.findOne({uuid: i.product}, function (error, product) {
             if (error) return callback(error);
-            product.created = i.created;
+            // product.created = i.created;
             cb(null, product);
         })
     })).then(function (list) {

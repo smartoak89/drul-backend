@@ -42,14 +42,14 @@ function isValid (body, callback) {
 
     var data = {
         name: body.name,
-        percent: body.percent,
-        expires: body.expires
+        percent: body.percent
+        // expires: body.expires
     };
 
     var schema = v.joi.object().keys({
         name: v.joi.string().required(),
         percent: v.joi.string().required(),
-        expires: v.joi.date()
+        // expires: v.joi.date()
     });
 
     v.validate(data, schema, callback);

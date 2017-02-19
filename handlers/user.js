@@ -31,10 +31,18 @@ exports.list = function (req, res, next) {
 
 exports.update = function (req, res, next) {
     isValidUpdate(req, function (err, value) {
-        if (err) return res.sendMsg(err, true, 400);
-        userAPI.update(req.params.id, value, function (err) {
-            if (err) return next(err);
-            res.sendMsg(msg.UPDATED_SUCCESS);
+        if (err) return res.status(400).json(value);
+        var id = req.params.id;
+
+        userAPI.find(id, function (err, user) {
+           if (err) return next(err);
+           if (!user) return res.status(404).json({message: 'User Not Found'});
+           if (!user.checkPassword(value.password)) return res.status(400).json({message: 'Неверный пароль!'});
+
+            userAPI.update(id, value, function (err, newUser) {
+                if (err) return next(err);
+                res.json(newUser);
+            });
         });
     });
 };
@@ -90,7 +98,7 @@ function isValidUpdate (req, callback) {
 
     var data = {
         country: req.body.country,
-        email: req.body.email,
+        email: req.body.email.toLowerCase(),
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         phone: req.body.phone,
@@ -98,11 +106,11 @@ function isValidUpdate (req, callback) {
     };
 
     var schema = v.joi.object().keys({
-        country: v.joi.string().required(),
+        country: v.joi.string(),
         email: v.joi.string().email().required(),
-        firstname: v.joi.string().min(2).max(30).required(),
-        lastname: v.joi.string().min(2).max(30).required(),
-        phone: v.joi.number().min(11).required(),
+        firstname: v.joi.string().max(30),
+        lastname: v.joi.string().max(30),
+        phone: v.joi.number(),
         password: v.joi.string().min(4).required()
     });
 
@@ -112,21 +120,13 @@ function isValidUpdate (req, callback) {
 function isValid (body, callback) {
     var v = require('../libs/validator');
     var data = {
-        email: body.email,
-        password: body.password,
-        phone: body.phone,
-        firstname: body.firstname,
-        lastname: body.lastname,
-        state: body.state
+        email: body.email.toLowerCase(),
+        password: body.password
     };
 
     var schema = v.joi.object().keys({
         email: v.joi.string().email().required(),
-        password: v.joi.string().required(),
-        phone: v.joi.number().required(),
-        state: v.joi.string().max(50).required(),
-        firstname: v.joi.string().min(2).max(30).required(),
-        lastname: v.joi.string().min(2).max(30).required()
+        password: v.joi.string().required()
     });
 
     v.validate(data, schema, callback);

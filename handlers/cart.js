@@ -1,18 +1,37 @@
 var cartAPI = require('../api/cart');
+var productAPI = require('../api/product');
 var error = require('../error').ressError;
 
 exports.add = function (req, res, next) {
+    var combo = req.body.combo;
+    var imageId = req.body.image;
     var user = req.params.user;
-    var product = req.params.product;
-    cartAPI.find({owner: user, product: product}, function (err, result) {
-        if (err) return next(err);
-        if (result) return res.status(400).json(error(400, 'Товар в корзине уже существует!'));
+    var productId = req.params.product;
+    productAPI.findOne({uuid: productId}, function (err, product) {
+        if (err) return callback(err);
+        if (!product) return res.status(404).json({message: 'Product Not Found'});
 
-        cartAPI.add(user, product, function (err, result) {
+        cartAPI.find({owner: user, product_uuid: productId}, function (err, result) {
             if (err) return next(err);
-            if (!result) res.status(500).json(error(500, 'Ошибка добавления в корзину!'));
-            res.json({uuid: result.uuid});
-        })
+            var data = {
+                name: product.name,
+                price: product.price,
+                category: product.category,
+                combo: combo,
+                image: imageId,
+                product_uuid: productId,
+                article: product.article,
+                slug: product.slug,
+                owner: user
+            };
+
+            cartAPI.add(user, data, function (err, savedProductInCart) {
+                if (err) return next(err);
+                if (!savedProductInCart) return res.status(500).json(error(500, 'Ошибка добавления в корзину!'));
+                res.json(savedProductInCart);
+            })
+        });
+
     });
 };
 
@@ -29,7 +48,7 @@ exports.delete = function (req, res, next) {
     var product = req.params.product;
     var criteria = {
         owner: user,
-        product: product
+        uuid: product
     };
     cartAPI.delete(criteria, function (err, result) {
         if (err) return next(err);

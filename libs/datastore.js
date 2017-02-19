@@ -25,26 +25,20 @@ Datastore.prototype = {
         model.save(data, function (err, result) {
             if (err) return callback(err);
             if (!result) return callback(500);
-            console.log('Saved data => ', JSON.stringify(result));
             return callback(null, result);
         })
     },
     update: function (id, data, callback) {
         var self = this;
-        // this.find(id, function (err) {
-        //     if (err) return callback(err);
-            self.model.update({uuid: id}, data, function (err, result) {
-                if (err) return callback(err);
-                console.log('Updated data => ', JSON.stringify(result));
-                return callback(null, data);
-            });
-        // });
+        self.model.update({uuid: id}, data, function (err, result) {
+            if (err) return callback(err);
+            return callback(null, data);
+        });
     },
     remove: function (id, callback) {
         var self = this;
         this.find(id, function (err, result) {
             if (err) return callback(err);
-            console.log('result', result);
             self.model.remove({uuid: result.uuid}, function (err, result) {
                 if (err) return callback(err);
                 return callback(null, result);
@@ -59,14 +53,19 @@ Datastore.prototype = {
     },
     findAll: function (criteria, callback) {
         var limit;
+        var sort;
         if (criteria.limit){
             limit = criteria.limit;
             delete criteria.limit;
         }
+        if (criteria.sort) {
+            sort = criteria.sort;
+            delete criteria.sort;
+        }
         this.model.find(criteria, function (err, result) {
             if (err) return callback(err);
             return callback(null, result);
-        }).limit(limit);
+        }).limit(limit).sort(sort);
     },
     filter: function (filter, callback) {
         this.model.aggregate(filter , function (err, result) {
@@ -75,7 +74,7 @@ Datastore.prototype = {
         });
     },
     getProductFilter: function (category, callback) {
-        this.model.aggregate([{$match: {category: category}}, {$unwind: '$combo'}, {$unwind: '$combo.values'}, {$group: {_id: '$combo.name', values: {$addToSet: '$combo.values'}}} ], function (err, res) {
+        this.model.aggregate([{$match: {'category.slug': category}}, {$unwind: '$combo'}, {$unwind: '$combo.values'}, {$group: {_id: '$combo.name', slug: {$first: '$combo.slug'}, values: {$addToSet: '$combo.values'}}} ], function (err, res) {
             if (err) return callback(err);
             callback(null, res);
         })

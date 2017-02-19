@@ -7,6 +7,7 @@
       "POST /category/{uuid}": "Create subcategory inside the current category",
       "DELETE /category/{uuid}": "Delete the current category",
       "DELETE /category/{uuid}/{index}": "Delete subcategory by index from the current category"
+      "GET /category/{categName}/filter": "get product filter for current category"
     }
   },{
     "User": {
@@ -22,6 +23,7 @@
       "POST /product": "Create a new product",
       "GET /products": "Return list of products",
       "PUT /product/{uuid}": "Update product",
+      "GET /products/category/{name}": "Get product from current categ",
       "DELETE /product/{uuid}": "Delete product",
       "GET /product/{uuid}": "Get one product",
       "GET /product/{uuid}/gallery": "Get all photos for current product",
@@ -50,6 +52,20 @@
       "POST /combination" : "Create new combination",
       "GET /combinations" : "list of combinations",
     }
+  "reviews": {
+    "POST /reviews/{productID}/{userID}": "добавить коментарий к товару"
+    "GET /reviews/{productID}": "Вернет все отзывы к данному продукту"
+    "Delete /reviews/{reviewID}": "Удалить отзыв"
+  }
+  "Slideshow": {
+    "POST /slider": "добавить новый слайдер"
+   "GET /sliders": "Вернет все слайды"
+   "PUT /slider/{uuid}": "Редактировать слайд"
+   "Delete /slider/{slideID}": "Удалить отзыв один слайд"
+  }
+  "orders": {
+    "POST /"
+  }
 }
   }
 ]

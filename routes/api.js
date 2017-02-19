@@ -70,10 +70,14 @@ function getRouter(router) {
     router.put('/combination/:id', combinationHandler.update);
     router.delete('/combination/:id', combinationHandler.delete);
 
+    //Orders
+    var orderHandler = require('../handlers/order');
+    router.post('/order', orderHandler.add);
+
     // Comments
-    var commentHandler = require('../handlers/comment');
-    router.post('product/:id/comment', commentHandler.add);
-    return router;
+    // var commentHandler = require('../handlers/comment');
+    // router.post('product/:id/comment', commentHandler.add);
+    // return router;
 }
 
 module.exports = function (router) {

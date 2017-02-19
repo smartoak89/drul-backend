@@ -26,7 +26,6 @@ module.exports = {
             if (!result) return callback(new HttpError(404, 'Product Not Found'));
             for (var k in data) {
                 if (typeof data[k] !== 'undefined') {
-                    console.log('data', data[k]);
                     result[k] = data[k];
                 }
             }
@@ -47,6 +46,7 @@ module.exports = {
         var self = this;
         db.findOne(document, function (err, product) {
             if (err) return callback(err);
+            if (!product) return callback(null);
             callback(null, product);
             // configureProduct([result]).then(function () {
             //     callback(null, result);
@@ -64,22 +64,31 @@ module.exports = {
 };
 
 function sanitazeCriteria (criteria) {
-    var obj = {};
+    var obj = {
+        match:{}
+    };
 
     if (criteria.category) {
-        obj.match = { category: criteria.category };
+        // obj.match["category.slug"] = criteria.category;
+        obj.match["category.slug"] = criteria.category;
         delete criteria.category;
     }
+
     if(criteria.skip) {
         obj.skip = criteria.skip * conf.product.limit;
         delete criteria.skip;
     }
-    if (Object.keys(criteria).length !== 0) {
-        obj.sort = {};
+
+    if (Object.keys(criteria).length != 0) {
+        // obj.sort = {};
         for (var key in criteria) {
-            obj.sort[key] = + criteria[key]
+            // obj.sort[key] = + criteria[key]
+            obj['match'][key] = criteria[key];
         }
     }
+
+    console.log('obj', obj);
+
     return obj;
 }
 

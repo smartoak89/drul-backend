@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 // var flash = require('express-flash');
 var log = require('./libs/logger')(module);
-var passport = require('./libs/passport');
+// var passport = require('./libs/passport');
 var conf = require('./conf');
 // var redisStore = require('connect-redis')(session);
 // var redisCli = require('./libs/redis');
@@ -44,9 +44,9 @@ app.use(cookieParser());
 //         ttl: conf.redis.ttl
 //     })
 // }));
-
-app.use(passport.initialize());
-app.use(passport.session());
+//
+// app.use(passport.initialize());
+// app.use(passport.session());
 // app.use(flash());
 // app.use(function (req, res, next) {
 //     // console.log('Session', req.session);
@@ -58,6 +58,7 @@ app.use(passport.session());
 //     console.log('IP', req.connection.remoteAddress)
 //     next();
 // })
+
 require('./routes')(app, express);
 
 app.use(require('./middleware/page404'));
@@ -65,5 +66,5 @@ app.use(require('./middleware/page404'));
 require('./middleware/errorHandler')(app);
 
 http.createServer(app).listen(process.env.PORT || conf.port, function () {
-    log.info('Server is listening on localhost:' + conf.port);
+    log.info('Server is listening on localhost:' + conf.port)
 });

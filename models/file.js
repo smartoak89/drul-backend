@@ -7,6 +7,7 @@ var schema = new Schema({
         unique: true,
         required: true
     },
+    context: {type: String},
     type: {type: String},
     name: { type: String },
     size: { type: Number },

@@ -7,12 +7,17 @@ var schema = new Schema({
         unique: true,
         required: true
     },
-    product: {
-        type: String
-    },
+    article: {type: String},
+    name: {type: String},
+    category: {type: Object},
+    price: {type: Number},
+    image: {type: String},
+    combo: {type: Array},
+    slug: {type: String},
     owner: {
         type: String
     },
+    product_uuid: {type: String},
     created: {
         type: Date,
         default: Date.now

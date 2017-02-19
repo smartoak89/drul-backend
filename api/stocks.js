@@ -1,5 +1,7 @@
 var db = require('../libs/datastore')('stocks');
 var HttpError = require('../error').HttpError;
+var Promise = require('bluebird');
+var ProductAPI = require('../api/product');
 
 module.exports = {
     create: function (data, callback) {
@@ -12,7 +14,22 @@ module.exports = {
         db.find(id, function (err, result) {
             if (err) return callback(err);
             if (!result) return callback(null);
+
+            ProductAPI.findAll({stock: result.uuid}, function (err, products) {
+                if (err) return (err);
+                if (products) Promise.map(products, deleteStockFromProduct);
+            });
+
             db.remove(id, callback);
+
         });
     }
 };
+
+var deleteStockFromProduct = Promise.promisify(function (product, i, c, cb) {
+    product.stock = '';
+    ProductAPI.update(product.uuid, product, function (err) {
+        if (err) return cb(err);
+        cb();
+    });
+});
