@@ -29,5 +29,6 @@
     "frontend_path": "../app/index.html",
     "product" : {
         "limit": 50
+
     }
 }
