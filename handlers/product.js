@@ -22,7 +22,12 @@ exports.list = function (req, res, next) {
     // console.log('color', req.query)
 
     var criteria = {};
-    productApi.findAll(criteria, function (err, data) {
+
+    // if (Object.keys(req.query).length > 0) {
+    //     criteria.query = req.query;
+    // }
+
+    productApi.findAll(req.query, function (err, data) {
         if (err) return next(err);
         res.json(data);
     });

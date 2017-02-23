@@ -10,6 +10,7 @@ module.exports = {
     },
     list: function (callback) {
         var self = this;
+
         db.list(function (err, result) {
             if (err) return callback(err);
             callback(null, result);
@@ -56,6 +57,7 @@ module.exports = {
         })
     },
     findAll: function (criteria, callback) {
+        // if (criteria.query) return db.search(criteria.query, callback);
         _find(sanitazeCriteria(criteria), callback);
     },
     getProductFilter: function (category, callback) {
@@ -74,16 +76,33 @@ function sanitazeCriteria (criteria) {
         delete criteria.category;
     }
 
+    if(criteria.sort) {
+        obj.sort = {};
+        var split = criteria.sort.split('.');
+        obj.sort[split[0]] = split[1] == 'ask' ? 1 : -1;
+        delete criteria.sort;
+    }
+
     if(criteria.skip) {
         obj.skip = criteria.skip * conf.product.limit;
         delete criteria.skip;
     }
 
+    // if(criteria.combo) {
+    //     //
+    //     // var split = criteria.combo.split('.');
+    //     // var slug = 'combo.slug';
+    //     // var values = 'combo.values';
+    //     // obj.match[slug] = split[0];
+    //     // obj.match[values] = split[1];
+    //     obj.match['combo'] = ['slug.razmer', 'slug.obem'];
+    //     console.log('criteria', obj);
+    //     delete criteria.combo;
+    // }
+
     if (Object.keys(criteria).length != 0) {
-        // obj.sort = {};
         for (var key in criteria) {
-            // obj.sort[key] = + criteria[key]
-            obj['match'][key] = criteria[key];
+            obj['match'][key] = new RegExp('.*'+ criteria[key], 'i');
         }
     }
 

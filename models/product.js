@@ -17,6 +17,7 @@ var schema = new Schema({
     sublines: {type: Array},
     slug: {type: String},
     stock: {type: String},
+    reviews_count: {type: Number},
     created: {
         type: Date,
         default: Date.now

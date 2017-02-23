@@ -34,10 +34,9 @@ module.exports = {
     update: function (id, data, callback) {
         db.find(id, function (err, result) {
             if (err) return callback(err);
-            if (!result) return callback(new HttpError(404, 'Product Not Found'));
+            if (!result) return callback(null);
             for (var k in data) {
                 if (typeof data[k] !== 'undefined') {
-                    console.log('data', data[k]);
                     result[k] = data[k];
                 }
             }

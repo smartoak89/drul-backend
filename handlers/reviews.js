@@ -18,7 +18,7 @@ exports.add = function (req, res, next) {
 
            orderAPI.find({owner: userID, 'products.productID': productID}, function (err, order) {
                if (err) return callback(err);
-               if (!order) return res.status(400).json({message: 'Вы не можете оставлять отзыв к данному товару!'})
+               if (!order && user.permission != 'administrator') return res.status(400).json({message: 'Вы не можете оставлять отзыв к данному товару!'})
 
                var review = {
                    body: req.body.body,
@@ -50,6 +50,11 @@ exports.add = function (req, res, next) {
 exports.update = function (req, res, next) {
     var rewId = req.params.reviewId;
 
+    reviewsAPI.update(rewId, req.body, function (err, updated) {
+        if (err) return next(err);
+        if (!updated) return res.status(404).json({message: 'Отзыв не найден'});
+        res.json(req.body)
+    })
 };
 
 exports.list = function (req, res, next) {

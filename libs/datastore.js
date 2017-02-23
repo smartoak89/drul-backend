@@ -78,6 +78,18 @@ Datastore.prototype = {
             if (err) return callback(err);
             callback(null, res);
         })
+    },
+    search: function(criteria, callback) {
+        var search = {};
+
+        for(var key in criteria) {
+            search[key] = new RegExp('.*'+ criteria[key], 'i');
+        }
+        console.log('search', search)
+        this.model.find(search, function (err, result) {
+            if (err) return callback(err);
+            callback(null, result);
+        })
     }
 };
 

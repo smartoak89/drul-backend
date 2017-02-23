@@ -16,6 +16,7 @@ var schema = new Schema({
     state: {type: String},
     hashedPassword: {type: String},
     salt: {type: String},
+    permission: {type: String},
     created: {
         type: Date,
         default: Date.now
