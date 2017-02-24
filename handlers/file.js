@@ -87,9 +87,6 @@ exports.getFiles = function (req, res, next) {
             criteria[key] = req.query[key];
         }
     }
-    // productAPI.findOne({uuid: id}, function (err, product) {
-    //     if (err) return next(err);
-    //     if (!product) return res.json(error(404, 'Product Not Found'));
 
     fileAPI.findAll(criteria, function (err, files) {
         if (err) return next(err);

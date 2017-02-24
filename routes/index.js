@@ -10,6 +10,7 @@ var combinationHandler = require('../handlers/combination');
 var orderHandler = require('../handlers/order');
 var reviewsHandler = require('../handlers/reviews');
 var sliderHandler = require('../handlers/slider');
+var mailHandler = require('../handlers/mail');
 
 module.exports = function (app, express) {
     // app.use('/', require('./api')(express.Router()));
@@ -98,4 +99,7 @@ module.exports = function (app, express) {
     app.put('/slider/:id', sliderHandler.update);
     app.delete('/slider/:id', sliderHandler.remove);
 
+    //Mail
+    app.post('/mail', mailHandler.add);
+    app.post('/mail/:userId', mailHandler.sendMailToUser);
 };

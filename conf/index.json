@@ -29,5 +29,12 @@
     "frontend_path": "../app/index.html",
     "product" : {
         "limit": 50
+    },
+    "mail": {
+        "service": "gmail",
+        "auth" : {
+            "user": "smartoak89@gmail.com",
+            "pass": "am1499be"
+        }
     }
 }
