@@ -71,7 +71,6 @@ function sanitazeCriteria (criteria) {
     };
 
     if (criteria.category) {
-        // obj.match["category.slug"] = criteria.category;
         obj.match["category.slug"] = criteria.category;
         delete criteria.category;
     }
@@ -88,17 +87,26 @@ function sanitazeCriteria (criteria) {
         delete criteria.skip;
     }
 
-    // if(criteria.combo) {
-    //     //
-    //     // var split = criteria.combo.split('.');
-    //     // var slug = 'combo.slug';
-    //     // var values = 'combo.values';
-    //     // obj.match[slug] = split[0];
-    //     // obj.match[values] = split[1];
-    //     obj.match['combo'] = ['slug.razmer', 'slug.obem'];
-    //     console.log('criteria', obj);
-    //     delete criteria.combo;
-    // }
+    if(criteria['combo']) {
+        var combo = [];
+
+        if (Array.isArray(criteria['combo'])) {
+
+            criteria['combo'].forEach(function (item) {
+                var split = item.split('.');
+                combo.push({'combo.slug': split[0], 'combo.values': split[1]});
+            });
+
+
+        } else {
+            var split = criteria['combo'].split('.');
+            combo.push({'combo.slug': split[0], 'combo.values': split[1]});
+        }
+
+        obj.match.$or = combo;
+
+        delete criteria.combo;
+    }
 
     if (Object.keys(criteria).length != 0) {
         for (var key in criteria) {
@@ -112,11 +120,13 @@ function sanitazeCriteria (criteria) {
 }
 
 function _find (criteria, callback) {
-    var match = criteria.match || null;
+    var match = criteria.match;
     var sort = criteria.sort || null;
     var skip = criteria.skip || null;
+    // var or = criteria.or || null;
     var limit = criteria.limit || conf.product.limit;
     var filter = [];
+    // if (or)    match.$or = or;
     if (match) filter.push({$match: match});
     if (sort)  filter.push({$sort: sort });
     if (skip)  filter.push({$skip: skip});

@@ -16,16 +16,7 @@ exports.create = function (req, res, next) {
 };
 
 exports.list = function (req, res, next) {
-    // var urlencode = require('urlencode');
-    // console.log('query', req.query);
-    // var query = Object.keys(req.query);
-    // console.log('color', req.query)
-
     var criteria = {};
-
-    // if (Object.keys(req.query).length > 0) {
-    //     criteria.query = req.query;
-    // }
 
     productApi.findAll(req.query, function (err, data) {
         if (err) return next(err);
@@ -42,7 +33,9 @@ exports.get = function (req, res, next) {
 };
 exports.listFromCurrentCateg = function (req, res, next){
     var categoryName = req.params.name;
-    productApi.findAll({category: categoryName}, function (err, products) {
+    var criteria = req.query;
+    criteria.category = categoryName;
+    productApi.findAll(criteria, function (err, products) {
         if (err) return next(err);
         res.json(products);
     })

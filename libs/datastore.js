@@ -68,6 +68,7 @@ Datastore.prototype = {
         }).limit(limit).sort(sort);
     },
     filter: function (filter, callback) {
+        console.log('filreer', filter);
         this.model.aggregate(filter , function (err, result) {
             if (err) return callback(err);
             callback(null, result);

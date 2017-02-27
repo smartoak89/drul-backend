@@ -20,6 +20,7 @@ exports.list = function (req, res, next) {
 };
 exports.update = function (req, res, next) {
     var id = req.params.id;
+
     isValid(req.body, function(err, value) {
         if (err) return res.status(400).json(error(400, err));
 
