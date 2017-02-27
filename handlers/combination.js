@@ -20,6 +20,7 @@ exports.list = function (req, res, next) {
 };
 exports.update = function (req, res, next) {
     var id = req.params.id;
+<<<<<<< HEAD
 
     isValid(req.body, function(err, value) {
         if (err) return res.status(400).json(error(400, err));
@@ -30,6 +31,18 @@ exports.update = function (req, res, next) {
             res.json(result);
         })
     });
+=======
+    console.log('updateWorks')
+    // isValid(req.body, function(err, value) {
+    //     if (err) return res.status(400).json(error(400, err));
+    //
+    //     combinationAPI.update({uuid: id}, value, function (err, result) {
+    //         if (err) return next(err);
+    //         if (!result) return res.status(400).json(error(400, 'Нет такой комбинации!'));
+    //         res.json(result);
+    //     })
+    // });
+>>>>>>> fb6daf02d7e6591d7c4e738ddcb9d6cdedfa9f0e
 };
 
 exports.delete = function (req, res, next) {
