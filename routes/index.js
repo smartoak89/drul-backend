@@ -11,6 +11,7 @@ var orderHandler = require('../handlers/order');
 var reviewsHandler = require('../handlers/reviews');
 var sliderHandler = require('../handlers/slider');
 var mailHandler = require('../handlers/mail');
+var authCheck = require('../middleware/auth');
 
 module.exports = function (app, express) {
     // app.use('/', require('./api')(express.Router()));
@@ -27,10 +28,11 @@ module.exports = function (app, express) {
     //--User
     app.post('/user/register', userHandler.register);
     app.get('/users', userHandler.list);
-    app.put('/user/:id', userHandler.update);
+    app.put('/user/:id', authCheck, userHandler.update);
     app.delete('/user/:id', userHandler.remove);
     app.get('/user/:id', userHandler.find);
     app.post('/user/auth', userHandler.auth);
+    app.get('/user', authCheck, userHandler.getAuthUser);
 
     //--Product
     app.post('/product', productHandler.create);

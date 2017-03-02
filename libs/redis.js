@@ -5,6 +5,10 @@ var client  = require('redis').createClient({
     port: conf.redis.port
 });
 
+client.on('connect', function () {
+    console.info('redis is connected!');
+});
+
 client.on('error', function (err) {
     throw new Error('Error connect to redis', err);
 });

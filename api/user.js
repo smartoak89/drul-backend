@@ -1,5 +1,5 @@
 var db = require('../libs/datastore')('user');
-var token = require('./token');
+var memstor = require('./memstor');
 
 module.exports = {
     create: function (data, callback) {
@@ -34,10 +34,33 @@ module.exports = {
             if (!user) return callback(null);
             if (!user.checkPassword(password)) return callback();
 
-            callback (null, {token: token.set(user.uuid)});
+            var suid = require('rand-token').suid;
+            var token = suid(36);
+
+            memstor.get('user-' + user.uuid, function (err, res) {
+                if (err) return callback(err);
+                if (res) memstor.remove(res);
+
+                memstor.set('token-' + token, JSON.stringify(sanitazeToSave(user)));
+                memstor.set('user-' + user.uuid, 'token-' + token);
+
+                callback (null, {token: token});
+            })
         });
     },
+
     findOne: function (data, callback) {
         db.findOne (data, callback);
     }
 };
+
+function sanitazeToSave (user) {
+    return {
+        uuid: user.uuid,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        permission: user.permission,
+        created: user.created
+    }
+}

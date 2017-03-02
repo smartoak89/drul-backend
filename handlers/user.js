@@ -79,6 +79,12 @@ exports.auth = function (req, res, next) {
     });
 };
 
+exports.getAuthUser = function (req, res, next) {
+    if (!req.user) return res.status(404);
+
+    res.json(req.user);
+};
+
 function viewData (data) {
     var res = {
         uuid: data.uuid,

@@ -1,11 +1,9 @@
-var suid = require('rand-token').suid;
 
-var tokens = {};
 
 module.exports = {
-    set: function (id) {
+    set: function (user) {
         var token = generator();
-        tokens[token] = id;
+
         return token;
     }
 };
