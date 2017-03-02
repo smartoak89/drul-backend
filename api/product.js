@@ -115,6 +115,7 @@ function sanitazeCriteria (criteria) {
         delete criteria.combo;
     }
 
+
     if (criteria.price) {
 
         var minSplit = criteria.price[0].split('.');
@@ -143,6 +144,7 @@ function _find (criteria, callback) {
     var match = criteria.match;
     var sort = criteria.sort || null;
     var skip = criteria.skip || null;
+    // var or = criteria.or || null;
     var limit = criteria.limit || conf.product.limit;
     var filter = [];
 
