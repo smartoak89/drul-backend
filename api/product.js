@@ -21,15 +21,16 @@ module.exports = {
             // });
         });
     },
-    update: function (id, data, callback) {
+    update: function (id, newData, callback) {
         db.find(id, function (err, result) {
             if (err) return callback(err);
             if (!result) return callback(new HttpError(404, 'Product Not Found'));
-            for (var k in data) {
-                if (typeof data[k] !== 'undefined') {
-                    result[k] = data[k];
-                }
+
+            for (var k in newData) {
+                result[k] = newData[k];
+                console.log(k, newData[k]);
             }
+
             db.update(result.uuid, result, callback);
         })
     },
@@ -71,7 +72,6 @@ function sanitazeCriteria (criteria) {
     };
 
     if (criteria.category) {
-        // obj.match["category.slug"] = criteria.category;
         obj.match["category.slug"] = criteria.category;
         delete criteria.category;
     }
@@ -83,22 +83,52 @@ function sanitazeCriteria (criteria) {
         delete criteria.sort;
     }
 
+    if (criteria.limit) {
+        obj.limit = Number(criteria.limit);
+        delete criteria.limit;
+    }
+
     if(criteria.skip) {
-        obj.skip = criteria.skip * conf.product.limit;
+        obj.skip = criteria.skip * obj.limit || conf.product.limit;
+
         delete criteria.skip;
     }
 
-    // if(criteria.combo) {
-    //     //
-    //     // var split = criteria.combo.split('.');
-    //     // var slug = 'combo.slug';
-    //     // var values = 'combo.values';
-    //     // obj.match[slug] = split[0];
-    //     // obj.match[values] = split[1];
-    //     obj.match['combo'] = ['slug.razmer', 'slug.obem'];
-    //     console.log('criteria', obj);
-    //     delete criteria.combo;
-    // }
+    if(criteria['combo']) {
+        var combo = [];
+
+        if (Array.isArray(criteria['combo'])) {
+
+            criteria['combo'].forEach(function (item) {
+                var split = item.split('.');
+                combo.push({'combo.slug': split[0], 'combo.values': split[1]});
+            });
+
+
+        } else {
+            var split = criteria['combo'].split('.');
+            combo.push({'combo.slug': split[0], 'combo.values': split[1]});
+        }
+
+        obj.match.$or = combo;
+
+        delete criteria.combo;
+    }
+
+    if (criteria.price) {
+
+        var minSplit = criteria.price[0].split('.');
+        var maxSplit = criteria.price[1].split('.');
+
+        if (minSplit[0] == 'min' && maxSplit[0] == 'max') {
+            var min = Number(minSplit[1]);
+            var max = Number(maxSplit[1]);
+
+            obj.match.price = {'$gte': min, '$lte': max};
+        }
+
+        delete criteria.price;
+    }
 
     if (Object.keys(criteria).length != 0) {
         for (var key in criteria) {
@@ -106,20 +136,20 @@ function sanitazeCriteria (criteria) {
         }
     }
 
-    console.log('obj', obj);
-
     return obj;
 }
 
 function _find (criteria, callback) {
-    var match = criteria.match || null;
+    var match = criteria.match;
     var sort = criteria.sort || null;
     var skip = criteria.skip || null;
     var limit = criteria.limit || conf.product.limit;
     var filter = [];
+
     if (match) filter.push({$match: match});
     if (sort)  filter.push({$sort: sort });
     if (skip)  filter.push({$skip: skip});
+
     filter.push({$limit: limit});
     db.filter(filter, callback);
 }

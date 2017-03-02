@@ -22,7 +22,8 @@ exports.add = function (req, res, next) {
                 product_uuid: productId,
                 article: product.article,
                 slug: product.slug,
-                owner: user
+                owner: user,
+                stock: product.stock
             };
 
             cartAPI.add(user, data, function (err, savedProductInCart) {

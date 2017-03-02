@@ -28,7 +28,7 @@
     "music": "tmp/music",
     "frontend_path": "../app/index.html",
     "product" : {
-        "limit": 50
+        "limit": 20
     },
     "mail": {
         "service": "gmail",

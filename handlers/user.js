@@ -13,11 +13,9 @@ exports.register = function (req, res, next) {
                 if (err) return next(err);
                 if (result) return res.sendMsg(msg.EMAIL_EXISTS, true, 400);
                 userAPI.create(value, function (err, user) {
-                    var view = require('../view-model/index').user;
-
                     if (err) return next(err);
                     if (!user) return res.sendMsg(msg.REGISTERED_ERROR, true, 400);
-                    res.json(view(user));
+                    res.json(user);
                 })
             });
         })
@@ -73,15 +71,10 @@ exports.auth = function (req, res, next) {
     isValidAuth(req, function (err) {
         if (err) return res.sendMsg(err, true, 400);
         userAPI.auth(req.body.email, req.body.password, function (err, user) {
-            var view = require('../view-model/index').user;
-
             if (err) return next(err);
             if (!user) return res.sendMsg(msg.AUTH_ERROR, true, 400);
-            // req.session.user = {
-            //     uuid: user.uuid,
-            //     email: user.email
-            // };
-            res.json(view(user));
+
+            res.json(user);
         })
     });
 };

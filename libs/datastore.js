@@ -68,15 +68,24 @@ Datastore.prototype = {
         }).limit(limit).sort(sort);
     },
     filter: function (filter, callback) {
+        console.log('filreer', filter);
         this.model.aggregate(filter , function (err, result) {
             if (err) return callback(err);
             callback(null, result);
         });
     },
     getProductFilter: function (category, callback) {
+        var self = this;
         this.model.aggregate([{$match: {'category.slug': category}}, {$unwind: '$combo'}, {$unwind: '$combo.values'}, {$group: {_id: '$combo.name', slug: {$first: '$combo.slug'}, values: {$addToSet: '$combo.values'}}} ], function (err, res) {
             if (err) return callback(err);
-            callback(null, res);
+
+            self.model.aggregate([{$match: {'category.slug': category}}, {$group: {_id: false, max_price: {$max: '$price'}} }], function (erro, maxVal) {
+                if (erro) return callback(erro);
+
+                res.unshift(maxVal[0]);
+
+                callback(null, res);
+            })
         })
     },
     search: function(criteria, callback) {

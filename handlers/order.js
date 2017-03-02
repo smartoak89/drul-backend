@@ -145,7 +145,14 @@ function isValid (body, callback) {
         status: body.status,
         currency: body.currency,
         price: body.price,
-        products: body.products
+        products: body.products.map(function (product) {
+            return {
+                combo: product.combo,
+                productID: product.productID,
+                count: product.count,
+                price: product.price
+            }
+        })
     };
 
     var schema = v.joi.object().keys({
@@ -158,7 +165,12 @@ function isValid (body, callback) {
         status: v.joi.string(),
         currency: v.joi.string(),
         price: v.joi.number().required(),
-        products: v.joi.array().items(v.joi.object()).required()
+        products: v.joi.array().items(v.joi.object().keys({
+            combo: v.joi.any(),
+            productID: v.joi.string(),
+            count: v.joi.number(),
+            price: v.joi.number()
+        })).required()
     });
 
     v.validate(data, schema, callback);

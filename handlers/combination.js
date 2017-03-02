@@ -20,18 +20,17 @@ exports.list = function (req, res, next) {
 };
 exports.update = function (req, res, next) {
     var id = req.params.id;
-    console.log('updateWorks')
-    // isValid(req.body, function(err, value) {
-    //     if (err) return res.status(400).json(error(400, err));
-    //
-    //     combinationAPI.update({uuid: id}, value, function (err, result) {
-    //         if (err) return next(err);
-    //         if (!result) return res.status(400).json(error(400, 'Нет такой комбинации!'));
-    //         res.json(result);
-    //     })
-    // });
-};
 
+    isValid(req.body, function(err, value) {
+        if (err) return res.status(400).json(error(400, err));
+
+        combinationAPI.update({uuid: id}, value, function (err, result) {
+            if (err) return next(err);
+            if (!result) return res.status(400).json(error(400, 'Нет такой комбинации!'));
+            res.json(result);
+        })
+    });
+};
 exports.delete = function (req, res, next) {
 
     combinationAPI.delete(req.params.id, function (err, result) {
@@ -41,7 +40,6 @@ exports.delete = function (req, res, next) {
     })
 
 };
-
 
 function isValid (body, callback) {
     var v = require('../libs/validator');

@@ -14,6 +14,7 @@ var schema = new Schema({
     image: {type: String},
     combo: {type: Array},
     slug: {type: String},
+    stock: {type: Object},
     owner: {
         type: String
     },

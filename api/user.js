@@ -1,5 +1,5 @@
 var db = require('../libs/datastore')('user');
-var HttpError = require('../error').HttpError;
+var token = require('./token');
 
 module.exports = {
     create: function (data, callback) {
@@ -33,8 +33,8 @@ module.exports = {
             if (err) return callback(err);
             if (!user) return callback(null);
             if (!user.checkPassword(password)) return callback();
-            console.log('Got user =>', user);
-            return callback (null, user);
+
+            callback (null, {token: token.set(user.uuid)});
         });
     },
     findOne: function (data, callback) {

@@ -16,7 +16,7 @@ var schema = new Schema({
     combo: {type: Array},
     sublines: {type: Array},
     slug: {type: String},
-    stock: {type: String},
+    stock: {type: Object},
     reviews_count: {type: Number},
     created: {
         type: Date,

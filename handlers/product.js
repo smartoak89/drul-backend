@@ -33,7 +33,9 @@ exports.get = function (req, res, next) {
 };
 exports.listFromCurrentCateg = function (req, res, next){
     var categoryName = req.params.name;
-    productApi.findAll({category: categoryName}, function (err, products) {
+    var criteria = req.query;
+    criteria.category = categoryName;
+    productApi.findAll(criteria, function (err, products) {
         if (err) return next(err);
         res.json(products);
     })
@@ -49,10 +51,10 @@ exports.getProductFilter = function (req, res, next) {
 
 exports.update = function (req, res, next) {
     isValid(req, function (err, value) {
-        console.log('Preupdate product', err);
         if (err) return res.sendMsg(err, true, 400);
+        console.log('update product', value);
         productApi.update(req.params.id, value, function (err, product) {
-            // console.log('update product', product);
+
             if (err) return next(err);
             res.json(product);
         });
@@ -75,20 +77,6 @@ exports.remove = function (req, res, next) {
     })
 };
 
-function viewData (data) {
-    var res = {
-        uuid: data.uuid,
-        name: data.name,
-        article: data.article,
-        description: data.description,
-        category: data.category,
-        price: data.price,
-        gallery: data.gallery,
-        old_price: data.old_price
-    };
-    return res;
-}
-
 function isValid (req, callback) {
     var v = require('../libs/validator');
 
@@ -99,7 +87,7 @@ function isValid (req, callback) {
         category: req.body.category,
         price: req.body.price,
         slug: req.body.slug,
-        stock: req.body.stock,
+        stock: req.body.stock || '',
         combo: req.body.combo,
         sublines: req.body.sublines,
         show: req.body.show
@@ -111,7 +99,10 @@ function isValid (req, callback) {
         description: v.joi.string(),
         category: v.joi.object(),
         slug: v.joi.string().max(50),
-        stock: v.joi.string().allow(''),
+        stock: v.joi.object().keys({
+            stock_id: v.joi.string(),
+            old_price: v.joi.number()
+        }).allow(''),
         price: v.joi.number(),
         combo: v.joi.array(),
         sublines: v.joi.array().items(v.joi.object()),
