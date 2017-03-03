@@ -5,7 +5,7 @@ var error = require('../error').ressError;
 exports.add = function (req, res, next) {
     var combo = req.body.combo;
     var imageId = req.body.image;
-    var user = req.params.user;
+    var user = req.user.uuid;
     var productId = req.params.product;
     productAPI.findOne({uuid: productId}, function (err, product) {
         if (err) return callback(err);
@@ -21,7 +21,6 @@ exports.add = function (req, res, next) {
                 image: imageId,
                 product_uuid: productId,
                 article: product.article,
-                slug: product.slug,
                 owner: user,
                 stock: product.stock
             };
@@ -38,7 +37,7 @@ exports.add = function (req, res, next) {
 
 exports.list = function (req, res, next) {
     //TODO: first need find user and then find list for him
-    cartAPI.list({owner: req.params.user}, function (err, products) {
+    cartAPI.list({owner: req.user.uuid}, function (err, products) {
         if (err) return next(err);
         res.json(products);
     })

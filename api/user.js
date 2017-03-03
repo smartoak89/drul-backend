@@ -3,7 +3,11 @@ var memstor = require('./memstor');
 
 module.exports = {
     create: function (data, callback) {
-        db.create(data, callback)
+        db.create(data, function (err, user) {
+            if (err) return callback(err);
+
+            generatorToken(user, callback);
+        })
     },
     list: function (callback) {
         db.list(callback);
@@ -34,18 +38,8 @@ module.exports = {
             if (!user) return callback(null);
             if (!user.checkPassword(password)) return callback();
 
-            var suid = require('rand-token').suid;
-            var token = suid(36);
+            generatorToken(user, callback);
 
-            memstor.get('user-' + user.uuid, function (err, res) {
-                if (err) return callback(err);
-                if (res) memstor.remove(res);
-
-                memstor.set('token-' + token, JSON.stringify(sanitazeToSave(user)));
-                memstor.set('user-' + user.uuid, 'token-' + token);
-
-                callback (null, {token: token});
-            })
         });
     },
 
@@ -53,6 +47,21 @@ module.exports = {
         db.findOne (data, callback);
     }
 };
+
+function generatorToken (user, callback) {
+    var suid = require('rand-token').suid;
+    var token = suid(36);
+
+    memstor.get('user-' + user.uuid, function (err, res) {
+        if (err) return callback(err);
+        if (res) memstor.remove(res);
+
+        memstor.set('token-' + token, JSON.stringify(sanitazeToSave(user)));
+        memstor.set('user-' + user.uuid, 'token-' + token);
+
+        callback (null, {token: token});
+    })
+}
 
 function sanitazeToSave (user) {
     return {

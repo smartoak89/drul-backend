@@ -11,7 +11,7 @@ var orderHandler = require('../handlers/order');
 var reviewsHandler = require('../handlers/reviews');
 var sliderHandler = require('../handlers/slider');
 var mailHandler = require('../handlers/mail');
-var authCheck = require('../middleware/auth');
+var isAuth = require('../middleware/is_auth');
 
 module.exports = function (app, express) {
     // app.use('/', require('./api')(express.Router()));
@@ -28,11 +28,11 @@ module.exports = function (app, express) {
     //--User
     app.post('/user/register', userHandler.register);
     app.get('/users', userHandler.list);
-    app.put('/user/:id', authCheck, userHandler.update);
+    app.put('/user/:id', userHandler.update);
     app.delete('/user/:id', userHandler.remove);
     app.get('/user/:id', userHandler.find);
     app.post('/user/auth', userHandler.auth);
-    app.get('/user', authCheck, userHandler.getAuthUser);
+    app.get('/user', isAuth, userHandler.getAuthUser);
 
     //--Product
     app.post('/product', productHandler.create);
@@ -69,8 +69,8 @@ module.exports = function (app, express) {
     app.get('/deferred/:user', deferredHandler.list);
 
     // Cart
-    app.put('/cart/:user/:product', cartHandler.add);
-    app.get('/cart/:user', cartHandler.list);
+    app.put('/cart/:product', isAuth, cartHandler.add);
+    app.get('/cart', isAuth, cartHandler.list);
     app.delete('/cart/:user/:product', cartHandler.delete);
 
     // Combinations
