@@ -44,7 +44,9 @@ exports.list = function (req, res, next) {
 };
 
 exports.delete = function (req, res, next) {
-    var user = req.params.user;
+    console.log('user', req.user);
+
+    var user = req.user.uuid;
     var product = req.params.product;
     var criteria = {
         owner: user,

@@ -64,14 +64,14 @@ module.exports = function (app, express) {
     app.delete('/stocks/:id', stocksHandler.remove);
 
     //--Deferred
-    app.put('/deferred/:user/:product', deferredHandler.add);
-    app.delete('/deferred/:user/:product', deferredHandler.delete);
-    app.get('/deferred/:user', deferredHandler.list);
+    app.put('/deferred/:product', isAuth, deferredHandler.add);
+    app.delete('/deferred/:product', isAuth, deferredHandler.delete);
+    app.get('/deferred', isAuth, deferredHandler.list);
 
     // Cart
     app.put('/cart/:product', isAuth, cartHandler.add);
     app.get('/cart', isAuth, cartHandler.list);
-    app.delete('/cart/:user/:product', cartHandler.delete);
+    app.delete('/cart/:product', isAuth, cartHandler.delete);
 
     // Combinations
     app.post('/combination', combinationHandler.create);
@@ -80,7 +80,7 @@ module.exports = function (app, express) {
     app.delete('/combination/:id', combinationHandler.delete);
 
     //Orders
-    app.post('/order/:userId', orderHandler.add);
+    app.post('/order', isAuth, orderHandler.add);
     app.get('/orders/:userId', orderHandler.allUserOrders);
     app.get('/orders', orderHandler.allListOrders);
     app.get('/order/:orderId', orderHandler.getOneOrder);

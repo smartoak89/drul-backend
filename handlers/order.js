@@ -4,7 +4,7 @@ var productAPI = require('../api/product');
 var promise = require('bluebird');
 
 exports.add = function (req, res, next) {
-    var userId = req.params.userId;
+    var userId = req.user.uuid;
 
     userAPI.find(userId, function (err, user) {
         if (err) return next(err);
