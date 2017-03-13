@@ -5,25 +5,22 @@ var orderAPI = require('../api/order');
 
 exports.add = function (req, res, next) {
     var productID = req.params.productId;
-    var userID = req.params.userId;
+    var user = req.user;
 
-    userAPI.find(userID, function (err, user) {
-       if (err) return next(err);
-       if (!user) return res.status(404).json({error_status: 404, error_message: 'User Not Found'});
 
        productAPI.findOne({uuid: productID}, function (err, product) {
            if (err) return next(err);
            if (!product) return res.status(404).json({error_status: 404, error_message: 'Product Not Found'});
            if (!req.body.body) return res.status(400).json({error_status: 400, error_message: "Коментарий пуст"});
 
-           orderAPI.find({owner: userID, 'products.productID': productID}, function (err, order) {
+           orderAPI.find({owner: user.uuid, 'products.productID': productID}, function (err, order) {
                if (err) return callback(err);
                if (!order && user.permission != 'administrator') return res.status(400).json({message: 'Вы не можете оставлять отзыв к данному товару!'})
 
                var review = {
                    body: req.body.body,
                    product_id: productID,
-                   owner_id: userID,
+                   owner_id: user.uuid,
                    owner_name: user.firstname,
                    publish: false
                };
@@ -35,7 +32,6 @@ exports.add = function (req, res, next) {
            });
 
        })
-    });
 
     // isValid(req, function (err, value) {
     //     log.log('gotVal %', value);

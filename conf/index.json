@@ -25,15 +25,15 @@
     "product_images": "tmp/product",
     "sliders_images": "tmp/slider",
     "music": "tmp/music",
-    "frontend_path": "../app/index.html",
     "product" : {
         "limit": 20
     },
     "mail": {
-        "service": "gmail",
+        "service": "Gmail",
         "auth" : {
             "user": "smartoak89@gmail.com",
             "pass": "am1499be"
-        }
+        },
+        "from": "Tooday <smartoak89@gmail.com>"
     }
 }

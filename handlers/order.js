@@ -1,54 +1,58 @@
 var orderAPI = require('../api/order');
-var userAPI = require('../api/user');
-var productAPI = require('../api/product');
-var promise = require('bluebird');
+
+var cacheOrder = {
+    first: true,
+    number: 1
+};
 
 exports.add = function (req, res, next) {
     var userId = req.user.uuid;
 
-    userAPI.find(userId, function (err, user) {
-        if (err) return next(err);
-        if (!user) res.status(404).json({message: 'Пользователь не найден!'});
+     isValid(req.body, function (err, data) {
+        if (err) return res.status(400).json({message: err});
 
-        // productAPI.findOne({uuid: productId}, function (err, product) {
-        //     if (err) return next(err);
-        //     if (!product) res.status(404).json({message: 'Неверный id товара!'});
+        if (cacheOrder.first) {
 
-            isValid(req.body, function (err, data) {
-                if (err) return res.status(400).json({message: err});
-                data.owner = userId;
-                data.owner_name = user.firstname + ' ' + user.lastname;
-                data.status = 'Новый заказ';
-                data.order_num = new Date().getFullYear() + "" + getUniqOrderId();
+            var criteria = {
+                limit: 1,
+                sort: {order_num: -1}
+            };
 
-                orderAPI.add(data, function (err, order) {
-                    if (err) return res.status(400).json({message: err});
-                    res.json(order);
-                });
+            orderAPI.findMaxOrderNum(criteria, function (err, orders) {
+                if (err) return res.status(500).json(err);
+                console.log('orders', orders);
+                if (orders.length > 0){
+
+                    cacheOrder.number = orders[0].order_num + 1;
+                }
+
+                return saveOrder(userId, data, res);
+
             });
-        // })
+
+        } else {
+            cacheOrder.number += 1;
+            saveOrder(userId, data, res);
+        }
     });
+
 };
 
-exports.allUserOrders = function (req, res, next) {
-    var userId = req.params.userId;
+exports.UserOrders = function (req, res, next) {
+    var userId = req.user.uuid;
+    var criteria = {owner: userId};
 
-    userAPI.find(userId, function (err, user) {
+    orderAPI.list(criteria, function (err, orders) {
         if (err) return next(err);
-        if (!user) res.status(404).json({message: 'Неверный id пользователя!'});
-
-        orderAPI.list({owner: userId}, function (err, orders) {
-            if (err) return next(err);
-            res.json(orders);
-        })
+        res.json(orders);
     });
 };
 
-exports.allListOrders = function (req, res, next) {
+exports.allUsersOrders = function (req, res, next) {
     orderAPI.list({}, function (err, orders) {
         if (err) return next(err);
         res.json(orders);
-    })
+    });
 };
 
 exports.update = function (req, res, next) {
@@ -127,9 +131,28 @@ exports.removeProductFromOrder = function (req, res, next) {
 
 };
 
-function getUniqOrderId () {
-    var k = Math.floor(Math.random()* 1000000);
-    return k;
+function saveOrder (userId, data, res) {
+    data.owner = userId;
+    data.status = 'Новый заказ';
+    data.order_num = cacheOrder.number;
+
+    orderAPI.add(data, function (err, order) {
+        if (err) return res.status(500).json({message: err});
+
+        var mailAPI = require('../api/mail');
+
+        cacheOrder.first = false;
+
+        mailAPI.firstOrder(data, function (err, info) {
+            if (err) {
+                console.log('error send mail', err);
+                return next(err);
+            }
+            console.log('info', info);
+        });
+
+        res.json(order);
+    });
 }
 
 function isValid (body, callback) {

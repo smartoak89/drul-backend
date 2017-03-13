@@ -11,25 +11,15 @@ module.exports = {
         });
 
     },
-    sendMailToUser: function (req, res, next) {
-
-        mailAPI.sendMail()
-        // var userId = req.params.userId;
-        //
-        // userAPI.find(userId, function (err, user) {
-        //     if (err) return next(err);
-        //     if (!user) return error(res, 404, 'User Not Found');
-        //
-        //     validSendMail(req.body, function(err) {
-        //         if (err) return error(res, 400, err);
-        //
-        //         mailAPI.sendMail(sanitize(req.body), user, function (err, res) {
-        //             if (err) return next(err);
-        //             res.json({message: 'Письмо успешно отправлено' + res});
-        //         })
-        //     })
-        // });
-    }
+    // sendMailToUser: function (req, res, next) {
+    //
+    //     mailAPI.sendMail(function (err, info) {
+    //
+    //         if (err) return res.status(500).json(err);
+    //         console.log("Все ок");
+    //         res.json({message: 'Email отправлен успешно'});
+    //     });
+    // }
 };
 
 function error (res, status, msg) {

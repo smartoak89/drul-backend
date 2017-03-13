@@ -42,7 +42,7 @@ var schema = new Schema({
         required: true
     },
     order_num: {
-        type: String
+        type: Number
     },
     price: {type: Number},
     currency: {

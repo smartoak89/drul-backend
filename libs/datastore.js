@@ -99,6 +99,9 @@ Datastore.prototype = {
             if (err) return callback(err);
             callback(null, result);
         })
+    },
+    aggregate: function (criteria, callback) {
+        self.model.aggregate(criteria, callback);
     }
 };
 

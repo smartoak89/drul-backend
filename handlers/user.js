@@ -1,6 +1,7 @@
 var userAPI = require('../api/user');
 var msg = require('../message/ru/user');
 var HttpError = require('../error/index').HttpError;
+var mailAPI = require('../api/mail');
 
 exports.register = function (req, res, next) {
     isValid(req.body, function (err, value) {
@@ -12,9 +13,18 @@ exports.register = function (req, res, next) {
             userAPI.findOne({email: value.email}, function(err, result) {
                 if (err) return next(err);
                 if (result) return res.status(400).json('Пользователь с email уже существует');
+
                 userAPI.create(value, function (err, user) {
                     if (err) return next(err);
                     if (!user) return res.status(500);
+
+                    mailAPI.welcome(value.email, function (err, info) {
+                        if (err) {
+                            console.log('error send mail', err);
+                            next(err);
+                        }
+                    });
+
                     res.json(user);
                 })
             });
@@ -69,10 +79,10 @@ exports.find = function (req, res, next) {
 
 exports.auth = function (req, res, next) {
     isValidAuth(req, function (err) {
-        if (err) return res.sendMsg(err, true, 400);
+        if (err) return res.status(400).json(err);
         userAPI.auth(req.body.email, req.body.password, function (err, user) {
             if (err) return next(err);
-            if (!user) return res.sendMsg(msg.AUTH_ERROR, true, 400);
+            if (!user) return res.status(404).json({message: 'Неверная комбинация логин/пароль'});
 
             res.json(user);
         })
