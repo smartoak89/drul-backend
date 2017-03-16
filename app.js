@@ -1,5 +1,6 @@
 var express = require('express');
 var http = require('http');
+var fs = require('fs');
 var path = require('path');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
@@ -45,19 +46,6 @@ app.use(cookieParser());
 //     })
 // }));
 //
-// app.use(passport.initialize());
-// app.use(passport.session());
-// app.use(flash());
-// app.use(function (req, res, next) {
-//     // console.log('Session', req.session);
-//     next();
-// });
-
-// require('./middleware/configureUser')(app);
-// app.use(function (req, res, next) {
-//     console.log('IP', req.connection.remoteAddress)
-//     next();
-// })
 
 require('./routes')(app, express);
 
@@ -66,5 +54,5 @@ app.use(require('./middleware/page404'));
 require('./middleware/errorHandler')(app);
 
 http.createServer(app).listen(process.env.PORT || conf.port, function () {
-    log.info('Server is listening on localhost:' + conf.port)
+   log.info('Server is listening on localhost:' + conf.port)
 });
