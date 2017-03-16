@@ -2,13 +2,13 @@ var mailAPI = require('../api/mail');
 var userAPI = require('../api/user');
 
 module.exports = {
-    add: function (req, res, next) {
-
-        validate(req.body, function (err) {
-            if (err) return err(res, 400, err);
-
-
-        });
+    send: function (req, res, next) {
+        mailAPI.welcome()
+        // validate(req.body, function (err) {
+        //     if (err) return err(res, 400, err);
+        //
+        //
+        // });
 
     },
     // sendMailToUser: function (req, res, next) {

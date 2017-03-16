@@ -2,6 +2,7 @@ var db = require('../libs/datastore')('mail');
 var conf = require('../conf');
 var mailer = require('nodemailer');
 var template = require('../templates');
+var path = require('path');
 
 module.exports = {
 
@@ -17,16 +18,37 @@ module.exports = {
     //     createMail.send(callback);
     //
     // },
+    // welcome: function (email, callback) {
+    //
+    //     var transport = createTransport();
+    //     var to = '<' + email + '>';
+    //     var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
+    //     var html = template.welcome;
+    //
+    //     var createMail = new CreateMail(transport, to, subject, html);
+    //
+    //     createMail.send(callback);
+    // },
     welcome: function (email, callback) {
 
-        var transport = createTransport();
-        var to = '<' + email + '>';
-        var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
-        var html = template.welcome;
+        var thenJade = require('then-jade');
 
-        var createMail = new CreateMail(transport, to, subject, html);
+        var tpl = conf.rootDir + '/templates/register.jade';
+        var options = {};
 
-        createMail.send(callback);
+
+        thenJade.renderFile(tpl, {} , function (err, html) {
+            if (err) return console.log('error', err);
+
+            var to = '<' + email + '>';
+            var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
+
+            var createMail = new CreateMail(to, subject, html);
+
+            createMail.send(callback);
+        })
+
+
     },
     firstOrder: function (order, callback) {
         var transport = createTransport();
@@ -40,9 +62,17 @@ module.exports = {
     }
 };
 
-function CreateMail (transport, to, subject, html, callback) {
+function CreateMail (to, subject, html) {
 
-    this.transport = transport;
+    this.transport = mailer.createTransport({
+        service: conf.mail.service,
+        auth: {
+            user: conf.mail.auth.user,
+            pass: conf.mail.auth.pass
+        }
+    }, {
+        from : conf.mail.from
+    });
 
     this.message = {
         to: to,
