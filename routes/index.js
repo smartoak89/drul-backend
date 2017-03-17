@@ -83,7 +83,7 @@ module.exports = function (app, express) {
 
     //Orders
     app.post('/order', isAuth, orderHandler.add);
-    app.post('/order/now', isAuth, orderHandler.buyNow);
+    app.post('/order/now', orderHandler.buyNow);
     app.get('/order/order', isAuth, orderHandler.add);
     app.get('/orders', isAuth, orderHandler.UserOrders);
     app.get('/orders/all', checkAdmin, orderHandler.allUsersOrders);
