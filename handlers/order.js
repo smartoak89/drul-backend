@@ -38,6 +38,38 @@ exports.add = function (req, res, next) {
 
 };
 
+exports.buyNow = function (req, res, next) {
+
+     isValid(req.body, function (err, data) {
+        if (err) return res.status(400).json({message: err});
+
+        if (cacheOrder.first) {
+
+            var criteria = {
+                limit: 1,
+                sort: {order_num: -1}
+            };
+
+            orderAPI.findMaxOrderNum(criteria, function (err, orders) {
+                if (err) return res.status(500).json(err);
+
+                if (orders.length > 0){
+
+                    cacheOrder.number = orders[0].order_num + 1;
+                }
+
+                return saveOrderBuyNow(data, res);
+
+            });
+
+        } else {
+            cacheOrder.number += 1;
+            saveOrderBuyNow(data, res);
+        }
+    });
+
+};
+
 exports.UserOrders = function (req, res, next) {
     var userId = req.user.uuid;
     var criteria = {owner: userId};
@@ -155,6 +187,30 @@ function saveOrder (userId, data, res) {
     });
 }
 
+function saveOrderBuyNow (data, res) {
+    data.owner = data.phone;
+    data.status = 'Новый заказ';
+    data.order_num = cacheOrder.number;
+
+    orderAPI.add(data, function (err, order) {
+        if (err) return res.status(500).json({message: err});
+
+        // var mailAPI = require('../api/mail');
+
+        cacheOrder.first = false;
+
+        // mailAPI.firstOrder(data, function (err, info) {
+        //     if (err) {
+        //         console.log('error send mail', err);
+        //         return next(err);
+        //     }
+        //     console.log('info', info);
+        // });
+
+        res.json(order);
+    });
+}
+
 function isValid (body, callback) {
     var v = require('../libs/validator');
 
@@ -179,15 +235,15 @@ function isValid (body, callback) {
     };
 
     var schema = v.joi.object().keys({
-        order_num: v.joi.string(),
-        email: v.joi.string().email(),
-        firstname: v.joi.string().required().min(2).max(50),
-        lastname: v.joi.string().required().min(2).max(50),
-        state: v.joi.string().required().min(2).max(50),
-        phone: v.joi.string().required().min(2).max(50),
+        order_num: v.joi.number(),
+        email: v.joi.string().email().allow(''),
+        firstname: v.joi.string().min(2).max(50).allow(''),
+        lastname: v.joi.string().min(2).max(50).allow(''),
+        state: v.joi.string().min(2).max(50).allow(''),
+        phone: v.joi.string().min(2).max(50).allow(''),
         status: v.joi.string(),
         currency: v.joi.string(),
-        price: v.joi.number().required(),
+        price: v.joi.number(),
         products: v.joi.array().items(v.joi.object().keys({
             combo: v.joi.any(),
             productID: v.joi.string(),

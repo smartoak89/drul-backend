@@ -11,16 +11,13 @@ var schema = new Schema({
         type: String
     },
     firstname: {
-        type: String,
-        required: true
+        type: String
     },
     lastname: {
-        type: String,
-        required: true
+        type: String
     },
     state: {
-        type: String,
-        required: true
+        type: String
     },
     phone: {
         type: String,

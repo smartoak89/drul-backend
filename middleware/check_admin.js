@@ -12,12 +12,17 @@ module.exports = function (req, res, next) {
         return res.status(401).json({message: "Not Authorized"})
     }
 
-    memstor.get('token-' + header, function (err, user) {
+    var token = 'token-' + header;
+    var user;
+
+    memstor.get(token, function (err, userCli) {
         if (err) return next(err);
 
-        if (!user) return res.status(401).json({message: 'Incorrect token'});
+        if (!userCli) return res.status(401).json({message: 'Incorrect token'});
 
-        var user = JSON.parse(user);
+        user = JSON.parse(userCli);
+
+        extendExspire();
 
         if (user.permission != 'administrator') {
             return res.status(401).json({message: 'You are not access permission'});
@@ -27,4 +32,11 @@ module.exports = function (req, res, next) {
 
         next();
     })
+
+    function extendExspire () {
+        var sec = 60 * 60 * 24;
+
+        memstor.expire(token, sec);
+        memstor.expire('user-' + user.uuid, sec);
+    }
 };
