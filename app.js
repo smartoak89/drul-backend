@@ -19,12 +19,12 @@ conf.rootDir = __dirname;
 app.use(require('./middleware/sendHttpError'));
 app.use(require('./middleware/sendMessage'));
 
-app.use(function(req, res, next) {
+// app.use(function(req, res, next) {
     // res.header("Access-Control-Allow-Origin", "http://localhost");
     // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
-    next();
-});
+    // res.header ('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+    // next();
+// });
 
 app.set('view engine', 'jade');
 
