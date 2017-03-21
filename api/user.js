@@ -52,12 +52,16 @@ function generatorToken (user, callback) {
     var suid = require('rand-token').suid;
     var token = suid(36);
 
-    memstor.get('user-' + user.uuid, function (err, res) {
-        if (err) return callback(err);
+    memstor.get('user-' + user.uuid, callback, function (res) {
         if (res) memstor.remove(res);
 
-        memstor.set('token-' + token, JSON.stringify(sanitazeToSave(user)));
-        memstor.set('user-' + user.uuid, 'token-' + token);
+        var tokenKey = 'token-' + token;
+        var userKey = 'user-' + user.uuid;
+
+        memstor.set(tokenKey, JSON.stringify(sanitazeToSave(user)));
+        memstor.expire(tokenKey, 60 * 60 * 24);
+        memstor.set(userKey, 'token-' + token);
+        memstor.expire(tokenKey, 60 * 60 * 24);
 
         callback (null, {token: token});
     })

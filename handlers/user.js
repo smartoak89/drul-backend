@@ -1,14 +1,15 @@
 var userAPI = require('../api/user');
-var msg = require('../message/ru/user');
-var HttpError = require('../error/index').HttpError;
 var mailAPI = require('../api/mail');
+var memstor = require('../api/memstor');
 
 exports.register = function (req, res, next) {
     isValid(req.body, function (err, value) {
-        if (err) return res.sendMsg(err, true, 400);
-        userAPI.findOne({}, function (err, users) {
-            if (err) return next(err);
-            if (!users) value.permission = 'administrator';
+
+        if (err) return res.status(400).json(err);
+
+        checkAdminExists(next, function (exists) {
+
+            if (!exists) value.permission = 'administrator';
 
             userAPI.findOne({email: value.email}, function(err, result) {
                 if (err) return next(err);
@@ -18,12 +19,9 @@ exports.register = function (req, res, next) {
                     if (err) return next(err);
                     if (!user) return res.status(500);
 
-                    mailAPI.welcome(value.email, function (err, info) {
-                        if (err) {
-                            console.log('error send mail', err);
-                            next(err);
-                        }
-                    });
+                    // mailAPI.welcome(value.email, next);
+
+                    memstor.set('first_user', true);
 
                     res.json(user);
                 })
@@ -94,6 +92,22 @@ exports.getAuthUser = function (req, res, next) {
 
     res.json(req.user);
 };
+
+function checkAdminExists (next, callback) {
+
+    memstor.get('first_user', next, function (firstUser) {
+
+        if (firstUser) return callback(true);
+
+        userAPI.findOne({}, function(err, user) {
+            if (err) return next(err);
+
+            if (user) return callback(true);
+
+            callback();
+        });
+    });
+}
 
 function viewData (data) {
     var res = {

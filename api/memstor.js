@@ -2,16 +2,12 @@ var redisCli = require('../libs/redis');
 
 module.exports = {
     set: function (key, value) {
-        var self = this;
-
         redisCli.set(key, value);
-
-        self.expire(key, 60 * 60 * 24);
     },
-    get: function (key, callback) {
+    get: function (key, next, callback) {
         redisCli.get(key, function (err, res) {
-            if (err) return callback(err);
-            callback(null, res);
+            if (err) return next(err);
+            callback(res);
         })
     },
     remove: function (key) {

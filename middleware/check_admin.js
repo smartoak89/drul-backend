@@ -15,8 +15,7 @@ module.exports = function (req, res, next) {
     var token = 'token-' + header;
     var user;
 
-    memstor.get(token, function (err, userCli) {
-        if (err) return next(err);
+    memstor.get(token, next, function (userCli) {
 
         if (!userCli) return res.status(401).json({message: 'Incorrect token'});
 

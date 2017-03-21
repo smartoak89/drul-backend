@@ -1,9 +1,10 @@
+var Promise = require('bluebird');
 var orderAPI = require('../api/order');
+var productAPI = require('../api/product');
+var memstor = require('../api/memstor');
 
-var cacheOrder = {
-    first: true,
-    number: 1
-};
+
+var totalAmount = 0;
 
 exports.add = function (req, res, next) {
     var userId = req.user.uuid;
@@ -11,29 +12,19 @@ exports.add = function (req, res, next) {
      isValid(req.body, function (err, data) {
         if (err) return res.status(400).json({message: err});
 
-        if (cacheOrder.first) {
+         Promise.map(data.products, recount).then(function () {
 
-            var criteria = {
-                limit: 1,
-                sort: {order_num: -1}
-            };
+             lastOrder(next, function (num) {
+                 data.owner = userId;
+                 data.status = 'Новый заказ';
+                 data.order_num = num;
+                 data.price = totalAmount;
+                 totalAmount = 0;
+                 // data.products = orderProducts;
 
-            orderAPI.findMaxOrderNum(criteria, function (err, orders) {
-                if (err) return res.status(500).json(err);
-                console.log('orders', orders);
-                if (orders.length > 0){
-
-                    cacheOrder.number = orders[0].order_num + 1;
-                }
-
-                return saveOrder(userId, data, res);
-
-            });
-
-        } else {
-            cacheOrder.number += 1;
-            saveOrder(userId, data, res);
-        }
+                 saveOrder(data, res, next);
+             })
+         })
     });
 
 };
@@ -43,29 +34,17 @@ exports.buyNow = function (req, res, next) {
      isValid(req.body, function (err, data) {
         if (err) return res.status(400).json({message: err});
 
-        if (cacheOrder.first) {
+         Promise.map(data.products, recount).then(function () {
 
-            var criteria = {
-                limit: 1,
-                sort: {order_num: -1}
-            };
-
-            orderAPI.findMaxOrderNum(criteria, function (err, orders) {
-                if (err) return res.status(500).json(err);
-
-                if (orders.length > 0){
-
-                    cacheOrder.number = orders[0].order_num + 1;
-                }
-
-                return saveOrderBuyNow(data, res);
-
-            });
-
-        } else {
-            cacheOrder.number += 1;
-            saveOrderBuyNow(data, res);
-        }
+             lastOrder(next, function (num) {
+                 data.owner = data.phone;
+                 data.status = 'Новый заказ';
+                 data.order_num = num;
+                 data.price = totalAmount;
+                 totalAmount = 0;
+                 saveOrderBuyNow(data, res, next);
+             })
+         });
     });
 
 };
@@ -97,16 +76,20 @@ exports.update = function (req, res, next) {
         isValid(req.body, function (err, data) {
             if (err) return res.status(400).json({message: err});
 
-            for (var k in data) {
-                order[k] = data[k];
-            }
+            Promise.map(data.products, recount).then(function () {
+                data.price = totalAmount;
+                data.updated = Date.now();
+                totalAmount = 0;
 
-            order.updated = Date.now();
+                for (var k in data) {
+                    order[k] = data[k];
+                }
 
-            orderAPI.update(orderId, order, function (err, result) {
-                if (err) return next(err);
-                res.json(order);
-            })
+                orderAPI.update(orderId, order, function (err, result) {
+                    if (err) return next(err);
+                    res.json(order);
+                })
+            });
         });
     })
 
@@ -163,54 +146,61 @@ exports.removeProductFromOrder = function (req, res, next) {
 
 };
 
-function saveOrder (userId, data, res) {
-    data.owner = userId;
-    data.status = 'Новый заказ';
-    data.order_num = cacheOrder.number;
+var recount = Promise.promisify(function (item, ind, count, callback) {
+    productAPI.findOne({uuid: item.productID}, function (err, product) {
+       if (err) return callback(err);
+       if (!product) callback();
+        //TODO: Подсчет если валюта не гривна
+        totalAmount += product.price * item.count;
+        item.price = product.price;
+        callback(null, item);
+    });
+});
 
-    orderAPI.add(data, function (err, order) {
-        if (err) return res.status(500).json({message: err});
+function lastOrder (next, callback) {
 
-        var mailAPI = require('../api/mail');
+    memstor.get('last_order', next, function (num) {
+        if (num) return callback(Number(num) + 1);
 
-        cacheOrder.first = false;
+        var criteria = {
+            limit: 1,
+            sort: {order_num: -1}
+        };
 
-        mailAPI.firstOrder(data, function (err, info) {
-            if (err) {
-                console.log('error send mail', err);
-                return next(err);
+        orderAPI.list(criteria, function (err, orders) {
+            if (err) return next(err);
+            var nextOrderNumber;
+
+            if (orders[0]) {
+                nextOrderNumber = orders[0].order_num + 1;
+            } else {
+                nextOrderNumber = 1;
             }
-            console.log('info', info);
+
+            callback(nextOrderNumber);
+
         });
-
+    })
+}
+function saveOrder (data, res, next) {
+    save(data, next, function (order) {
         res.json(order);
     });
 }
+function saveOrderBuyNow (data, res, next) {
+    save(data, next, function (order) {
+        data.updated = Date.now();
+        res.json(order);
+    })
 
-function saveOrderBuyNow (data, res) {
-    data.owner = data.phone;
-    data.status = 'Новый заказ';
-    data.order_num = cacheOrder.number;
-
+}
+function save (data, next, callback) {
     orderAPI.add(data, function (err, order) {
-        if (err) return res.status(500).json({message: err});
-
-        // var mailAPI = require('../api/mail');
-
-        cacheOrder.first = false;
-
-        // mailAPI.firstOrder(data, function (err, info) {
-        //     if (err) {
-        //         console.log('error send mail', err);
-        //         return next(err);
-        //     }
-        //     console.log('info', info);
-        // });
-
-        res.json(order);
+        if (err) return next(err);
+        memstor.set('last_order', data.order_num);
+        callback(order);
     });
 }
-
 function isValid (body, callback) {
     var v = require('../libs/validator');
 
@@ -222,14 +212,12 @@ function isValid (body, callback) {
         state: body.state,
         phone: body.phone,
         status: body.status,
-        currency: body.currency,
-        price: body.price,
+        currency: body.currency.toUpperCase(),
         products: body.products.map(function (product) {
             return {
                 combo: product.combo,
                 productID: product.productID,
-                count: product.count,
-                price: product.price
+                count: product.count || 1
             }
         })
     };
@@ -242,15 +230,14 @@ function isValid (body, callback) {
         state: v.joi.string().min(2).max(50).allow(''),
         phone: v.joi.string().min(2).max(50).allow(''),
         status: v.joi.string(),
-        currency: v.joi.string(),
-        price: v.joi.number(),
+        currency: v.joi.string().uppercase(),
         products: v.joi.array().items(v.joi.object().keys({
             combo: v.joi.any(),
             productID: v.joi.string(),
-            count: v.joi.number(),
-            price: v.joi.number()
+            count: v.joi.number()
         })).required()
     });
 
     v.validate(data, schema, callback);
 }
+

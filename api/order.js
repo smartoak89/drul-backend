@@ -20,8 +20,8 @@ module.exports = {
     },
     delete: function (id, callback) {
         db.remove(id, callback);
-    },
-    findMaxOrderNum: function (criteria, callback) {
-        db.findAll(criteria, callback)
     }
+    // findMaxOrderNum: function (criteria, callback) {
+    //     db.findAll(criteria, callback)
+    // }
 };

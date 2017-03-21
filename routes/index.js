@@ -109,4 +109,8 @@ module.exports = function (app, express) {
     // app.post('/mail', mailHandler.add);
     // app.post('/mail/:userId', mailHandler.sendMailToUser);
     app.get('/mail/mail', mailHandler.send);
+
+    // -- test
+    var currency = require('../api/currency');
+    app.get('/test', currency.converter)
 };
