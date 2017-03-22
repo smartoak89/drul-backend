@@ -15,7 +15,7 @@ exports.add = function (req, res, next) {
 
            orderAPI.find({owner: user.uuid, 'products.productID': productID}, function (err, order) {
                if (err) return callback(err);
-               if (!order && user.permission != 'administrator') return res.status(400).json({message: 'Вы не можете оставлять отзыв к данному товару!'})
+               if (!order && user.permission != 'administrator') return res.status(400).json({message: 'Вы не можете оставлять отзыв к данному товару!'});
 
                var review = {
                    body: req.body.body,

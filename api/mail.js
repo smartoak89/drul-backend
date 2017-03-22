@@ -1,65 +1,39 @@
 var db = require('../libs/datastore')('mail');
 var conf = require('../conf');
 var mailer = require('nodemailer');
-var template = require('../templates');
 var path = require('path');
+var thenJade = require('then-jade');
 
 module.exports = {
 
-    // sendMail: function (callback) {
-    //
-    //     var transport = createTransport();
-    //     var to = 'Yura <yura@koderra.com>';
-    //     var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
-    //     var html = '<p><center>Привет тебе!!!</center></p>';
-    //
-    //     var createMail = new CreateMail(transport, to, subject, html);
-    //
-    //     createMail.send(callback);
-    //
-    // },
-    // welcome: function (email, callback) {
-    //
-    //     var transport = createTransport();
-    //     var to = '<' + email + '>';
-    //     var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
-    //     var html = template.welcome;
-    //
-    //     var createMail = new CreateMail(transport, to, subject, html);
-    //
-    //     createMail.send(callback);
-    // },
-    welcome: function (email, callback) {
-
-        var thenJade = require('then-jade');
+    welcome: function (email, next) {
 
         var tpl = conf.rootDir + '/templates/register.jade';
-        var options = {};
-
 
         thenJade.renderFile(tpl, {} , function (err, html) {
-            if (err) return console.log('error', err);
-
+            if (err) return next(err);
+            console.log(html)
             var to = '<' + email + '>';
-            var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
+
+            var subject = 'Регистрация на сайте www.today.net.ua';
 
             var createMail = new CreateMail(to, subject, html);
 
-            createMail.send(callback);
+            createMail.send(next);
         })
 
 
-    },
-    firstOrder: function (order, callback) {
-        var transport = createTransport();
-        var to = '<' + order.email + '>';
-        var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
-        var html = template.firstOrder(order);
-
-        var createMail = new CreateMail(transport, to, subject, html);
-
-        createMail.send(callback);
     }
+    // firstOrder: function (order, callback) {
+    //     var transport = createTransport();
+    //     var to = '<' + order.email + '>';
+    //     var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
+    //     var html = template.firstOrder(order);
+    //
+    //     var createMail = new CreateMail(transport, to, subject, html);
+    //
+    //     createMail.send(callback);
+    // }
 };
 
 function CreateMail (to, subject, html) {
@@ -83,13 +57,12 @@ function CreateMail (to, subject, html) {
 
 CreateMail.prototype = {
 
-    send: function (callback) {
+    send: function (next) {
         var self = this;
 
         this.transport.sendMail(this.message, function (err, info) {
-            if (err) return callback(err);
+            if (err) return next(err);
             self.close();
-            callback(null, info);
         });
     },
     close: function () {

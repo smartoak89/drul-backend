@@ -31,9 +31,9 @@
     "mail": {
         "service": "Gmail",
         "auth" : {
-            "user": "smartoak89@gmail.com",
-            "pass": "am1499be"
+            "user": "today.net.ua@gmail.com",
+            "pass": "Dryulion063"
         },
-        "from": "Tooday <smartoak89@gmail.com>"
+        "from": "<today.net.ua>"
     }
 }

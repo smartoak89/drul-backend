@@ -75,6 +75,7 @@ html(xmlns='http://www.w3.org/1999/xhtml')
       .free-text {
       width: 100% !important;
       padding: 10px 60px 0px;
+      text-align: left;
       }
       .block-rounded {
       border-radius: 5px;
@@ -205,14 +206,18 @@ html(xmlns='http://www.w3.org/1999/xhtml')
             table.w320(cellspacing='0', cellpadding='0', width='600')
               tr
                 td.header-lg
-                  | Успешная регистрация!
+                  | {Имя пользователя}, здравствуйте!
               tr
                 td.free-text
-                  | Спасибо за регитрацию! Теперь вы можете войти в свой аккаунт и использовать все возможности сайта для наиболее удобного совершения покупок.
+                  | {Сообщение администратора}
               tr
                 td.button
                   div
-                    a.btn-drul.dark(href='https://today.net.ua', style="background-color: #000; color:#ffffff; display:inline-block; font-family:'Cabin', Helvetica, Arial, sans-serif; font-size:14px; font-weight:regular; line-height:45px; text-align:center; text-decoration:none; width:155px; -webkit-text-size-adjust:none; mso-hide:all;") Перейти на сайт
+                    //if mso
+                      v:roundrect(xmlns:v='urn:schemas-microsoft-com:vml', xmlns:w='urn:schemas-microsoft-com:office:word', href='http://', style='height:45px;v-text-anchor:middle;width:155px;', arcsize='15%', strokecolor='#ffffff', fillcolor='#ff6f6f')
+                        w:anchorlock
+                          center.btn-drul.dark(style='color:#ffffff;font-family:Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;') My Account
+                    a.btn-drul.dark(href='http://', style="color:#ffffff;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;") Перейти на сайт
       tr
         td(align='center', valign='top', width='100%', style='background-color: #000; color: #fff;  border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5;')
           center

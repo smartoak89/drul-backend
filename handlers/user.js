@@ -19,7 +19,7 @@ exports.register = function (req, res, next) {
                     if (err) return next(err);
                     if (!user) return res.status(500);
 
-                    // mailAPI.welcome(value.email, next);
+                    mailAPI.welcome(value.email, next);
 
                     memstor.set('first_user', true);
 
