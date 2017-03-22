@@ -3,10 +3,11 @@ var request = require('request');
 var _ = require('lodash');
 var memstor = require('./memstor');
 
-exports.converter = function (data, next, callback) {
+exports.converter = function (curr, product, next, callback) {
 
-    courses(data.currency, next, function (value) {
-
+    courses(curr, next, function (amount) {
+        product.price = (product.price / amount).toFixed(2);
+        callback(product);
     });
 
 
@@ -24,8 +25,8 @@ exports.converter = function (data, next, callback) {
     //     //         var oldPrice =  i.old_price / currentPrice;
     //     //         i.old_price = oldPrice.toFixed(2);
     //     //     }
-    //     //     var price = i.price / currentPrice;
-    //     //     i.price = price.toFixed(2);
+    //         var price = i.price / currentPrice;
+    //         i.price = price.toFixed(2);
     //     // });
     //     //
     //     // callback(null, data);
@@ -38,7 +39,7 @@ function courses (currency, next, callback) {
     currency = currency.toUpperCase();
 
     memstor.get('currency-' + currency, next, function (cours) {
-        if (cours) callback(Number(cours));
+        if (cours) return callback(Number(cours));
 
         courseAPI().then(function (res) {
 
@@ -46,8 +47,10 @@ function courses (currency, next, callback) {
 
             if (ccy) {
                 memstor.set('currency-' + currency, ccy.sale);
-                callback(Number(ccy.sale));
+                return callback(Number(ccy.sale));
             }
+
+            next('Currency not found');
         })
     })
 }

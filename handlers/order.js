@@ -1,50 +1,50 @@
 var Promise = require('bluebird');
 var orderAPI = require('../api/order');
 var productAPI = require('../api/product');
-var memstor = require('../api/memstor');
-
+var memstorAPI = require('../api/memstor');
+var currencyAPI = require('../api/currency');
 
 var totalAmount = 0;
 
 exports.add = function (req, res, next) {
     var userId = req.user.uuid;
 
-     isValid(req.body, function (err, data) {
+    isValid(req.body, function (err, data) {
         if (err) return res.status(400).json({message: err});
 
-         Promise.map(data.products, recount).then(function () {
+        Promise.map(data.products, recount(data.currency, next)).then(function () {
 
-             lastOrder(next, function (num) {
-                 data.owner = userId;
-                 data.status = 'Новый заказ';
-                 data.order_num = num;
-                 data.price = totalAmount;
-                 totalAmount = 0;
-                 // data.products = orderProducts;
+            lastOrder(next, function (num) {
+                data.owner = userId;
+                data.status = 'Новый заказ';
+                data.order_num = num;
+                data.price = totalAmount;
+                totalAmount = 0;
+                // data.products = orderProducts;
 
-                 saveOrder(data, res, next);
-             })
-         })
+                saveOrder(data, res, next);
+            })
+        })
     });
 
 };
 
 exports.buyNow = function (req, res, next) {
 
-     isValid(req.body, function (err, data) {
+    isValid(req.body, function (err, data) {
         if (err) return res.status(400).json({message: err});
 
-         Promise.map(data.products, recount).then(function () {
+        Promise.map(data.products, recount(data.currency, next)).then(function () {
 
-             lastOrder(next, function (num) {
-                 data.owner = data.phone;
-                 data.status = 'Новый заказ';
-                 data.order_num = num;
-                 data.price = totalAmount;
-                 totalAmount = 0;
-                 saveOrderBuyNow(data, res, next);
-             })
-         });
+            lastOrder(next, function (num) {
+                data.owner = data.phone;
+                data.status = 'Новый заказ';
+                data.order_num = num;
+                data.price = totalAmount;
+                totalAmount = 0;
+                saveOrderBuyNow(data, res, next);
+            })
+        });
     });
 
 };
@@ -76,7 +76,7 @@ exports.update = function (req, res, next) {
         isValid(req.body, function (err, data) {
             if (err) return res.status(400).json({message: err});
 
-            Promise.map(data.products, recount).then(function () {
+            Promise.map(data.products, recount(data.currency, next)).then(function () {
                 data.price = totalAmount;
                 data.updated = Date.now();
                 totalAmount = 0;
@@ -146,20 +146,34 @@ exports.removeProductFromOrder = function (req, res, next) {
 
 };
 
-var recount = Promise.promisify(function (item, ind, count, callback) {
-    productAPI.findOne({uuid: item.productID}, function (err, product) {
-       if (err) return callback(err);
-       if (!product) callback();
-        //TODO: Подсчет если валюта не гривна
-        totalAmount += product.price * item.count;
-        item.price = product.price;
-        callback(null, item);
+function recount(currency, next) {
+    return Promise.promisify(function (item, ind, count, callback) {
+
+        productAPI.findOne({uuid: item.productID}, function (err, product) {
+            if (err) return callback(err);
+            if (!product) callback();
+
+            if (currency.toUpperCase() != 'UAH') {
+                currencyAPI.converter(currency, product, next, function (recountProduct) {
+                    product = recountProduct;
+                    correctAmount();
+                })
+            } else {
+                correctAmount();
+            }
+
+            function correctAmount () {
+                totalAmount += product.price * item.count;
+                item.price = product.price;
+                console.log('item', item);
+                callback(null, item);
+            }
+        });
     });
-});
+}
+function lastOrder(next, callback) {
 
-function lastOrder (next, callback) {
-
-    memstor.get('last_order', next, function (num) {
+    memstorAPI.get('last_order', next, function (num) {
         if (num) return callback(Number(num) + 1);
 
         var criteria = {
@@ -182,26 +196,26 @@ function lastOrder (next, callback) {
         });
     })
 }
-function saveOrder (data, res, next) {
+function saveOrder(data, res, next) {
     save(data, next, function (order) {
         res.json(order);
     });
 }
-function saveOrderBuyNow (data, res, next) {
+function saveOrderBuyNow(data, res, next) {
     save(data, next, function (order) {
         data.updated = Date.now();
         res.json(order);
     })
 
 }
-function save (data, next, callback) {
+function save(data, next, callback) {
     orderAPI.add(data, function (err, order) {
         if (err) return next(err);
-        memstor.set('last_order', data.order_num);
+        memstorAPI.set('last_order', data.order_num);
         callback(order);
     });
 }
-function isValid (body, callback) {
+function isValid(body, callback) {
     var v = require('../libs/validator');
 
     var data = {
