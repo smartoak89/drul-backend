@@ -136,7 +136,11 @@ exports.removeProductFromOrder = function (req, res, next) {
     orderAPI.find({uuid: orderId}, function (err, order) {
         if (err) return next(err);
         if (!order) return res.status(404).json({message: 'Заказ не найден!'});
-        order.products.splice(productIndex, 1);
+        var splice = order.products.splice(productIndex, 1)[0];
+        order.price = order.price - (splice.price * splice.count);
+
+        console.log('order', order);
+        console.log('splice', splice);
 
         orderAPI.update(orderId, order, function (err, result) {
             if (err) return next(err);
