@@ -30,21 +30,49 @@ exports.add = function (req, res, next) {
 };
 
 exports.buyNow = function (req, res, next) {
+    var header = req.headers['authorization'];
 
     isValid(req.body, function (err, data) {
         if (err) return res.status(400).json({message: err});
 
-        Promise.map(data.products, recount(data.currency, next)).then(function () {
+        if (header) {
+            var token = 'token-' + header;
 
-            lastOrder(next, function (num) {
-                data.owner = data.phone;
-                data.status = 'Новый заказ';
-                data.order_num = num;
-                data.price = totalAmount;
-                totalAmount = 0;
-                saveOrderBuyNow(data, res, next);
-            })
-        });
+            memstorAPI.get(token, next, function (userCli) {
+                var user = JSON.parse(userCli);
+
+                Promise.map(data.products, recount(data.currency, next)).then(function () {
+
+                    lastOrder(next, function (num) {
+                        data.owner = user.uuid;
+                        data.firstname = user.firstname;
+                        data.lastname = user.lastname;
+                        data.state = user.country;
+                        data.email = user.email;
+                        data.phone = data.phone;
+                        data.status = 'Новый заказ';
+                        data.order_num = num;
+                        data.price = totalAmount;
+
+                        totalAmount = 0;
+                        saveOrderBuyNow(data, res, next);
+                    })
+
+                });
+            });
+        } else {
+            Promise.map(data.products, recount(data.currency, next)).then(function () {
+
+                lastOrder(next, function (num) {
+                    data.owner = data.phone;
+                    data.status = 'Новый заказ';
+                    data.order_num = num;
+                    data.price = totalAmount;
+                    totalAmount = 0;
+                    saveOrderBuyNow(data, res, next);
+                })
+            });
+        }
     });
 
 };

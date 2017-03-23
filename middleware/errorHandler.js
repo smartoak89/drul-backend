@@ -4,7 +4,9 @@ var conf = require('../conf');
 
 module.exports = function (app) {
     app.use(function (err, req, res, next) {
+        console.trace(err);
         res.status(500).json(err);
+        next();
         // if (typeof err == 'number') err = new HttpError(err);
         // if (err instanceof HttpError) {
         //     log.error(err);

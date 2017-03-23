@@ -49,8 +49,6 @@ function courses (currency, next, callback) {
                 memstor.set('currency-' + currency, ccy.sale);
                 return callback(Number(ccy.sale));
             }
-
-            next('Currency not found');
         })
     })
 }

@@ -5,7 +5,7 @@ module.exports = function (req, res, next) {
     var header = req.headers['authorization'];
 
     if (!header) {
-        return res.status(401).json({message: "Not Authorized"})
+        return res.status(401).json({message: "Not Authorized"});
     }
 
     var token = 'token-' + header;
