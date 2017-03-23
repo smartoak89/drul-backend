@@ -12,10 +12,10 @@ module.exports = {
 
         thenJade.renderFile(tpl, {} , function (err, html) {
             if (err) return next(err);
-            console.log(html)
+
             var to = '<' + email + '>';
 
-            var subject = 'Регистрация на сайте www.today.net.ua';
+            var subject = 'Регистрация на сайте.';
 
             var createMail = new CreateMail(to, subject, html);
 
@@ -23,17 +23,26 @@ module.exports = {
         })
 
 
+    },
+    reset: function (data, res, next) {
+
+        var tpl = conf.rootDir + '/templates/reset.jade';
+        var link = conf.frontend.url + '/reset/' + data.link
+
+        thenJade.renderFile(tpl, {link: link} , function (err, html) {
+            if (err) return next(err);
+
+            var to = '<' + data.email + '>';
+
+            var subject = 'Востановление пароля.';
+
+            var createMail = new CreateMail(to, subject, html);
+
+            res.json({message: 'Инструкции отправлены на указанный вами email'});
+
+            createMail.send(next);
+        })
     }
-    // firstOrder: function (order, callback) {
-    //     var transport = createTransport();
-    //     var to = '<' + order.email + '>';
-    //     var subject = 'Добро пожаловать на сайт супер модной одежны Tooday';
-    //     var html = template.firstOrder(order);
-    //
-    //     var createMail = new CreateMail(transport, to, subject, html);
-    //
-    //     createMail.send(callback);
-    // }
 };
 
 function CreateMail (to, subject, html) {

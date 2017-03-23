@@ -11,6 +11,7 @@ var orderHandler = require('../handlers/order');
 var reviewsHandler = require('../handlers/reviews');
 var sliderHandler = require('../handlers/slider');
 var mailHandler = require('../handlers/mail');
+var resetHandler = require('../handlers/reset');
 var isAuth = require('../middleware/is_auth');
 var checkAdmin = require('../middleware/check_admin');
 
@@ -110,7 +111,12 @@ module.exports = function (app, express) {
     // app.post('/mail/:userId', mailHandler.sendMailToUser);
     app.get('/mail/mail', mailHandler.send);
 
+    // -- Reset password
+    app.post('/reset', resetHandler.sendResetToMail);
+    app.get('/reset/:token', resetHandler.checkTtlLink);
+    app.post('/reset/:token', resetHandler.resetPasswd);
+
     // -- test
     var currency = require('../api/currency');
-    app.get('/test', currency.converter)
+    app.get('/test', resetHandler.sendResetToMail)
 };

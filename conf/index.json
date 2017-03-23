@@ -35,5 +35,8 @@
             "pass": "Dryulion063"
         },
         "from": "<today.net.ua>"
+    },
+    "frontend": {
+        "url": "https://today.net.ua/#"
     }
 }
