@@ -60,6 +60,20 @@ exports.list = function (req, res, next) {
         if (err) return next(err);
         if (!product) return res.status(404).json({error_status: 404, error_message: 'Product Not Found'});
 
+        reviewsAPI.findAll({product_id: productID, publish: true}, function (err, list) {
+            if (err) return next(err);
+            res.json(list);
+        })
+    })
+};
+
+exports.allList = function (req, res, next) {
+    var productID = req.params.productId;
+
+    productAPI.findOne({uuid: productID}, function (err, product) {
+        if (err) return next(err);
+        if (!product) return res.status(404).json({error_status: 404, error_message: 'Product Not Found'});
+
         reviewsAPI.findAll({product_id: productID}, function (err, list) {
             if (err) return next(err);
             res.json(list);

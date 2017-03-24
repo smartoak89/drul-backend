@@ -1,11 +1,11 @@
 var HttpError = require('../error').HttpError;
-var log = require('../libs/logger')(module);
+var loggger = require('../libs/logger')(module);
 var conf = require('../conf');
 
 module.exports = function (app) {
     app.use(function (err, req, res, next) {
-        console.trace(err);
         res.status(500).json(err);
+        loggger.error(err);
         next();
         // if (typeof err == 'number') err = new HttpError(err);
         // if (err instanceof HttpError) {
@@ -22,6 +22,5 @@ module.exports = function (app) {
         //         res.sendHttpError(err);
         //     }
         // }
-
     });
 };

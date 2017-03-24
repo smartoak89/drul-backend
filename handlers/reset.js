@@ -3,7 +3,7 @@ var productApi = require('../api/product');
 var userApi = require('../api/user');
 var memstorAPI = require('../api/memstor');
 var mailApi = require('../api/mail');
-
+var urls = {};
 exports.sendResetToMail = function (req, res, next) {
 
     isValid(req.body, function (err, data) {
@@ -51,7 +51,7 @@ exports.resetPasswd = function (req, res, next) {
                 if (err) return next(err);
 
                 memstorAPI.remove('reset_url-' + token);
-
+                delete urls[user.email];
                 res.json({id: saved.uuid});
             });
         })
@@ -69,13 +69,14 @@ function checkTokenLink (token, res, next, callback) {
 }
 
 function sendMail (user, res, next) {
-
+    if(urls[user.email]) return res.status(400).json({message: 'Инструкции для востановления пароля уже отправлены на указаный вами email'});
     var token = require('rand-token').suid(10);
 
     var urlToken = 'reset_url-' + token;
 
     memstorAPI.set(urlToken, user.uuid);
     memstorAPI.expire(urlToken, 3600);
+    urls[user.email] = token;
 
     var opt = {
         email: user.email,

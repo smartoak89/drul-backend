@@ -96,6 +96,7 @@ module.exports = function (app, express) {
     //Reviews
     app.post('/reviews/:productId', isAuth, reviewsHandler.add);
     app.get('/reviews/:productId', reviewsHandler.list);
+    app.get('/reviews/:productId/all', checkAdmin, reviewsHandler.allList);
     app.get('/reviews', checkAdmin, reviewsHandler.listUnpublished);
     app.put('/reviews/:reviewId', checkAdmin, reviewsHandler.update);
     app.delete('/reviews/:reviewId', checkAdmin, reviewsHandler.remove);
