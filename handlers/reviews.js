@@ -98,5 +98,3 @@ exports.remove = function (req, res, next) {
         res.json(result);
     })
 };
-
-//TODO: product should be with unique article and name
