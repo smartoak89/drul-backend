@@ -1,11 +1,8 @@
-var HttpError = require('../error/index').HttpError;
-var msg = require('../message/ru/category');
 var categoryAPI = require('../api/category');
-var error = require('../error').ressError;
 
 exports.create = function (req, res, next) {
     isValid(req, function (err, value) {
-        if (err) return res.sendMsg(err, true, 400);
+        if (err) return res.status(400).json({message: err});
         categoryAPI.create(value, function (err, result) {
             if (err) return next(err);
             res.json(result);
@@ -22,10 +19,11 @@ exports.list = function (req, res, next) {
 
 exports.update = function (req, res, next) {
     isValid(req, function (err, value) {
-        if (err) return res.sendMsg(err, true, 400);
+        if (err) return res.status(400).json({message: err});
+
         categoryAPI.update(req.params.id, value, function (err, result) {
             if (err) return next(err);
-            res.sendMsg(msg.CATEGORY_UPDATED);
+            res.json({message: 'Подкатегория добавлени'});
         });
     });
 
@@ -33,10 +31,10 @@ exports.update = function (req, res, next) {
 
 exports.add = function (req, res, next) {
     isValid(req, function (err, value) {
-        if (err) return res.sendMsg(err, true, 400);
+        if (err) return res.status(400).json({message: err});
         categoryAPI.add(req.params.id, value, function (err) {
             if (err) return next(err);
-            res.sendMsg(msg.SUBCATEGORY_UPDATED);
+            res.json({message: 'Категория добавлени'});
         })
     });
 };

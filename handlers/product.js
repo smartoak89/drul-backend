@@ -73,7 +73,7 @@ exports.gallery = function (req, res, next) {
 exports.remove = function (req, res, next) {
     productApi.remove(req.params.id, function(err) {
         if (err) return next(err);
-        res.sendMsg(msg.DELETED);
+        res.json('Товар удален');
     })
 };
 
