@@ -3,6 +3,7 @@ var orderAPI = require('../api/order');
 var productAPI = require('../api/product');
 var memstorAPI = require('../api/memstor');
 var currencyAPI = require('../api/currency');
+var mailAPI = require('../api/mail');
 
 var totalAmount = 0;
 
@@ -230,12 +231,14 @@ function lastOrder(next, callback) {
 }
 function saveOrder(data, res, next) {
     save(data, next, function (order) {
+        mailAPI.newOrder(order, next);
         res.json(order);
     });
 }
 function saveOrderBuyNow(data, res, next) {
     save(data, next, function (order) {
         data.updated = Date.now();
+        if (data.email) mailAPI.newOrder(order, next);
         res.json(order);
     })
 

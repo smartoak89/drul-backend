@@ -108,9 +108,8 @@ module.exports = function (app, express) {
     app.delete('/slider/:id', checkAdmin, sliderHandler.remove);
 
     //Mail
-    // app.post('/mail', mailHandler.add);
+    app.post('/mail', checkAdmin, mailHandler.send);
     // app.post('/mail/:userId', mailHandler.sendMailToUser);
-    app.get('/mail/mail', mailHandler.send);
 
     // -- Reset password
     app.post('/reset', resetHandler.sendResetToMail);

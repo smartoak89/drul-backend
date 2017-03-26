@@ -3,23 +3,21 @@ var userAPI = require('../api/user');
 
 module.exports = {
     send: function (req, res, next) {
-        mailAPI.welcome()
-        // validate(req.body, function (err) {
-        //     if (err) return err(res, 400, err);
-        //
-        //
-        // });
 
-    },
-    // sendMailToUser: function (req, res, next) {
-    //
-    //     mailAPI.sendMail(function (err, info) {
-    //
-    //         if (err) return res.status(500).json(err);
-    //         console.log("Все ок");
-    //         res.json({message: 'Email отправлен успешно'});
-    //     });
-    // }
+        validate(sanitize(req.body), function (err, body) {
+
+            if (err) return error(res, 400, err);
+
+            userAPI.findOne({email: body.email}, function (err, user) {
+                if (err) return next(err);
+
+                if (!user) return error(res, 404, 'Пользователя с указанным email не существует');
+
+                mailAPI.sendLetter(body, res, next);
+            })
+
+        })
+    }
 };
 
 function error (res, status, msg) {
@@ -28,33 +26,17 @@ function error (res, status, msg) {
 
 function sanitize (body) {
     return {
-        name: body.name,
-        text: body.text,
-        subject: body.subject
+        email: body.email,
+        subject: body.subject,
+        text: body.text
     }
 }
 
-function validate (mail, callback) {
-    console.log('mail', mail);
-    if (!mail.name) return callback('Отсутствует название Email');
+function validate (body, callback) {
+    if (!body.email) return callback('Введите email получателя');
+    if (!body.subject) return callback('Введите тему сообщения');
+    if (!body.text) return callback('Введите текст сообщения');
 
-    if (!mail.text) return callback('Отсутствует текст Email');
+    callback(null, body);
 
-    // mailAPI.get({name: mail.name}, function (err, email) {
-    //     if (err) {
-    //         callback(err);
-    //     }
-    //     if (email) {
-    //         callback('Email с таким именем уже существует');
-    //     }
-    // });
-
-    callback();
-
-}
-
-function validSendMail(mail, callback) {
-    if (!mail.subject) return callback('Укажите тему Email');
-    if (!mail.text) return callback('Напишите текст Email');
-    callback();
 }

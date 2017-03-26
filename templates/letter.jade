@@ -184,49 +184,30 @@ html(xmlns='http://www.w3.org/1999/xhtml')
   body(bgcolor='#f7f7f7')
     table.container-for-gmail-android(align='center', cellpadding='0', cellspacing='0', width='100%')
       tr
-        td(align='left', valign='top', width='100%', style='background:repeat-x url(http://s3.amazonaws.com/swu-filepicker/4E687TRe69Ld95IDWyEg_bg_top_02.jpg) #ffffff;')
-          center
-            img.force-width-gmail(src='http://s3.amazonaws.com/swu-filepicker/SBb2fQPrQ5ezxmqUTgCr_transparent.png')
-            table(cellspacing='0', cellpadding='0', width='100%', bgcolor='#ffffff', background='http://s3.amazonaws.com/swu-filepicker/4E687TRe69Ld95IDWyEg_bg_top_02.jpg', style='background-color:transparent')
-              tr
-                td(width='100%', height='80', valign='top', style='text-align: center; vertical-align:middle;')
-                  //if gte mso 9
-                    v:rect(xmlns:v='urn:schemas-microsoft-com:vml', fill='true', stroke='false', style='mso-width-percent:1000;height:80px; v-text-anchor:middle;')
-                      v:fill(type='tile', src='http://s3.amazonaws.com/swu-filepicker/4E687TRe69Ld95IDWyEg_bg_top_02.jpg', color='#ffffff')
-                        v:textbox(inset='0,0,0,0')
-                  center
-                    table.w320(cellpadding='0', cellspacing='0', width='600')
-                      tr
-                        td.pull-left.mobile-header(style='vertical-align: middle;')
-                          a(href='') TODAY
-                  //if gte mso 9
-      tr
         td.content-padding(align='center', valign='top', width='100%', style='background-color: #f7f7f7;')
           center
             table.w320(cellspacing='0', cellpadding='0', width='600')
               tr
-                td.header-lg
-                  | {Имя пользователя}, здравствуйте!
+                td.free-text
+                  h3
+                    center
+                      | Администрации сайта.
               tr
                 td.free-text
-                  | {Сообщение администратора}
+                  | #{text}
               tr
                 td.button
                   div
-                    //if mso
-                      v:roundrect(xmlns:v='urn:schemas-microsoft-com:vml', xmlns:w='urn:schemas-microsoft-com:office:word', href='http://', style='height:45px;v-text-anchor:middle;width:155px;', arcsize='15%', strokecolor='#ffffff', fillcolor='#ff6f6f')
-                        w:anchorlock
-                          center.btn-drul.dark(style='color:#ffffff;font-family:Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;') My Account
-                    a.btn-drul.dark(href='http://', style="color:#ffffff;display:inline-block;font-family:'Cabin', Helvetica, Arial, sans-serif;font-size:14px;font-weight:regular;line-height:45px;text-align:center;text-decoration:none;width:155px;-webkit-text-size-adjust:none;mso-hide:all;") Перейти на сайт
-      tr
-        td(align='center', valign='top', width='100%', style='background-color: #000; color: #fff;  border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5;')
-          center
-            table.w320(cellspacing='0', cellpadding='0', width='600')
+                    a.btn-drul.dark(href='#{link}', style="background-color: #000; color:#ffffff; display:inline-block; font-family:'Cabin', Helvetica, Arial, sans-serif; font-size:14px; font-weight:regular; line-height:45px; text-align:center; text-decoration:none; width:155px; -webkit-text-size-adjust:none; mso-hide:all;") Перейти на сайт
               tr
-                td(style='padding: 25px 0 25px')
-                  strong TODAY
-                  br
-                  |               since 2017 
-                  br
-                  |               Ukraine
-                  br
+                td(align='center', valign='top', width='100%', style='background-color: #000; color: #fff;  border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5;')
+                  center
+                    table.w320(cellspacing='0', cellpadding='0', width='600')
+                      tr
+                        td(style='padding: 25px 0 25px')
+                          strong TODAY
+                          br
+                          |               since 2017
+                          br
+                          |               Ukraine
+                          br

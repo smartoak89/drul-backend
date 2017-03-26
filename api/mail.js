@@ -42,6 +42,44 @@ module.exports = {
 
             createMail.send(next);
         })
+    },
+    sendLetter: function (data, res, next) {
+        var tpl = conf.rootDir + '/templates/letter.jade';
+
+        thenJade.renderFile(tpl, {text: data.text} , function (err, html) {
+            if (err) return next(err);
+
+            var to = '<' + data.email + '>';
+
+            var subject = data.subject;
+
+            var createMail = new CreateMail(to, subject, html);
+
+            res.json({message: 'Сообщение успешно отправлено'});
+
+            createMail.send(next);
+        })
+    },
+    newOrder: function (data, next) {
+        var tpl = conf.rootDir + '/templates/order.jade';
+
+        var property = {
+            price: data.price,
+            currency: data.currency,
+            order_num: data.order_num
+        };
+
+        thenJade.renderFile(tpl, property , function (err, html) {
+            if (err) return next(err);
+
+            var to = '<' + data.email + '>';
+
+            var subject = 'Новый заказ № ' + data.order_num;
+
+            var createMail = new CreateMail(to, subject, html);
+
+            createMail.send(next);
+        })
     }
 };
 
