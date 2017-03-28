@@ -1,5 +1,4 @@
 var mailAPI = require('../api/mail');
-var userAPI = require('../api/user');
 
 module.exports = {
     send: function (req, res, next) {
@@ -8,13 +7,7 @@ module.exports = {
 
             if (err) return error(res, 400, err);
 
-            userAPI.findOne({email: body.email}, function (err, user) {
-                if (err) return next(err);
-
-                if (!user) return error(res, 404, 'Пользователя с указанным email не существует');
-
-                mailAPI.sendLetter(body, res, next);
-            })
+            mailAPI.sendLetter(body, res, next);
 
         })
     }

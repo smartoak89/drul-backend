@@ -15,5 +15,8 @@ module.exports = {
     },
     expire: function (key, sec) {
         redisCli.expire(key, sec);
+    },
+    expireat: function (key, date) {
+        redisCli.expireat(key, date);
     }
 };

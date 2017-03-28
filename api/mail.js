@@ -79,6 +79,20 @@ module.exports = {
             var createMail = new CreateMail(to, subject, html);
 
             createMail.send(next);
+        });
+
+        var adminTpl = conf.rootDir + '/templates/order_for_admin.jade';
+
+        thenJade.renderFile(adminTpl, property , function (err, html) {
+            if (err) return next(err);
+
+            var to = '<' + conf.mail.admin_mail + '>';
+
+            var subject = 'Поступил новый заказ № ' + data.order_num;
+
+            var createMail = new CreateMail(to, subject, html);
+
+            createMail.send(next);
         })
     }
 };

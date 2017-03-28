@@ -9,37 +9,13 @@ exports.converter = function (curr, product, next, callback) {
         product.price = (product.price / amount).toFixed(2);
         callback(product);
     });
-
-
-    // getCurrentCourse().then(function(course) {
-    //
-    //     // var curr = currency.toUpperCase();
-    //     // if (curr == 'UAH') return callback(null, data);
-    //     //
-    //     // var currentPrice;
-    //     // var c = _.find(course, {ccy: curr});
-    //     // c ? currentPrice = c.sale : callback(null, data);
-    //     //
-    //     // _.each(data, function (i) {
-    //     //     if (i.old_price) {
-    //     //         var oldPrice =  i.old_price / currentPrice;
-    //     //         i.old_price = oldPrice.toFixed(2);
-    //     //     }
-    //         var price = i.price / currentPrice;
-    //         i.price = price.toFixed(2);
-    //     // });
-    //     //
-    //     // callback(null, data);
-    // }, function(err) {
-    //     // callback(err);
-    // });
 };
 
 function courses (currency, next, callback) {
     currency = currency.toUpperCase();
 
     memstor.get('currency-' + currency, next, function (cours) {
-        if (cours) return callback(Number(cours));
+        // if (cours) return callback(Number(cours));
 
         courseAPI().then(function (res) {
 
@@ -51,6 +27,13 @@ function courses (currency, next, callback) {
             }
         })
     })
+}
+
+function expire () {
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate()+1);
+    var nextday = new Date((tomorrow.getMonth()+1)+','+tomorrow.getDate()+','+tomorrow.getFullYear()+',10:00:00');
+    return nextday;
 }
 
 function courseAPI () {

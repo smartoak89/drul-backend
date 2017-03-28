@@ -10,7 +10,8 @@ client.on('connect', function () {
 });
 
 client.on('error', function (err) {
-    throw new Error('Error connect to redis', err);
+    console.log('redis err', err);
+    throw new Error(err);
 });
 
 module.exports = client;

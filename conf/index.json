@@ -34,7 +34,8 @@
             "user": "today.net.ua@gmail.com",
             "pass": "Dryulion063"
         },
-        "from": "<today.net.ua>"
+        "from": "<today.net.ua>",
+        "admin_mail": "yura@koderra.com"
     },
     "frontend": {
         "url": "https://today.net.ua/#"
