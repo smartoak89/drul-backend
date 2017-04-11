@@ -12,6 +12,7 @@ var reviewsHandler = require('../handlers/reviews');
 var sliderHandler = require('../handlers/slider');
 var mailHandler = require('../handlers/mail');
 var resetHandler = require('../handlers/reset');
+var vendorHandler = require('../handlers/vendor');
 var isAuth = require('../middleware/is_auth');
 var checkAdmin = require('../middleware/check_admin');
 
@@ -81,6 +82,10 @@ module.exports = function (app, express) {
     app.get('/combinations', combinationHandler.list);
     app.put('/combination/:id', checkAdmin, combinationHandler.update);
     app.delete('/combination/:id', checkAdmin, combinationHandler.delete);
+
+    // Vendor
+    app.get('/vendors', checkAdmin, vendorHandler.list);
+    app.put('/vendor', checkAdmin, vendorHandler.update);
 
     //Orders
     app.post('/order', isAuth, orderHandler.add);

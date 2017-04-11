@@ -33,7 +33,6 @@ exports.update = function (req, res, next) {
 
 };
 
-
 exports.delete = function (req, res, next) {
 
     combinationAPI.delete(req.params.id, function (err, result) {
