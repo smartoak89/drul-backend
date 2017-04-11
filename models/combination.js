@@ -12,7 +12,7 @@ var schema = new Schema({
         required: true
     },
     slug: {
-        type: String,
+        type: String
         // unique: true,
         // required: true
     },

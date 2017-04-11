@@ -17,7 +17,7 @@ exports.add = function (req, res, next) {
 
             lastOrder(next, function (num) {
                 data.owner = userId;
-                data.status = 'Новый заказ';
+                data.status = 'Оформлена';
                 data.order_num = num;
                 data.price = totalAmount;
                 totalAmount = 0;
@@ -51,7 +51,7 @@ exports.buyNow = function (req, res, next) {
                         data.state = user.country;
                         data.email = user.email;
                         data.phone = data.phone;
-                        data.status = 'Новый заказ';
+                        data.status = 'Оформлена';
                         data.order_num = num;
                         data.price = totalAmount;
 
@@ -66,7 +66,7 @@ exports.buyNow = function (req, res, next) {
 
                 lastOrder(next, function (num) {
                     data.owner = data.phone;
-                    data.status = 'Новый заказ';
+                    data.status = 'Оформлена';
                     data.order_num = num;
                     data.price = totalAmount;
                     totalAmount = 0;

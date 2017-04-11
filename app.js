@@ -8,7 +8,6 @@ var morgan = require('morgan');
 var app = express();
 
 conf.rootDir = __dirname;
-
 // process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // app.use(require('./middleware/sendHttpError'));
 // app.use(require('./middleware/sendMessage'));
