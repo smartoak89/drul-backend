@@ -1,4 +1,3 @@
-var msg = require('../message/ru/product');
 var log = require('../libs/logger')(module);
 var error = require('../error/index').ressError;
 var productApi = require('../api/product');
@@ -6,18 +5,25 @@ var productApi = require('../api/product');
 exports.create = function (req, res, next) {
 
     isValid(req, function (err, value) {
-        log.log('gotVal %', value);
-        if (err) return res.sendMsg(err, true, 400);
-        productApi.create(value, function (err, product) {
-            if (err) return next(err);
-            res.json(product);
-        })
+        if (err) return res.status(400).json(err);
+
+        console.log(productApi.findAll({article: value.article, sort: 'count.desk', limit: 1}, function (err, products) {
+            var count =  0;
+            if (products[0]) count = products[0].count;
+            value.count = count + 1;
+            value.article = value.article + '-' + value.count;
+
+            productApi.create(value, function (err, product) {
+                if (err) return next(err);
+                res.json(product);
+            })
+
+        }))
+
     });
 };
 
 exports.list = function (req, res, next) {
-    var criteria = {};
-
     productApi.findAll(req.query, function (err, data) {
         if (err) return next(err);
         res.json(data);
@@ -31,6 +37,7 @@ exports.get = function (req, res, next) {
         res.json(product);
     });
 };
+
 exports.listFromCurrentCateg = function (req, res, next){
     var categoryName = req.params.name;
     var criteria = req.query;
@@ -51,8 +58,7 @@ exports.getProductFilter = function (req, res, next) {
 
 exports.update = function (req, res, next) {
     isValid(req, function (err, value) {
-        if (err) return res.sendMsg(err, true, 400);
-        console.log('update product', value);
+        if (err) return res.status(400).json(err);
         productApi.update(req.params.id, value, function (err, product) {
 
             if (err) return next(err);

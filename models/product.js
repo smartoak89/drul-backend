@@ -18,6 +18,10 @@ var schema = new Schema({
     slug: {type: String},
     stock: {type: Object},
     reviews_count: {type: Number},
+    count: {
+        type: Number,
+        default: 0
+    },
     created: {
         type: Date,
         default: Date.now
