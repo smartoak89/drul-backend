@@ -9,7 +9,8 @@ exports.create = function (req, res, next) {
 
         console.log(productApi.findAll({article: value.article, sort: 'count.desk', limit: 1}, function (err, products) {
             var count =  0;
-            if (products[0]) count = products[0].count;
+            if (products[0] && products[0].count) count = products[0].count;
+            console.log('products', products);
             value.count = count + 1;
             value.article = value.article + '-' + value.count;
 
