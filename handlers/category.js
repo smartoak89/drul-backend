@@ -66,7 +66,6 @@ function isValid (req, callback) {
     var data = {
         name: req.body.name,
         link: req.body.link,
-        article: req.body.article,
         slug: req.body.slug,
         level: req.body.level
     };
@@ -74,7 +73,6 @@ function isValid (req, callback) {
     var schema = v.joi.object().keys({
         name: v.joi.string().min(3).max(20).required(),
         link: v.joi.string().min(3).max(20).required(),
-        article: v.joi.string().min(3).max(20).required(),
         slug: v.joi.string().min(3).max(20).required(),
         level: v.joi.number()
     });
