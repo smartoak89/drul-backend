@@ -22,10 +22,10 @@ module.exports = function (app, express) {
     //--Category
     app.get('/categories', categoryHandler.list);
     app.post('/category', checkAdmin, categoryHandler.create);
+    app.post('/category/:id', checkAdmin, categoryHandler.createSub);
     app.put('/category/:id', checkAdmin, categoryHandler.update);
     app.post('/category/:id', checkAdmin, categoryHandler.add);
     app.delete('/category/:id', checkAdmin, categoryHandler.remove);
-    app.delete('/category/:id/:index', checkAdmin, categoryHandler.remove);
     app.get('/category/:name/filter', categoryHandler.getFilter);
 
     //--User

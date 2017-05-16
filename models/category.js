@@ -7,19 +7,13 @@ var schema = new Schema({
         unique: true,
         required: true
     },
-    name: {
-        type: String
-    },
-    link: {
-        type: String
-    },
-    children: {
-        type: Array
-    },
-    article: {type: String},
+    name: {type: String},
     slug: {type: String},
-    level: {type: Number},
-    parent: {type: String}
+    parent: {type: String},
+    parents: {type: Array, default: []},
+    children: {type: Array, default: []},
+    path: {type: Array, default: []}
+
 },{
     versionKey: false
 });

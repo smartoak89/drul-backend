@@ -1,7 +1,6 @@
 var fileAPI = require('../api/file');
 var productAPI = require('../api/product');
 var sliderAPI = require('../api/slider');
-var msg = require('../message/ru/file');
 var HttpError = require('../error/index').HttpError;
 var error = require('../error/index').ressError;
 var Promise = require("bluebird");
