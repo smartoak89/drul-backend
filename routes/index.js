@@ -31,7 +31,9 @@ module.exports = function (app, express) {
     //--User
     app.post('/user/register', userHandler.register);
     app.get('/users', checkAdmin, userHandler.list);
+    app.get('/user', userHandler.getUserByToken);
     app.put('/user/:id', userHandler.update);
+    app.put('/user/admin/:id',checkAdmin, userHandler.updateAdmin);
     //TODO: put user;
     app.delete('/user/:id', checkAdmin, userHandler.remove);
     app.get('/user/:id', checkAdmin, userHandler.find);

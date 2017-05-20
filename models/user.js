@@ -17,6 +17,7 @@ var schema = new Schema({
     hashedPassword: {type: String},
     salt: {type: String},
     permission: {type: String},
+    ballance: {type: Number, default: 0},
     created: {
         type: Date,
         default: Date.now

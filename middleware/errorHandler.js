@@ -4,6 +4,7 @@ var conf = require('../conf');
 
 module.exports = function (app) {
     app.use(function (err, req, res, next) {
+        console.trace('error', err);
         loggger.error(err);
         res.status(500).json(err);
         next();

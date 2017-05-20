@@ -41,12 +41,58 @@ exports.list = function (req, res, next) {
     });
 };
 
-exports.update = function (req, res, next) {
-    isValidUpdate(req, function (err, value) {
-        if (err) return res.status(400).json(value);
+exports.getUserByToken = function (req, res, next) {
+    var header = req.headers['authorization'];
+    var token = 'token-' + header;
+    memstor.get(token, next, function (userCli) {
+
+        if (!userCli) return res.status(404).json({message: 'User Not Found'});
+
+        var user = JSON.parse(userCli);
+        userAPI.find(user.uuid, function (err, result) {
+            if (err) return next(err);
+
+            res.json({
+                uuid: result.uuid,
+                email: result.email,
+                firstname: result.firstname,
+                lastname: result.lastname,
+                email: result.email,
+                country: result.country,
+                ballance: result.ballance,
+                phone: result.phone,
+            });
+        })
+
+
+    })
+};
+
+exports.updateAdmin = function (req, res, next) {
+    isValidUpdateAdmin(req, function (err, value) {
+        if (err) return res.status(400).json(err);
         var id = req.params.id;
 
         userAPI.find(id, function (err, user) {
+            console.log('error', err);
+           if (err) return next(err);
+           if (!user) return res.status(404).json({message: 'User Not Found'});
+
+            userAPI.update(id, value, function (err, newUser) {
+                if (err) return next(err);
+                res.json(newUser);
+            });
+        });
+    });
+};
+
+exports.update = function (req, res, next) {
+    isValidUpdate(req, function (err, value) {
+        if (err) return res.status(400).json(err);
+        var id = req.params.id;
+
+        userAPI.find(id, function (err, user) {
+            console.log('error', err);
            if (err) return next(err);
            if (!user) return res.status(404).json({message: 'User Not Found'});
            if (!user.checkPassword(value.password)) return res.status(400).json({message: 'Неверный пароль!'});
@@ -122,26 +168,43 @@ function viewData (data) {
     return data;
 }
 
+function isValidUpdateAdmin (req, callback) {
+    var v = require('../libs/validator');
+
+    console.log('data', req.body);
+    var data = {
+        ballance: req.body.ballance
+    };
+
+    var schema = v.joi.object().keys({
+        ballance: v.joi.number()
+    });
+
+    v.validate(data, schema, callback);
+}
 function isValidUpdate (req, callback) {
     var v = require('../libs/validator');
 
+    console.log('data', req.body);
     var data = {
         country: req.body.country,
-        email: req.body.email.toLowerCase(),
+        email: req.body.email,
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         phone: req.body.phone,
         password: req.body.password,
-        permission: req.body.permission
+        permission: req.body.permission,
+        ballance: req.body.ballance
     };
 
     var schema = v.joi.object().keys({
         country: v.joi.string(),
-        email: v.joi.string().email().required(),
+        email: v.joi.string().email().lowercase().required(),
         firstname: v.joi.string().max(30),
         lastname: v.joi.string().max(30),
         phone: v.joi.number(),
         permission: v.joi.string(),
+        ballance: v.joi.number(),
         password: v.joi.string().min(4).required()
     });
 
