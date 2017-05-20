@@ -25,6 +25,7 @@ exports.create = function (req, res, next) {
 };
 
 exports.list = function (req, res, next) {
+    console.log('reqparams', req.query);
     productApi.findAll(req.query, function (err, data) {
         if (err) return next(err);
         res.json(data);
@@ -50,7 +51,7 @@ exports.listFromCurrentCateg = function (req, res, next){
 
 };
 exports.getProductFilter = function (req, res, next) {
-
+    console.log('params', req.params);
     productApi.getProductFilter(req.params.category, function (err, filter) {
         if (err) return next(err);
         res.json(filter);
