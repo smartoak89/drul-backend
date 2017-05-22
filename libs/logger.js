@@ -15,7 +15,7 @@ function getLogger(module) {
             new (winston.transports.File)({
                 name: 'error',
                 filename: 'logs/log.log',
-                level: 'error'
+                level: 'debug'
             })
         ]
     });

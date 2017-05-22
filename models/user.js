@@ -13,11 +13,10 @@ var schema = new Schema({
     firstname: {type: String},
     lastname: {type: String},
     phone: {type: String},
-    state: {type: String},
+    permission: {type: String, default: 'member'},
+    ballance: {type: Object, default: {amount: 0, currency: 'UAH'}},
     hashedPassword: {type: String},
     salt: {type: String},
-    permission: {type: String},
-    ballance: {type: Number, default: 0},
     created: {
         type: Date,
         default: Date.now

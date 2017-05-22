@@ -51,8 +51,7 @@ exports.getUserByToken = function (req, res, next) {
         var user = JSON.parse(userCli);
         userAPI.find(user.uuid, function (err, result) {
             if (err) return next(err);
-
-            res.json({
+            var user = {
                 uuid: result.uuid,
                 email: result.email,
                 firstname: result.firstname,
@@ -61,7 +60,9 @@ exports.getUserByToken = function (req, res, next) {
                 country: result.country,
                 ballance: result.ballance,
                 phone: result.phone,
-            });
+                permission: result.permission
+            };
+            res.json(user);
         })
 
 
@@ -106,10 +107,17 @@ exports.update = function (req, res, next) {
 };
 
 exports.remove = function (req, res, next) {
-    userAPI.remove(req.params.id, function(err) {
+    userAPI.find(req.params.id, function(err, user) {
         if (err) return next(err);
-        res.sendMsg(msg.DELETED);
+        if (!user) return ('Пользователь не найден');
+        user.remove();
+        res.json({message: 'Пользователь удален успешно'});
     })
+    // userAPI.remove(req.params.id, function(err, result) {
+    //     if (err) return next(err);
+    //     if (!result)
+    //     res.json({message: 'Пользователь удален успешно'});
+    // })
 };
 
 exports.find = function (req, res, next) {
@@ -177,7 +185,10 @@ function isValidUpdateAdmin (req, callback) {
     };
 
     var schema = v.joi.object().keys({
-        ballance: v.joi.number()
+        ballance: v.joi.object().keys({
+            amount: v.joi.number(),
+            currency: v.joi.string().max(3)
+        })
     });
 
     v.validate(data, schema, callback);

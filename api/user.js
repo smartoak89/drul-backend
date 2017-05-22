@@ -25,7 +25,7 @@ module.exports = {
     remove: function (id, callback) {
         db.find(id, function (err, result) {
             if (err) return callback(err);
-            if (!result) return callback(404);
+            if (!result) return callback(null, 'Пользователь не найден');
             db.remove(id, callback);
         });
     },
