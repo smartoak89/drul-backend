@@ -203,9 +203,7 @@ function isValidUpdate (req, callback) {
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         phone: req.body.phone,
-        password: req.body.password,
-        permission: req.body.permission,
-        ballance: req.body.ballance
+        password: req.body.password
     };
 
     var schema = v.joi.object().keys({
@@ -214,8 +212,6 @@ function isValidUpdate (req, callback) {
         firstname: v.joi.string().max(30),
         lastname: v.joi.string().max(30),
         phone: v.joi.number(),
-        permission: v.joi.string(),
-        ballance: v.joi.number(),
         password: v.joi.string().min(4).required()
     });
 
