@@ -13,6 +13,7 @@ var sliderHandler = require('../handlers/slider');
 var mailHandler = require('../handlers/mail');
 var resetHandler = require('../handlers/reset');
 var vendorHandler = require('../handlers/vendor');
+var deliveryHandler = require('../handlers/delivery');
 var isAuth = require('../middleware/is_auth');
 var checkAdmin = require('../middleware/check_admin');
 
@@ -123,6 +124,11 @@ module.exports = function (app, express) {
     app.get('/reset/:token', resetHandler.checkTtlLink);
     app.post('/reset/:token', resetHandler.resetPasswd);
 
+    // -- Delivery
+    app.post('/delivery', checkAdmin, deliveryHandler.addNew);
+    app.get('/deliveries', deliveryHandler.list);
+    app.delete('/delivery/:id', deliveryHandler.remove);
+    app.put('/delivery/:id', deliveryHandler.edit);
     // -- test
     var currency = require('../api/currency');
     app.get('/test', resetHandler.sendResetToMail)
