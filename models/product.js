@@ -18,6 +18,7 @@ var schema = new Schema({
     slug: {type: String},
     stock: {type: Object},
     reviews_count: {type: Number},
+    group: {type: String},
     count: {
         type: Number,
         default: 0

@@ -258,7 +258,7 @@ function isValid(body, callback) {
         email: body.email,
         firstname: body.firstname,
         lastname: body.lastname,
-        country: body.state,
+        country: body.country,
         phone: body.phone,
         status: body.status,
         currency: body.currency.toUpperCase(),
