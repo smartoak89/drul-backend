@@ -62,8 +62,10 @@ exports.update = function (req, res, next) {
     isValid(req, function (err, value) {
         if (err) return res.status(400).json(err);
 
-        if (!value.stock || value.stock != '') {
-            console.log('stock', value.stock);
+        if (value.stock || value.stock !== '') {
+            value.group = 'stocks';
+        } else if (!value.stock || value.stock === '' && value.group == 'stocks'){
+            value.group = '';
         }
 
         productApi.update(req.params.id, value, function (err, product) {

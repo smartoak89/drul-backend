@@ -15,7 +15,7 @@ module.exports = {
             if (err) return callback(err);
             if (!result) return callback(null);
 
-            ProductAPI.findAll({stock: result.uuid}, function (err, products) {
+            ProductAPI.findAll({'stock.stock_id': result.uuid}, function (err, products) {
                 if (err) return (err);
                 if (products) Promise.map(products, deleteStockFromProduct);
             });
@@ -27,7 +27,9 @@ module.exports = {
 };
 
 var deleteStockFromProduct = Promise.promisify(function (product, i, c, cb) {
+    product.price = product.stock.old_price;
     product.stock = '';
+    product.group = '';
     ProductAPI.update(product.uuid, product, function (err) {
         if (err) return cb(err);
         cb();
