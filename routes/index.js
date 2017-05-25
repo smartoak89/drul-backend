@@ -14,11 +14,11 @@ var mailHandler = require('../handlers/mail');
 var resetHandler = require('../handlers/reset');
 var vendorHandler = require('../handlers/vendor');
 var deliveryHandler = require('../handlers/delivery');
+var settingHandler = require('../handlers/setting');
 var isAuth = require('../middleware/is_auth');
 var checkAdmin = require('../middleware/check_admin');
 
-module.exports = function (app, express) {
-    // app.use('/', require('./api')(express.Router()));
+module.exports = function (app) {
 
     //--Category
     app.get('/categories', categoryHandler.list);
@@ -33,13 +33,13 @@ module.exports = function (app, express) {
     app.post('/user/register', userHandler.register);
     app.get('/users', checkAdmin, userHandler.list);
     app.get('/user', userHandler.getUserByToken);
-    app.put('/user/:id', userHandler.update);
-    app.put('/user/admin/:id',checkAdmin, userHandler.updateAdmin);
+    app.put('/user/:id', isAuth, userHandler.update);
+    app.put('/user/admin/:id', checkAdmin, userHandler.updateAdmin);
     //TODO: put user;
     app.delete('/user/:id', checkAdmin, userHandler.remove);
     app.get('/user/:id', checkAdmin, userHandler.find);
     app.post('/user/auth', userHandler.auth);
-    app.get('/user', isAuth, userHandler.getAuthUser);
+    // app.get('/user', isAuth, userHandler.getAuthUser);
 
     //--Product
     app.post('/product', checkAdmin, productHandler.create);
@@ -127,9 +127,11 @@ module.exports = function (app, express) {
     // -- Delivery
     app.post('/delivery', checkAdmin, deliveryHandler.addNew);
     app.get('/deliveries', deliveryHandler.list);
-    app.delete('/delivery/:id', deliveryHandler.remove);
-    app.put('/delivery/:id', deliveryHandler.edit);
-    // -- test
-    var currency = require('../api/currency');
-    app.get('/test', resetHandler.sendResetToMail)
+    app.delete('/delivery/:id',checkAdmin, deliveryHandler.remove);
+    app.put('/delivery/:id', checkAdmin, deliveryHandler.edit);
+
+    // -- Settings
+    app.put('/setting', checkAdmin, settingHandler.edit);
+    app.get('/settings', settingHandler.getSetting);
+
 };

@@ -7,14 +7,9 @@ var schema = new Schema({
         unique: true,
         required: true
     },
-    name: {type: String},
-    percent: {type: Number},
-    created: {
-        type: Date,
-        default: Date.now
-    }
+    monitoring: {type: Number, default: 0}
 },{
     versionKey: false
 });
 
-module.exports = mongoose.model('Stocks', schema);
+module.exports = mongoose.model('Setting', schema);

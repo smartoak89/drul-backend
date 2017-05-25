@@ -42,6 +42,7 @@ var schema = new Schema({
         type: Number
     },
     price: {type: Number},
+    delivery: {type: Object, default: {}},
     currency: {
         type: String
     },

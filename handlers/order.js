@@ -262,6 +262,7 @@ function isValid(body, callback) {
         phone: body.phone,
         status: body.status,
         currency: body.currency.toUpperCase(),
+        delivery: body.delivery,
         products: body.products.map(function (product) {
             return {
                 combo: product.combo,
@@ -280,6 +281,7 @@ function isValid(body, callback) {
         phone: v.joi.string().min(2).max(50).allow(''),
         status: v.joi.string(),
         currency: v.joi.string().uppercase(),
+        delivery: v.joi.object(),
         products: v.joi.array().items(v.joi.object().keys({
             combo: v.joi.any(),
             productID: v.joi.string(),

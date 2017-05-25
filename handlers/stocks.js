@@ -1,14 +1,12 @@
 var error = require('../error').ressError;
+var stocksAPI = require('../api/stocks');
 
 exports.create = function (req, res, next) {
-    var stocksdAPI = require('../api/stocks');
-
     isValid(req.body, function (err, value) {
-        if (err) return res.sendMsg(err, true, 400);
+        if (err) return res.status(400).json({message: err});
 
-        stocksdAPI.create(value, function (err, stocks) {
+        stocksAPI.create(value, function (err, stocks) {
             if (err) return next(err);
-            if (!stocks) return res.sendMsg('Ошибка', true, 400);
             res.json(stocks);
         })
     });
@@ -16,9 +14,7 @@ exports.create = function (req, res, next) {
 };
 
 exports.list = function (req, res, next) {
-    var stocksdAPI = require('../api/stocks');
-
-    stocksdAPI.list(function (err, result) {
+    stocksAPI.list(function (err, result) {
         if (err) return next(err);
         res.json(result);
     });
@@ -26,9 +22,7 @@ exports.list = function (req, res, next) {
 };
 
 exports.remove = function (req, res, next) {
-    var stocksdAPI = require('../api/stocks');
-
-    stocksdAPI.remove(req.params.id, function(err, result) {
+    stocksAPI.remove(req.params.id, function(err, result) {
         if (err) return next(err);
         if(!result) {
             return res.status(404).json(error(404, 'Акция не найдена'));
@@ -43,13 +37,11 @@ function isValid (body, callback) {
     var data = {
         name: body.name,
         percent: body.percent
-        // expires: body.expires
     };
 
     var schema = v.joi.object().keys({
         name: v.joi.string().required(),
-        percent: v.joi.string().required(),
-        // expires: v.joi.date()
+        percent: v.joi.number().required()
     });
 
     v.validate(data, schema, callback);
