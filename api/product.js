@@ -101,13 +101,11 @@ function sanitazeCriteria (criteria) {
 
             criteria['combo'].forEach(function (item) {
                 var split = item.split('.');
-                combo.push({'combo.slug': split[0], 'combo.values': split[1]});
             });
 
 
         } else {
             var split = criteria['combo'].split('.');
-            combo.push({'combo.slug': split[0], 'combo.values': split[1]});
         }
 
         obj.match.$or = combo;
@@ -118,14 +116,18 @@ function sanitazeCriteria (criteria) {
 
     if (criteria.price) {
 
-        var minSplit = criteria.price[0].split('.');
-        var maxSplit = criteria.price[1].split('.');
+        if (Array.isArray(criteria.price)) {
+            var min = Number(criteria.price[0]);
+            var max = Number(criteria.price[1]);
 
-        if (minSplit[0] == 'min' && maxSplit[0] == 'max') {
-            var min = Number(minSplit[1]);
-            var max = Number(maxSplit[1]);
-
-            obj.match.price = {'$gte': min, '$lte': max};
+            if (min < max) {
+                obj.match.price = {'$gte': min, '$lte': max};
+            } else {
+                obj.match.price = NaN;
+            }
+        }else {
+            var price = Number(criteria.price);
+            obj.match.price = price;
         }
 
         delete criteria.price;

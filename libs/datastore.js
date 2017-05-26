@@ -68,7 +68,7 @@ Datastore.prototype = {
         }).limit(limit).sort(sort);
     },
     filter: function (filter, callback) {
-        console.log('filreer', filter);
+        console.log('filter', filter);
         this.model.aggregate(filter , function (err, result) {
             if (err) return callback(err);
             callback(null, result);
@@ -88,18 +88,18 @@ Datastore.prototype = {
             })
         })
     },
-    search: function(criteria, callback) {
-        var search = {};
-
-        for(var key in criteria) {
-            search[key] = new RegExp('.*'+ criteria[key], 'i');
-        }
-        console.log('search', search)
-        this.model.find(search, function (err, result) {
-            if (err) return callback(err);
-            callback(null, result);
-        })
-    },
+    // search: function(criteria, callback) {
+    //     var search = {};
+    //
+    //     for(var key in criteria) {
+    //         search[key] = new RegExp('.*'+ criteria[key], 'i');
+    //     }
+    //     console.log('search', search)
+    //     this.model.find(search, function (err, result) {
+    //         if (err) return callback(err);
+    //         callback(null, result);
+    //     })
+    // },
     aggregate: function (criteria, callback) {
         self.model.aggregate(criteria, callback);
     }
