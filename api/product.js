@@ -41,6 +41,7 @@ module.exports = {
             db.remove(id, function (err) {
                 if (err) return callback(err);
                 removeFromCartAndDeferred(id, callback);
+                removeFiles();
             });
         });
     },
@@ -157,6 +158,7 @@ function _find (criteria, callback) {
     filter.push({$limit: limit});
     db.filter(filter, callback);
 }
+
 function removeFromCartAndDeferred(productID, callback) {
     var Promise = require('bluebird');
     var cartAPI = require('./cart');

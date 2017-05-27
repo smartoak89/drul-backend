@@ -1,5 +1,4 @@
 var db = require('../libs/datastore')('file');
-var HttpError = require('../error').HttpError;
 var conf = require('../conf');
 var fs = require('fs');
 
@@ -14,7 +13,7 @@ module.exports = {
         db.findOne({uuid: id}, function (err, result) {
             if (err) return callback(err);
             if (!result) return callback(404);
-            removeFileFromDisk(result, function (err, res) {
+            removeFileFromDisk(result, function (err) {
                 if (err) return callback(err);
                 db.remove(id, callback);
             });
