@@ -1,6 +1,7 @@
 var log = require('../libs/logger')(module);
 var error = require('../error/index').ressError;
 var combinationAPI = require('../api/combination');
+var trans = require('../libs/support').transliterator;
 
 exports.create = function (req, res, next) {
     isValid(req.body, function (err, validBody) {
@@ -48,7 +49,7 @@ function isValid (body, callback) {
 
     var data = {
         name: body.name,
-        slug: body.slug,
+        slug: trans(body.name).replace(/\s/ig, '-'),
         value: body.value,
         checked: body.checked
     };
