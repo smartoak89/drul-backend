@@ -116,7 +116,8 @@ function isValid (req, callback) {
         slug: v.joi.string().max(50),
         stock: v.joi.object().keys({
             stock_id: v.joi.string(),
-            old_price: v.joi.number()
+            old_price: v.joi.number(),
+            percent: v.joi.number()
         }).allow(''),
         price: v.joi.number(),
         combo: v.joi.array(),

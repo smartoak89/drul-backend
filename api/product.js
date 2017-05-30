@@ -41,7 +41,7 @@ module.exports = {
             db.remove(id, function (err) {
                 if (err) return callback(err);
                 removeFromCartAndDeferred(id, callback);
-                removeFiles();
+                // removeFiles();
             });
         });
     },
@@ -64,6 +64,20 @@ module.exports = {
     },
     getProductFilter: function (category, callback) {
         db.getProductFilter(category, callback);
+    },
+    updateCategoryPath: function(criteria, next, data, callback){
+        var self = this;
+        this.findAll(criteria, function (err, results) {
+            if (err) return next(err);
+            Promise.map(results, function (item) {
+                item.category.name = data.name;
+                item.category.slug = data.slug;
+                self.update(item.uuid, item, function(){});
+
+            }).then(function () {
+                callback();
+            })
+        })
     }
 };
 

@@ -12,7 +12,7 @@ var schema = new Schema({
     parent: {type: String},
     parents: {type: Array, default: []},
     children: {type: Array, default: []},
-    path: {type: Array, default: []}
+    path: {type: Object, default: {}}
 
 },{
     versionKey: false
