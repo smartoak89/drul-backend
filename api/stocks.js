@@ -23,6 +23,12 @@ module.exports = {
             db.remove(id, callback);
 
         });
+    },
+    get: function (criteria, next, callback) {
+        db.findOne(criteria, function (err, res) {
+            if (err) return next (err);
+            callback(res);
+        })
     }
 };
 

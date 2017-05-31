@@ -68,6 +68,7 @@ module.exports = function (app) {
     //--Stocks
     app.post('/stocks', checkAdmin, stocksHandler.create);
     app.get('/stocks', stocksHandler.list);
+    app.put('/stock/:id', checkAdmin, stocksHandler.update);
     app.delete('/stocks/:id', checkAdmin, stocksHandler.remove);
 
     //--Deferred

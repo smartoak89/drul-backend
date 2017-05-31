@@ -1,5 +1,6 @@
 var error = require('../error').ressError;
 var stocksAPI = require('../api/stocks');
+var productAPI = require('../api/product');
 
 exports.create = function (req, res, next) {
     isValid(req.body, function (err, value) {
@@ -8,6 +9,29 @@ exports.create = function (req, res, next) {
         stocksAPI.create(value, function (err, stocks) {
             if (err) return next(err);
             res.json(stocks);
+        })
+    });
+
+};
+
+exports.update = function (req, res, next) {
+    isValid(req.body, function (err, value) {
+        if (err) return res.status(400).json({message: err});
+
+        stocksAPI.get({uuid: req.params.id}, next, function (result) {
+            if (!result) return res.status(404).json({message: 'Акция не найдена'});
+
+            for (var key in value) {
+                result[key] = value[key];
+            }
+
+            productAPI.updateStock({'stock.stock_id': result.uuid}, result, next, function () {
+                result.save();
+                res.json(result);
+            });
+
+
+
         })
     });
 
