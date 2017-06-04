@@ -28,7 +28,6 @@ module.exports = {
 
             for (var k in newData) {
                 result[k] = newData[k];
-                console.log(k, newData[k]);
             }
 
             db.update(result.uuid, result, callback);
@@ -87,7 +86,6 @@ module.exports = {
             Promise.map(results, function (item) {
                 item.stock.percent = data.percent;
                 item.price = Math.round(item.stock.old_price - ( item.stock.old_price * data.percent / 100 ));
-                console.log('item', item);
                 self.update(item.uuid, item, function(){});
             }).then(function () {
                 callback();

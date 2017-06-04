@@ -7,31 +7,31 @@ exports.add = function (req, res, next) {
     var productID = req.params.productId;
     var user = req.user;
 
+    productAPI.findOne({uuid: productID}, function (err, product) {
+       if (err) return next(err);
+       if (!product) return res.status(404).json({message: 'Product Not Found'});
+       if (!req.body.owner_name) return res.status(400).json({message: "Введите имя коментатора"});
+       if (!req.body.body) return res.status(400).json({message: "Коментарий пуст"});
 
-       productAPI.findOne({uuid: productID}, function (err, product) {
-           if (err) return next(err);
-           if (!product) return res.status(404).json({error_status: 404, error_message: 'Product Not Found'});
-           if (!req.body.body) return res.status(400).json({error_status: 400, error_message: "Коментарий пуст"});
+       orderAPI.find({owner: user.uuid, 'products.productID': productID}, function (err, order) {
+           if (err) return callback(err);
+           if (!order && user.permission != 'administrator') return res.status(400).json({message: 'Вы не можете оставлять отзыв к данному товару!'});
 
-           orderAPI.find({owner: user.uuid, 'products.productID': productID}, function (err, order) {
-               if (err) return callback(err);
-               if (!order && user.permission != 'administrator') return res.status(400).json({message: 'Вы не можете оставлять отзыв к данному товару!'});
+           var review = {
+               body: req.body.body,
+               product_id: productID,
+               owner_id: user.uuid,
+               owner_name: req.body.owner_name,
+               publish: false
+           };
 
-               var review = {
-                   body: req.body.body,
-                   product_id: productID,
-                   owner_id: user.uuid,
-                   owner_name: user.firstname,
-                   publish: false
-               };
+           reviewsAPI.create(review, function (err, result) {
+               if (err) return next(err);
+               res.json(result);
+           })
+       });
 
-               reviewsAPI.create(review, function (err, result) {
-                   if (err) return next(err);
-                   res.json(result);
-               })
-           });
-
-       })
+    })
 
     // isValid(req, function (err, value) {
     //     log.log('gotVal %', value);
