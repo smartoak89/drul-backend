@@ -15,6 +15,7 @@ var resetHandler = require('../handlers/reset');
 var vendorHandler = require('../handlers/vendor');
 var deliveryHandler = require('../handlers/delivery');
 var settingHandler = require('../handlers/setting');
+var templatesHandler = require('../handlers/templates');
 var isAuth = require('../middleware/is_auth');
 var checkAdmin = require('../middleware/check_admin');
 
@@ -134,5 +135,11 @@ module.exports = function (app) {
     // -- Settings
     app.put('/setting', checkAdmin, settingHandler.edit);
     app.get('/settings', settingHandler.getSetting);
+
+    // -- Templates
+    app.post('/template', checkAdmin, templatesHandler.create);
+    app.get('/templates', checkAdmin, templatesHandler.list);
+    app.put('/template/:id', checkAdmin, templatesHandler.update);
+    app.delete('/template/:id', checkAdmin, templatesHandler.remove);
 
 };
