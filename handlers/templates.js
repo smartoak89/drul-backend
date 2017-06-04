@@ -36,7 +36,7 @@ exports.remove = function (req, res, next) {
 
     templatesAPI.remove(templateId, next, function (err, results) {
         if (err) return res.status(404).json({message: err});
-        res.json(results);
+        res.json({message: results});
     })
 };
 
