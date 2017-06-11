@@ -86,6 +86,7 @@ module.exports = function (app) {
     app.post('/combination', checkAdmin, combinationHandler.create);
     app.get('/combinations', combinationHandler.list);
     app.put('/combination/:id', checkAdmin, combinationHandler.update);
+    app.put('/combination/:id/:index', checkAdmin, combinationHandler.updateValue);
     app.delete('/combination/:id', checkAdmin, combinationHandler.delete);
 
     // Vendor
