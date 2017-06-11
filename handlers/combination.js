@@ -34,6 +34,19 @@ exports.update = function (req, res, next) {
 
 };
 
+exports.updateValue = function (req, res, next) {
+    var id = req.params.id;
+    var ind = req.params.index;
+    if (!req.body.name) return  res.status(400).json({message: 'Укажите значечие'});
+
+    combinationAPI.updateValue(id, ind, req.body.name, function (err, result) {
+        if (err) return next(err);
+        if (!result) return res.status(400).json(error(400, 'Нет такой комбинации!'));
+        res.json(result);
+    })
+
+};
+
 exports.delete = function (req, res, next) {
 
     combinationAPI.delete(req.params.id, function (err, result) {
