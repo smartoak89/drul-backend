@@ -35,7 +35,7 @@ module.exports = {
 var deleteStockFromProduct = Promise.promisify(function (product, i, c, cb) {
     product.price = product.stock.old_price;
     product.stock = '';
-    product.group = '';
+    product.groups.splice(product.groups.indexOf('stock'), 1);
     ProductAPI.update(product.uuid, product, function (err) {
         if (err) return cb(err);
         cb();

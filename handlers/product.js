@@ -7,10 +7,9 @@ exports.create = function (req, res, next) {
     isValid(req, function (err, value) {
         if (err) return res.status(400).json(err);
 
-        console.log(productApi.findAll({article: value.article, sort: 'count.desk', limit: 1}, function (err, products) {
+        productApi.findAll({article: value.article, sort: 'count.desk', limit: 1}, function (err, products) {
             var count =  0;
             if (products[0] && products[0].count) count = products[0].count;
-            console.log('products', products);
             value.count = count + 1;
             value.article = value.article + '-' + value.count;
 
@@ -19,7 +18,7 @@ exports.create = function (req, res, next) {
                 res.json(product);
             })
 
-        }))
+        })
 
     });
 };
@@ -51,7 +50,6 @@ exports.listFromCurrentCateg = function (req, res, next){
 };
 
 exports.getProductFilter = function (req, res, next) {
-    console.log('params', req.params);
     productApi.getProductFilter(req.params.category, function (err, filter) {
         if (err) return next(err);
         res.json(filter);
@@ -61,13 +59,6 @@ exports.getProductFilter = function (req, res, next) {
 exports.update = function (req, res, next) {
     isValid(req, function (err, value) {
         if (err) return res.status(400).json(err);
-
-        if (value.stock && value.stock !== '') {
-            value.group = 'stocks';
-        } else if (!value.stock || value.stock === '' && value.group == 'stocks'){
-            value.group = '';
-        }
-
         productApi.update(req.params.id, value, function (err, product) {
 
             if (err) return next(err);
@@ -94,7 +85,7 @@ exports.remove = function (req, res, next) {
 
 function isValid (req, callback) {
     var v = require('../libs/validator');
-
+    console.log('valid prod', req.body);
     var data = {
         name: req.body.name,
         article: req.body.article,
@@ -105,11 +96,12 @@ function isValid (req, callback) {
         stock: req.body.stock || '',
         combo: req.body.combo,
         sublines: req.body.sublines,
-        show: req.body.show
+        show: req.body.show,
+        groups: req.body.groups
     };
 
     var schema = v.joi.object().keys({
-        name: v.joi.string().min(4).max(50).required(),
+        name: v.joi.string(),
         article: v.joi.string().max(50),
         description: v.joi.string(),
         category: v.joi.object(),
@@ -122,7 +114,8 @@ function isValid (req, callback) {
         price: v.joi.number(),
         combo: v.joi.array(),
         sublines: v.joi.array().items(v.joi.object()),
-        show: v.joi.boolean()
+        show: v.joi.boolean(),
+        groups: v.joi.array()
     });
 
     v.validate(data, schema, callback);
