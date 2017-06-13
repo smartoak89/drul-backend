@@ -168,9 +168,6 @@ exports.removeProductFromOrder = function (req, res, next) {
         var splice = order.products.splice(productIndex, 1)[0];
         order.price = order.price - (splice.price * splice.count);
 
-        console.log('order', order);
-        console.log('splice', splice);
-
         orderAPI.update(orderId, order, function (err, result) {
             if (err) return next(err);
             res.json(result);
@@ -198,7 +195,6 @@ function recount(currency, next) {
             function correctAmount () {
                 totalAmount += product.price * item.count;
                 item.price = product.price;
-                console.log('item', item);
                 callback(null, item);
             }
         });
