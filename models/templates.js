@@ -7,6 +7,8 @@ var schema = new Schema({
         unique: true,
         required: true
     },
+    name: {type: String},
+    slug: {type: String},
     subject: {type: String},
     body: {type: String},
     created: {

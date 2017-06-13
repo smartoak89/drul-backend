@@ -3,6 +3,7 @@ var conf = require('../conf');
 var mailer = require('nodemailer');
 var path = require('path');
 var thenJade = require('then-jade');
+var templateAPI = require('./templates');
 
 module.exports = {
 
@@ -10,17 +11,25 @@ module.exports = {
 
         var tpl = conf.rootDir + '/templates/register.jade';
 
-        thenJade.renderFile(tpl, {} , function (err, html) {
+        templateAPI.get({slug: 'registracziya'}, function (err, template) {
             if (err) return next(err);
 
-            var to = '<' + email + '>';
+            if(!template) return;
 
-            var subject = 'Регистрация на сайте.';
+            thenJade.renderFile(tpl, {body: template.body} , function (err, html) {
+                if (err) return next(err);
 
-            var createMail = new CreateMail(to, subject, html);
+                var to = '<' + email + '>';
 
-            createMail.send(next);
+                var subject = template.subject;
+
+                var createMail = new CreateMail(to, subject, html);
+
+                createMail.send(next);
+            })
         })
+
+
 
 
     },
@@ -44,7 +53,7 @@ module.exports = {
         })
     },
     sendLetter: function (data, res, next) {
-        var tpl = conf.rootDir + '/templates/letter.jade';
+        var tpl = conf.rootDir + '/templates/letter-test.jade';
 
         thenJade.renderFile(tpl, {text: data.text} , function (err, html) {
             if (err) return next(err);
@@ -61,25 +70,39 @@ module.exports = {
         })
     },
     newOrder: function (data, next) {
-        var tpl = conf.rootDir + '/templates/order.jade';
-
+        var path = conf.rootDir + '/templates/order.jade';
+        console.log('data', data);
         var property = {
             price: data.price,
             currency: data.currency,
-            order_num: data.order_num
+            order_num: data.order_num,
+            user_name: data.firstname + ' ' + data.lastname,
+            status: data.status,
+            city: data.delivery.city,
+            post_number: data.delivery.numberPost
         };
 
-        thenJade.renderFile(tpl, property , function (err, html) {
+        templateAPI.get({slug: 'zakaz'}, function (err, result) {
             if (err) return next(err);
 
-            var to = '<' + data.email + '>';
+            if (!result) return;
 
-            var subject = 'Новый заказ № ' + data.order_num;
+            var fn = thenJade.compile(result.body, property);
 
-            var createMail = new CreateMail(to, subject, html);
+            fn(property, function (err, html) {
+                thenJade.renderFile(path, {body: html} , function (err, template) {
+                    if (err) return next(err);
 
-            createMail.send(next);
-        });
+                    var to = '<' + data.email + '>';
+
+                    var subject = result.subject + ' № заказа ' + data.order_num;
+
+                    var createMail = new CreateMail(to, subject, template);
+
+                    createMail.send(next);
+                });
+            })
+        })
 
         var adminTpl = conf.rootDir + '/templates/order_for_admin.jade';
 

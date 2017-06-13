@@ -33,5 +33,8 @@ module.exports = {
             result.remove();
             callback(null, "Шаблон успешно удален");
         });
+    },
+    get: function (document, callback) {
+        db.findOne(document, callback);
     }
 };

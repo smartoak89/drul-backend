@@ -1,4 +1,5 @@
 var templatesAPI = require('../api/templates');
+var trans = require('../libs/support').transliterator;
 
 exports.create = function (req, res, next) {
     validator(sanitize(req.body), function (err, data) {
@@ -43,11 +44,14 @@ exports.remove = function (req, res, next) {
 function sanitize(data) {
     return {
         subject: data.subject,
+        name: data.name,
         body: data.body
     }
 }
 
 function validator(data, callback) {
+    if (!data.name)  return callback('Укажите название шаблона');
+    data.slug = trans(data.name).replace(/\s/ig, '-');
     if (!data.subject)  return callback('Укажите тему шаблона');
     if (typeof data.subject !== 'string')  return callback('Тема должна быть типа \'string\'');
     if (!data.body)  return callback('Укажите текст шаблона');
