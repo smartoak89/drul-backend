@@ -1,4 +1,5 @@
 var mailAPI = require('../api/mail');
+var orderAPI = require('../api/order');
 
 module.exports = {
     send: function (req, res, next) {
@@ -9,7 +10,24 @@ module.exports = {
 
             mailAPI.sendLetter(body, res, next);
 
+            res.end();
         })
+    },
+    status: function (req, res, next) {
+        var orderId = req.params.order;
+
+        orderAPI.find({uuid: orderId}, function (err, order) {
+            if (err) return next(err);
+            if (!order) return res.status(404).json({message: 'Заказ не найден'});
+
+            if (!order.email || order.email === '') return res.end();
+
+            mailAPI.sendStatus(order, next);
+
+            res.end();
+        });
+
+
     }
 };
 

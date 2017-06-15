@@ -119,8 +119,8 @@ module.exports = function (app) {
     app.delete('/slider/:id', checkAdmin, sliderHandler.remove);
 
     //Mail
-    app.post('/mail', checkAdmin, mailHandler.send);
-    // app.post('/mail/:userId', mailHandler.sendMailToUser);
+    app.post('/mail/user', checkAdmin, mailHandler.send);
+    app.post('/mail/status/:order', checkAdmin, mailHandler.status);
 
     // -- Reset password
     app.post('/reset', resetHandler.sendResetToMail);

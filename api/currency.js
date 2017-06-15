@@ -4,36 +4,39 @@ var _ = require('lodash');
 var memstor = require('./memstor');
 
 exports.converter = function (curr, product, next, callback) {
-
     courses(curr, next, function (amount) {
+        console.log('amount', amount);
         product.price = (product.price / amount).toFixed(2);
         callback(product);
     });
 };
 
 function courses (currency, next, callback) {
-    currency = currency.toUpperCase();
+    currency = currency.toLowerCase();
 
     memstor.get('currency-' + currency, next, function (cours) {
-        // if (cours) return callback(Number(cours));
+        if (cours) {
+            return callback(Number(cours));
+        } else {
+            courseAPI().then(function (res) {
+                var ccy = _.find(res, {ccy: currency.toUpperCase()});
 
-        courseAPI().then(function (res) {
-
-            var ccy = _.find(res, {ccy: currency});
-
-            if (ccy) {
-                memstor.set('currency-' + currency, ccy.sale);
-                return callback(Number(ccy.sale));
-            }
-        })
+                if (ccy) {
+                    memstor.set('currency-' + currency, ccy.sale);
+                    memstor.expire('currency-' + currency, expire());
+                    return callback(Number(ccy.sale));
+                }
+            })
+        }
     })
 }
 
 function expire () {
-    var tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate()+1);
-    var nextday = new Date((tomorrow.getMonth()+1)+','+tomorrow.getDate()+','+tomorrow.getFullYear()+',10:00:00');
-    return nextday;
+    var now = new Date();
+    var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 10);
+    var diff = tomorrow - now;
+
+    return Math.round(diff / 1000)
 }
 
 function courseAPI () {

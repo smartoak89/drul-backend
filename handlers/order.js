@@ -132,13 +132,6 @@ exports.getOneOrder = function (req, res, next) {
         if (!order) return res.status(404).json({message: 'Заказ не найден!'});
 
         res.json(order);
-        // productAPI.findOne({uuid: order.product_id}, function (err, product) {
-        //     if (err) return next(err);
-        //     if (!product) return res.status(404).json({message: 'Товар не найден!'})
-        //     product.combo = order.combo;
-        //
-        //     res.json(product);
-        // })
     })
 
 };
@@ -183,7 +176,7 @@ function recount(currency, next) {
             if (err) return callback(err);
             if (!product) callback();
 
-            if (currency.toUpperCase() != 'UAH') {
+            if (currency.toLowerCase() != 'uah') {
                 currencyAPI.converter(currency, product, next, function (recountProduct) {
                     product = recountProduct;
                     correctAmount();
@@ -246,9 +239,10 @@ function save(data, next, callback) {
         callback(order);
     });
 }
+
 function isValid(body, callback) {
     var v = require('../libs/validator');
-
+    console.log('order', body);
     var data = {
         order_num: body.order_num,
         email: body.email,
@@ -257,7 +251,7 @@ function isValid(body, callback) {
         country: body.country,
         phone: body.phone,
         status: body.status,
-        currency: body.currency.toUpperCase(),
+        currency: body.currency,
         delivery: body.delivery,
         products: body.products.map(function (product) {
             return {
