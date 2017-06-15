@@ -117,6 +117,35 @@ module.exports = {
 
             createMail.send(next);
         })
+    },
+    sendStatus: function (order, next) {
+        var path = conf.rootDir + '/templates/status.jade';
+
+        templateAPI.get({slug: 'status'}, function (err, result) {
+            if (err) return next(err);
+
+            if(!result) return;
+
+            var prop = {
+                status: order.status,
+                order_num: order.order_num
+            };
+            var fn = thenJade.compile(result.body, prop);
+
+            fn(prop, function (err, html) {
+                thenJade.renderFile(path, {body: html} , function (err, template) {
+                    if (err) return next(err);
+
+                    var to = '<' + order.email + '>';
+
+                    var subject = result.subject + ' № заказа ' + order.order_num;
+
+                    var createMail = new CreateMail(to, subject, template);
+
+                    createMail.send(next);
+                });
+            })
+        })
     }
 };
 
